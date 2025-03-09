@@ -14,6 +14,7 @@ import RecuperacaoSenha from "./Pages/RecuperacaoSenha/index.jsx";
 import Relatorios from "./Pages/Dashboard/Relatorios.jsx";
 import RelatorioMedicacao from "./Pages/PerfilDependente/HistoricoMedicacao.jsx";
 import PaginaHistoricoDependentes from "./Pages/PerfilDependente/HistoricoMedicacao.jsx";
+import Configuracoes from "./Pages/Dashboard/Configuracoes.jsx";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/recuperacaosenha" element={<RecuperacaoSenha/>}/>
         <Route path="/relatorios" element={<Relatorios/>}/>
         <Route path="/historico_medicacoes" element={<PaginaHistoricoDependentes/>}/>
+        <Route path="/configuracoes" element={<Configuracoes/>}/>
       </Routes>
     
   );

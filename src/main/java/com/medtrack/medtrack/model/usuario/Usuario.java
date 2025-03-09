@@ -30,6 +30,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senhaHashed;
+
     private LocalDate dataNascimento;
 
     private String nomeUsuario;
@@ -52,6 +53,8 @@ public class Usuario {
         dataNascimento = dados.dataNascimento();
         nomeUsuario = dados.nomeUsuario();
     }
+
+
 
 }
 

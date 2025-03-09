@@ -25,9 +25,9 @@ const RelatorioMedicacao = ({dados}) => {
                 <tr key={index} className="text-center">
                   <td className="border border-cyan-300 px-4 py-2">{registro.data}</td>
                   <td className="border border-cyan-300 px-4 py-2">{registro.remedio}</td>
-                  <td clasName="border border-cyan-300 px-4 py-2">{registro.horario}</td>
-                  <td clssName="border border-cyan-300 px-4 py-2">{registro.dose}</td>
-                  <td clssName="border border-cyan-300 px-4 py-2">
+                  <td className="border border-cyan-300 px-4 py-2">{registro.horario}</td>
+                  <td className="border border-cyan-300 px-4 py-2">{registro.dose}</td>
+                  <td className="border border-cyan-300 px-4 py-2">
                     {registro.tomado ? "✅ Sim" : "❌ Não"}
                   </td>
                   <td className="border border-cyan-300 px-4 py-2">{registro.observacoes || "-"}</td>

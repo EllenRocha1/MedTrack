@@ -31,7 +31,7 @@ const ListaFuncionalidades = () => {
           </Link>
         </li>
         <li>
-          <Link to="/consultas" className="flex items-center gap-2 hover:bg-gray-700 rounded">
+          <Link to="/" className="flex items-center gap-2 hover:bg-gray-700 rounded">
             <Calendar size={30}  />
             <span className="hidden sm:inline ml-2">LOGOUT</span>
           </Link>
