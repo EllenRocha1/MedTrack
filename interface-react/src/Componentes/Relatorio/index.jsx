@@ -1,26 +1,38 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Check, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import api from "../../Service/api";
 
 const Relatorio = ({ termoPesquisa }) => {
-  const [dependentes, setDependentes] = useState([
-    { id: 1, nome: "Maria Silva", idade: 10, telefone: "(11) 98765-4321", emDia: true },
-    { id: 2, nome: "João Souza", idade: 15, telefone: "(21) 98888-1111", emDia: false },
-    { id: 3, nome: "Ana Santos", idade: 65, telefone: "(31) 99999-2222", emDia: true },
-    { id: 4, nome: "Carimbo", idade: 500.9, telefone: "(11) 98765-4321", emDia: true },
-    { id: 5, nome: "Beyonce", idade: 90, telefone: "(81)98636-6767", emDia: false },
-    { id: 6, nome: "Jimbo", idade: 90, telefone: "(81)98636-6767", emDia: true },
-    { id: 7, nome: "James", idade: 90, telefone: "(81)98636-6767", emDia: true },
-    { id: 8, nome: "Beyonce", idade: 90, telefone: "(81)98636-6767", emDia: true },
-    { id: 9, nome: "Jimbo", idade: 90, telefone: "(81)98636-6767", emDia: true },
-    { id: 10, nome: "James", idade: 90, telefone: "(81)98636-6767", emDia: true },
-  ]);
+
+    const [dependentes, setDependentes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const dependentesFiltrados = dependentes.filter((dep) =>
       dep.nome.toLowerCase().includes(termoPesquisa.toLowerCase())
   );
+
+    useEffect(() => {
+        const fetchDependentes = async () => {
+            try {
+                const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                setDependentes(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDependentes();
+    }, []);
+
+    const adicionarDependente = (novoDependente) => {
+        setDependentes([...dependentes, novoDependente]);
+    };
 
   return (
       <div className="p-6">

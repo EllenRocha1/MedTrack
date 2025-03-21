@@ -18,7 +18,7 @@ import Configuracoes from "./Pages/Dashboard/Configuracoes.jsx";
 
 function App() {
     return (
-        <Router>
+        //<Router>
             <Routes>
                 {/* Rotas Públicas */}
                 <Route path='/' element={<PaginaPrincipal />} />
@@ -49,7 +49,7 @@ function App() {
                     <Route path="/home-pessoal" element={<Dashboard />} />
                 </Route>
             </Routes>
-        </Router>
+      //  </Router>
 
     );
 }
