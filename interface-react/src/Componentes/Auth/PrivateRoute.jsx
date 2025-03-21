@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { isAuthenticated, getUserRole } from "../Auth/AuthToken";
 
-const PrivateRoute = ({ ...requiredRole }) => {
+const PrivateRoute = ({requiredRole }) => {
 
     const authenticated = isAuthenticated();
     const role = getUserRole();
