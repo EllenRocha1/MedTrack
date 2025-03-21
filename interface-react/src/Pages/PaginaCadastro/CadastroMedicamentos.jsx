@@ -1,78 +1,153 @@
 import { useState } from "react";
-import FormularioLogin from "../../Componentes/FormularioLogin";
-import Botao from "../../Componentes/Botao";
+import FormularioCadastro from "../../Componentes/FormularioCadastro";
 import useMedicamentos from "../../Componentes/ListaDeMed";
 
 const CadastroMedicamentos = () => {
-    const [nomeMed, setNomeMed] = useState("");
-    const [agenteAtivo, setAgenteAtivo] = useState("");
-    const [quantidade, setQuantidade] = useState("");
-    const [quantMili, setQuantMili] = useState("");
-    const [quantDia, setQuantDia] = useState("");
+    const [formData, setFormData] = useState({
+        nome: "",
+        principioAtivo: "",
+        dosagem: "",
+        usuarioId: "",
+        observacoes: "",
+        dependenteId: "",
+        frequenciaUso: {
+            frequenciaUsoTipo: "",
+            usoContinuo: null,
+            intervaloHoras: 0,
+            horariosEspecificos: [],
+            primeiroHorario: "",
+            dataInicio: "",
+            dataTermino: ""
+        },
 
-    const { buscarAgenteAtivo, filtrarMedicamentos } = useMedicamentos();
+    });
+
+    const handleChange = (e) => {
+        let { name, value } = e.target;
+
+        // Se for "usoContinuo", convertemos para booleano
+        if (name === "usoContinuo") {
+            value = value === "true";
+        }
+
+        setFormData((prevState) => ({
+            ...prevState,
+            frequenciaUso:{
+                ...prevState.frequenciaUso,
+                [name]: value,
+            }
+
+        }));
+    };
+
+
+    const camposBase = [
+        { type: "text", id: "nome-remedio", label: "Nome do Remédio:", name: "nome", placeholder: "Digite o nome do medicamento..." },
+        { type: "text", id: "principioAtivo", label: "Princípio Ativo:", name: "principioAtivo", placeholder: "Digite o princípio ativo" },
+        { type: "number", id: "dosagem", label: "Dosagem:", name: "dosagem", placeholder: "Dosagem..." },
+        { type: "textarea", id: "observacoes", label: "Observações:", name: "observacoes" },
+
+        {
+            type: 'select', id: 'usoContinuo', label: 'Uso Contínuo?', name: 'usoContinuo',
+            options: [
+                { value: 'true', text: 'Selecione...' },
+                { value: "true", text: 'Sim' },
+                { value: "false", text: 'Não' }
+            ],
+            value: formData.frequenciaUso.usoContinuo === null ? "" : formData.frequenciaUso.usoContinuo.toString(),
+            onChange: handleChange
+        },
+
+        {
+            type: 'select', id: 'frequenciaUsoTipo', label: 'Tipo de Frequência', name: 'frequenciaUsoTipo',
+            options: [
+                { value: '', text: 'Selecione...' },
+                { value: "HORARIOS_ESPECIFICOS", text: "Horário Específico"},
+                { value: "INTERVALO_ENTRE_DOSES", text: 'Intervalo entre doses' }
+            ],
+            value: formData.frequenciaUso.frequenciaUsoTipo || "",
+            onChange: handleChange
+        }
+    ];
+
+    const camposExtras = [];
+    if (formData.frequenciaUso.usoContinuo === false) {
+            camposExtras.push({
+                type: "date",
+                id: `dataInicio`,
+                label: `Data de Inicio:`,
+                name: `dataInicio`,
+                value: formData.frequenciaUso.dataInicio,
+                onChange: handleChange
+            },{ type: "date",
+                id: "dataTermino",
+                label: "Data de Término:",
+                name: "dataTermino",
+                value: formData.frequenciaUso.dataTermino,
+                onChange: handleChange }
+            );
+
+
+    }
+    if (formData.frequenciaUso.frequenciaUsoTipo === "HORARIOS_ESPECIFICOS") {
+        camposExtras.push({
+            type: "time",
+            id: "horariosEspecificos",
+            label: "Horário:",
+            name: "horariosEspecificos",
+            value: formData.frequenciaUso.horariosEspecificos,
+            onChange: handleChange
+        });
+    }
+
+    if (formData.frequenciaUso.frequenciaUsoTipo === "INTERVALO_ENTRE_DOSES") {
+        camposExtras.push({
+            type: "time",
+            id: "primeiroHorario",
+            label: "Primeiro Horário:",
+            name: "primeiroHorario",
+            value: formData.frequenciaUso.primeiroHorario,
+            onChange: handleChange
+        });
+        camposExtras.push({
+            type: "number",
+            id: "intervaloHoras",
+            label: "Intervalo entre as doses (em horas):",
+            name: "intervaloHoras",
+            value: formData.frequenciaUso.intervaloHoras,
+            onChange: handleChange
+        });
+    }
+
+
+
+    const botao = [
+        { label: "Salvar", type: "submit" },
+        { label: "Voltar", destino: "/dashboard" }
+    ];
+
+    const { buscarAgenteAtivo } = useMedicamentos();
 
     const handleNomeChange = (e) => {
         const nome = e.target.value;
-        setNomeMed(nome);
-
-        const agente = buscarAgenteAtivo(nome);
-        setAgenteAtivo(agente);
+        setFormData((prevState) => ({
+            ...prevState,
+            nome,
+            principioAtivo: buscarAgenteAtivo(nome)
+        }));
     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-2xl font-semibold text-center">Cadastro de Medicamentos</h1>
-
-            <div className="flex flex-col my-2 p-10 gap-4 justify-between w-[400px]">
-                <label htmlFor="nome-medicamento">Nome do Medicamento:</label>
-                <input
-                    type="text"
-                    id="nome-medicamento"
-                    list="sugestoes-medicamentos"
-                    value={nomeMed}
-                    onChange={handleNomeChange}
-                    placeholder="Digite o nome do medicamento"
-                    className="border p-2 rounded"
-                />
-                <datalist id="sugestoes-medicamentos">
-                    {filtrarMedicamentos(nomeMed).map((med, index) => (
-                        <option key={index} value={med} />
-                    ))}
-                </datalist>
-
-                <label htmlFor="agente-ativo">Agente Ativo:</label>
-                <input
-                    type="text"
-                    id="agente-ativo"
-                    value={agenteAtivo}
-                    onChange={(e) => setAgenteAtivo(e.target.value)}
-                    placeholder="Agente ativo"
-                    className="border p-2 rounded"
-                />
-
-                <label htmlFor="quantidade">Quantidade:</label>
-                <input
-                    type="number"
-                    id="quantidade"
-                    value={quantidade}
-                    onChange={(e) => setQuantidade(e.target.value)}
-                    placeholder="Digite a quantidade"
-                    className="border p-2 rounded"
-                />
-
-                <label htmlFor="quant-mili">Quantos Miligramas?</label>
-                <input
-                    type="number"
-                    id="quant-mili"
-                    value={quantMili}
-                    onChange={(e) => setQuantMili(e.target.value)}
-                    placeholder="Digite quantos mg"
-                    className="border p-2 rounded"
-                />
-            </div>
-
-            <Botao label={"Salvar"} destino={"/perfil"} />
+            <FormularioCadastro
+                campos={[...camposBase, ...camposExtras]}
+                h1="Cadastro de Medicamento"
+                botaos={botao}
+                formData={formData}
+                setFormData={setFormData}
+                handleNomeChange={handleNomeChange}
+                handleChange={handleChange}
+            />
         </div>
     );
 };
