@@ -1,16 +1,17 @@
 import {useState, useMemo, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import api from "../../Service/api";
-import {getUserInfo} from "../../Componentes/Auth/AuthToken";
+import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 
 const CadastroMedicamentos = () => {
-
+    const userRole = getUserRole()
     const [dependentes, setDependentes] = useState([]);
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         nome: "",
         principioAtivo: "",
-        dosagem: "",
+        dosagemQuantidade: "",
+        dosagemUnidade: "mg",
         observacoes: "",
         frequenciaUso: {
             frequenciaUsoTipo: "",
@@ -22,45 +23,53 @@ const CadastroMedicamentos = () => {
             dataTermino: ""
         },
     });
+
+    const unidadesMedida = [
+        { value: "mg", text: "mg" },
+        { value: "g", text: "g" },
+        { value: "ml", text: "ml" },
+        { value: "L", text: "L" },
+        { value: "mcg", text: "mcg" },
+        { value: "cápsula(s)", text: "cápsula(s)" },
+        { value: "comprimido(s)", text: "comprimido(s)" },
+        { value: "gotas", text: "gotas" },
+        { value: "UI", text: "UI" },
+    ];
     const usuarioId = getUserInfo().id// Supondo que o ID do usuário está no localStorage
     const {dependenteId} = useParams() // Supondo que o ID do dependente está no localStorage
     console.log("usuarioId:", usuarioId);
     console.log("dependenteId:", dependenteId);
 
-    const [dosagemErro, setDosagemErro] = useState(""); // Estado para mensagem de erro
 
-// Regex para validar entrada (ex: 500mg, 10ml, 2g, 1.5L, 250mcg)
-    const dosagemRegex = /^[0-9]+(\.[0-9]+)?(mg|g|ml|L|mcg)$/;
 
-// Função de validação
-    const handleDosagemChange = (e) => {
-        const { value } = e.target;
-
-        if (value === "" || dosagemRegex.test(value)) {
-            setDosagemErro(""); // Remove erro se o valor for válido
-        } else {
-            setDosagemErro("Formato inválido! Ex: 500mg, 10ml, 2g, 1.5L");
-        }
-
-        setFormData((prevState) => ({
-            ...prevState,
-            dosagem: value
-        }));
-    };
 
 
     useEffect(() => {
-        const fetchDependentes = async () => {
-            try {
-                const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
-                setDependentes(data.data);
-            } catch (err) {
-                setError(err.message);
-            }
-        };
+        if (userRole === "ADMINISTRADOR"){
+            const fetchDependentes = async () => {
+                try {
+                    const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                    setDependentes(data.data);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
 
         fetchDependentes();
-    }, []);
+    }
+        else if (userRole === "PESSOAL"){
+            const fetchMedicamentoPessoal = async () => {
+                try {
+                    const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`)
+                    setDependentes(response)
+                }
+                catch (error){
+                    setError(error.message)
+                }
+            }
+        }
+
+    }, [userRole]);
 
     const navigate = useNavigate();
 
@@ -71,13 +80,7 @@ const CadastroMedicamentos = () => {
         // Verifica se o campo pertence a `frequenciaUso`
         const isFrequenciaUsoField = Object.keys(formData.frequenciaUso).includes(name);
 
-        if (name === "dosagem") {
-            if (value === "" || dosagemRegex.test(value)) {
-                setDosagemErro(""); // Remove erro se válido
-            } else {
-                setDosagemErro("Formato inválido! Ex: 500mg, 10ml, 2g, 1.5L");
-            }
-        }
+
 
         setFormData((prevState) => {
             if (isFrequenciaUsoField) {
@@ -131,7 +134,14 @@ const CadastroMedicamentos = () => {
     const camposBase = [
         { type: "text", id: "nome", label: "Nome do Remédio:", name: "nome", placeholder: "Digite o nome do medicamento..." },
         { type: "text", id: "principioAtivo", label: "Princípio Ativo:", name: "principioAtivo", placeholder: "Digite o princípio ativo" },
-        { type: "text", id: "dosagem", label: "Dosagem:", name: "dosagem", placeholder: "Dosagem..." },
+        { type: "dosagem",
+            id: "dosagem",
+            label: "Dosagem:",
+            name: "dosagem",
+            quantidadeName: "dosagemQuantidade",
+            unidadeName: "dosagemUnidade",
+            unidades: unidadesMedida,
+            placeholder: "Dosagem..." },
         { type: "textarea", id: "observacoes", label: "Observações:", name: "observacoes" },
         {
             type: "select", id: "usoContinuo", label: "Uso Contínuo?", name: "usoContinuo",
@@ -151,11 +161,14 @@ const CadastroMedicamentos = () => {
         }
     ];
 
-    // Campos extras baseados no estado
+
     const camposExtras = useMemo(() => {
         let extras = [];
 
-        // Se não for uso contínuo, exibe campos de data de início e término
+        if(formData.frequenciaUso.usoContinuo === true){
+            formData.frequenciaUso.frequenciaUsoTipo = "HORARIOS_ESPECIFICOS"
+        }
+
         if (formData.frequenciaUso.usoContinuo === false) {
             extras.push(
                 { type: "date", id: "dataInicio", label: "Data de Início:", name: "dataInicio" },
@@ -186,44 +199,67 @@ const CadastroMedicamentos = () => {
         return extras;
     }, [formData.frequenciaUso]);
 
-    // Função para enviar o formulário
+    const getDadosCadastro = (userRole) => {
+        if (userRole === "ADMINISTRADOR") {
+            const dadosCadastro = {
+                nome: formData.nome,
+                principioAtivo: formData.principioAtivo,
+                dosagem: `${formData.dosagemQuantidade}${formData.dosagemUnidade}`,
+                observacoes: formData.observacoes,
+                usuarioId: usuarioId,
+                dependenteId: dependenteId,
+                frequenciaUso: {
+                    frequenciaUsoTipo: formData.frequenciaUso.frequenciaUsoTipo,
+                    usoContinuo: formData.frequenciaUso.usoContinuo,
+                    intervaloHoras: formData.frequenciaUso.intervaloHoras,
+                    horariosEspecificos: formData.frequenciaUso.horariosEspecificos,
+                    primeiroHorario: formData.frequenciaUso.primeiroHorario,
+                    dataInicio: formData.frequenciaUso.dataInicio,
+                    dataTermino: formData.frequenciaUso.dataTermino
+                },
+            };
+            return dadosCadastro
+        }
+        else if (userRole==="PESSOAL"){
+            const dadosCadastro = {
+                nome: formData.nome,
+                principioAtivo: formData.principioAtivo,
+                dosagem: `${formData.dosagemQuantidade}${formData.dosagemUnidade}`,
+                observacoes: formData.observacoes,
+                usuarioId: usuarioId,
+                frequenciaUso: {
+                    frequenciaUsoTipo: formData.frequenciaUso.frequenciaUsoTipo,
+                    usoContinuo: formData.frequenciaUso.usoContinuo,
+                    intervaloHoras: formData.frequenciaUso.intervaloHoras,
+                    horariosEspecificos: formData.frequenciaUso.horariosEspecificos,
+                    primeiroHorario: formData.frequenciaUso.primeiroHorario,
+                    dataInicio: formData.frequenciaUso.dataInicio,
+                    dataTermino: formData.frequenciaUso.dataTermino
+                },
+            };
+            return dadosCadastro
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.nome || !formData.principioAtivo || !formData.dosagem) {
+        if (!formData.nome || !formData.principioAtivo || !formData.dosagemQuantidade || !formData.dosagemUnidade) {
             alert('Por favor, preencha todos os campos.');
             return;
         }
 
-        // Recupera o ID do usuário e do dependente (exemplo)
-
-        const dadosCadastro = {
-            nome: formData.nome,
-            principioAtivo: formData.principioAtivo,
-            dosagem: formData.dosagem,
-            observacoes: formData.observacoes,
-            usuarioId: usuarioId,
-            dependenteId: dependenteId,
-            frequenciaUso: {
-                frequenciaUsoTipo: formData.frequenciaUso.frequenciaUsoTipo,
-                usoContinuo: formData.frequenciaUso.usoContinuo,
-                intervaloHoras: formData.frequenciaUso.intervaloHoras,
-                horariosEspecificos: formData.frequenciaUso.horariosEspecificos,
-                primeiroHorario: formData.frequenciaUso.primeiroHorario,
-                dataInicio: formData.frequenciaUso.dataInicio,
-                dataTermino: formData.frequenciaUso.dataTermino
-            },
-        };
-
         try {
             const token = localStorage.getItem('token');
             console.log("Token JWT:", token);
-            console.log("Dados enviados ao backend:", dadosCadastro);
-            const sucesso = await api.post("http://localhost:8081/medicamentos/cadastro", dadosCadastro)
+            console.log("Dados enviados ao backend:", getDadosCadastro(userRole));
+            const sucesso = await api.post("http://localhost:8081/medicamentos/cadastro", getDadosCadastro(userRole))
             console.log("Resposta do servidor:", sucesso);
             console.log("Medicamento cadastrado com sucesso!");
-            if (sucesso) {
+            if (sucesso && userRole ==="ADMINISTRADOR") {
                 navigate(`/perfil_dependente/${dependenteId}`);
+            }
+            else if (sucesso && userRole === "PESSOAL"){
+                navigate(`/perfil_usuario/${usuarioId}`)
             }
         } catch (error) {
             console.error('Erro ao cadastrar medicamento:', error);
@@ -259,7 +295,33 @@ const CadastroMedicamentos = () => {
                                         </option>
                                     ))}
                                 </select>
-                            ) : campo.type === "textarea" ? (
+                            ) : campo.type === "dosagem" ? (
+                                <div className="flex gap-2">
+                                    <input
+                                        type="number"
+                                        id={`${campo.id}-quantidade`}
+                                        name={campo.quantidadeName}
+                                        value={formData[campo.quantidadeName] || ""}
+                                        onChange={handleChange}
+                                        className="border p-2 border-blue-400 rounded-lg flex-1"
+                                        placeholder="Quantidade"
+                                        step="any"
+                                    />
+                                    <select
+                                        id={`${campo.id}-unidade`}
+                                        name={campo.unidadeName}
+                                        value={formData[campo.unidadeName] || ""}
+                                        onChange={handleChange}
+                                        className="border p-2 border-blue-400 rounded-lg"
+                                    >
+                                        {campo.unidades.map((unidade) => (
+                                            <option key={unidade.value} value={unidade.value}>
+                                                {unidade.text}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>)
+                                : campo.type === "textarea" ? (
                                 <textarea
                                     id={campo.id}
                                     name={campo.name}

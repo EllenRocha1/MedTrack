@@ -3,16 +3,17 @@ import { Search } from 'lucide-react';
 
 const Header = ({ exibirPesquisa, h1, setTermoPesquisa }) => {
     return (
-        <header className="flex items-center w-9/10 mx-10 py-4 ">
+        <header className="flex items-center gap-2 justify-between w-full md:px-8 py-4 ">
+
             <h1 className="text-2xl font-bold text-cyan-500">{h1}</h1>
-            <div className="flex gap-6 ml-auto">
+            <div className="flex gap-6 ">
                 {exibirPesquisa ? (
                     <div className='flex px-2 items-center border border-cyan-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500'>
                         <Search color='turquoise' />
                         <input
                             type="text"
                             placeholder="Buscar..."
-                            className="px-4 py-2 m--auto border-none focus:outline-none"
+                            className="px-4 py-2 m-auto border-none focus:outline-none"
                             onChange={(e) => setTermoPesquisa(e.target.value)}
                         />
                     </div>

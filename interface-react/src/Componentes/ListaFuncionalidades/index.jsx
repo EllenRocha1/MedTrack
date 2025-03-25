@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { ClipboardList, Box, Bolt, Calendar, Home } from "lucide-react";
 
 
-const ListaFuncionalidades = ({type}) => {
-  const rota1 = "/lista_dependentes"
-  const rota2 = "/perfil"
+const ListaFuncionalidades = ({type, usuarioId}) => {
+  const rota1 = {rota: "/lista_dependentes", label: "LISTA DE DEPENDENTES"}
+  const rota2 = {rota: `/perfil_usuario/${usuarioId}`, label: "PERFIL"}
   const rota3 =  "/relatorios"
   const rota4 = "/historico_medicacoes"
-   const home = "/home"
-   const config = "/configuracoes"
+
+  const home = "/home"
+  const config = "/configuracoes"
 
 
   return (
@@ -22,13 +23,13 @@ const ListaFuncionalidades = ({type}) => {
           </Link>
         </li>
         <li>
-          <Link to={rota1} className="flex items-center gap-2 hover:bg-gray-700 rounded">
+          <Link to={type ? rota1.rota : rota2.rota} className="flex items-center gap-2 hover:bg-gray-700 rounded">
             <ClipboardList size={30} />
-            <span className="hidden sm:inline ml-2">LISTA DE DEPENDENTES</span>
+            <span className="hidden sm:inline ml-2">{type? rota1.label : rota2.label}</span>
           </Link>
         </li>
         <li>
-          <Link to={rota3 } className="flex items-center gap-2 hover:bg-gray-700 rounded">
+          <Link to={type? rota3 : rota4} className="flex items-center gap-2 hover:bg-gray-700 rounded">
             <Box size={30}  />
             <span className="hidden sm:inline ml-2">RELATÓRIOS</span>
           </Link>
