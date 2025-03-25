@@ -1,12 +1,22 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import { ClipboardList, Home, Menu, X, Box, Calendar, Bolt} from "lucide-react";
 import Perfil from "../Perfil";
 import ListaFuncionalidades from "../ListaFuncionalidades";
+import {getUserInfo} from "../Auth/AuthToken";
 
 export default function Sidebar({}) {
   const [expandida, setExpandida] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
+  useEffect(() => {
+    const info = getUserInfo();
+    setUserInfo(info);
+  }, []);
+
+  if (!userInfo) {
+    return <div>Carregando...</div>;
+  }
   return (
     <>
     <div className={`bg-gray-800 text-white transition-all duration-300 sm:block hidden ${
@@ -37,7 +47,7 @@ export default function Sidebar({}) {
         transition={{ duration: 0.3 }}
         className={` left-0 top-0 h-full w-64 bg-gray-900 text-white p-5 shadow-lg `}
       >
-        <Perfil />
+        <Perfil userInfo={userInfo} />
         <ListaFuncionalidades />
       </motion.div>
       </div>

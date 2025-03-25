@@ -19,11 +19,6 @@ const PaginaLogin = () => {
             label: "Nome de Usuário: ",
             name: "username",
             placeholder: "Digite seu nome de usuário",
-            value: formData.username,
-            onChange: (e) => {
-                console.log("Digitando usuário:", e.target.value);
-                setFormData({ ...formData, username: e.target.value });
-            }
         },
         {
             type: "password",
@@ -31,11 +26,6 @@ const PaginaLogin = () => {
             label: "Senha: ",
             name: "password",
             placeholder: "Digite sua senha",
-            value: formData.password,
-            onChange: (e) => {
-                console.log("Digitando senha:", e.target.value);
-                setFormData({ ...formData, password: e.target.value });
-            }
         },
     ];
 
@@ -53,7 +43,7 @@ const PaginaLogin = () => {
             navigate('/dashboard');
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            setErro(error.message || "Erro ao fazer login. Tente novamente.");
+            setErro("Usuário ou senha incorretos. Tente novamente.");
         }
     };
 
@@ -67,7 +57,7 @@ const PaginaLogin = () => {
                 formData={formData}
                 handleChange={handleChange}
             />
-            {erro && <p className="text-red-500 mt-4">{erro}</p>} {/* Exibir mensagem de erro */}
+            {erro && <p className="text-red-500 mt-4">{erro}</p>}
         </div>
     );
 };
