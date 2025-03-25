@@ -28,14 +28,14 @@ function App() {
                 <Route path='/cadastro_concluido' element={<PaginaCadastro3 h1="Usuário Cadastrado com sucesso!" />} />
                 <Route path="/recuperacaosenha" element={<RecuperacaoSenha />} />
 
-                {/* Rotas privadas */}
-                <Route element={<PrivateRoute requiredRole={["ADMINISTRADOR", "PESSOAL" ]} />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/configuracoes" element={<Configuracoes />}/>
-                </Route>
+                {/*/!* Rotas privadas *!/*/}
+                {/*<Route element={<PrivateRoute requiredRole={["ADMINISTRADOR", "PESSOAL" ]} />}>*/}
+                {/*    <Route path="/dashboard" element={<Dashboard />} />*/}
+                {/*    <Route path="/configuracoes" element={<Configuracoes />}/>*/}
+                {/*</Route>*/}
 
                 {/* Rotas privadas com role ADMINISTRADOR */}
-                <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
+                {/*<Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>*/}
                     <Route path="/home" element={<Dashboard />} />
                     <Route path="/lista_dependentes" element={<ListaDependentes />} />
                     <Route path="/perfil_dependente/:dependenteId" element={<PerfilDependente />} />
@@ -43,7 +43,8 @@ function App() {
                     <Route path="/cadastro_medicamento/:dependenteId" element={<CadastroMedicamentos />} />
                     <Route path="/relatorios" element={<Relatorios />} />
                     <Route path="/historico_medicacoes" element={<PaginaHistoricoDependentes />} />
-                </Route>
+                    <Route path="/perfil_usuario/:usuarioId" element={<PerfilDependente/>}/>
+                {/*</Route>*/}
 
                 {/*<Route element={<PrivateRoute requiredRole="PESSOAL" />}>*/}
                 {/*    <Route path="/homel" element={<Dashboard />} />*/}

@@ -3,7 +3,7 @@ import Header from "../../Componentes/Header/index.jsx";
 import Sidebar from "../../Componentes/Sidebar/index.jsx";
 import CardDependente from "../../Componentes/Card/CardDependente.jsx";
 import Botao from "../../Componentes/Botao/index.jsx";
-import {getUserRole} from "../../Componentes/Auth/AuthToken";
+import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import api from "../../Service/api";
 import {useNavigate} from "react-router-dom";
 
@@ -12,7 +12,7 @@ const ListaDependentes = () => {
     const [dependentes, setDependentes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const usuarioId = getUserInfo().id
     const navigate = useNavigate();
 
     const handleClickDependente = (dependenteId) => {
@@ -27,22 +27,23 @@ const ListaDependentes = () => {
 
     useEffect(() => {
         const fetchDependentes = async () => {
-            try {
-                const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
-                setDependentes(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+            if (role === "ADMINISTRADOR") {
+                try {
+                    const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                    console.log("Dados recebidos:", data);
+                    setDependentes(data);
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setLoading(false);
+                }
             }
-        };
+        }
+            fetchDependentes();
 
-        fetchDependentes();
-    }, []);
+    }, [role]);
 
-    const adicionarDependente = (novoDependente) => {
-        setDependentes([...dependentes, novoDependente]);
-    };
+
 
     const removerDependente = async (id) => {
         try {
@@ -63,12 +64,12 @@ const ListaDependentes = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
-            <div className="flex flex-1">
-                <Sidebar className="w-64" type={type} />
-                <div className="flex-1 p-4 transition-all duration-300">
-                    <Header h1={"MedTrack"} exibirPesquisa={true} setTermoPesquisa={setTermoPesquisa} />
-                    <div className="flex self-center justify-between mt-10 ml-10 mr-10">
+        <div>
+            <div className="flex flex-1 w-full h-10">
+                <Sidebar className="w-64" type={type} usuarioId={getUserInfo().id} />
+                <div className="flex-col w-full p-4 transition-all duration-300">
+                    <Header h1={"MedTrack"} exibirPesquisa={true} setTermoPesquisa={setTermoPesquisa}  />
+                    <div className="flex self-center w-full justify-between mt-10">
                         <h1 className="text-2xl font-bold mt-2 ">Lista de Dependentes</h1>
                         <Botao label={"Criar novo dependente"} destino={"/cadastro_dependente"} />
                     </div>

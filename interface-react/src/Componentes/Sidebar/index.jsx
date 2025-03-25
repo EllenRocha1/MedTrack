@@ -5,7 +5,7 @@ import Perfil from "../Perfil";
 import ListaFuncionalidades from "../ListaFuncionalidades";
 import {getUserInfo} from "../Auth/AuthToken";
 
-export default function Sidebar({}) {
+export default function Sidebar({type, usuarioId}) {
   const [expandida, setExpandida] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
 
@@ -29,8 +29,8 @@ export default function Sidebar({}) {
         className="p-3 bg-gray-800 text-white rounded-md fixed top-2 left-2 z-50"
       >
         {expandida ? <X /> : <div className="flex flex-col gap-[150px] ">
-                                  <Menu /> 
-                                    <div className="flex flex-col gap-[50px]"> 
+                                  <Menu />
+                                    <div className="flex flex-col gap-[50px]">
                                     <Home/>
                                       <ClipboardList/>
                                         <Box/>
@@ -48,12 +48,12 @@ export default function Sidebar({}) {
         className={` left-0 top-0 h-full w-64 bg-gray-900 text-white p-5 shadow-lg `}
       >
         <Perfil userInfo={userInfo} />
-        <ListaFuncionalidades />
+        <ListaFuncionalidades type={type} usuarioId={usuarioId} />
       </motion.div>
       </div>
 
       <div className="fixed flex space-between bottom-0 left-0 w-full bg-gray-900 text-white justify-around items-center p-3 sm:hidden">
-          <ListaFuncionalidades/>
+          <ListaFuncionalidades type={type} usuarioId={usuarioId}/>
       </div>
     </>
   );

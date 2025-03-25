@@ -40,7 +40,7 @@ const PaginaLogin = () => {
 
         try {
             await login(formData.username, formData.password);
-            navigate('/dashboard');
+            navigate('/home');
         } catch (error) {
             console.error("Erro ao fazer login:", error);
             setErro("Usuário ou senha incorretos. Tente novamente.");

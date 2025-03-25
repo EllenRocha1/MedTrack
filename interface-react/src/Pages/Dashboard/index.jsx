@@ -1,5 +1,5 @@
 import Sidebar from "../../Componentes/Sidebar"
-import { isAuthenticated, getUserRole } from "../../Componentes/Auth/AuthToken.js";
+import {getUserRole, getUserInfo} from "../../Componentes/Auth/AuthToken.js";
 
 
 const Dashboard = () =>{
@@ -9,10 +9,11 @@ const Dashboard = () =>{
     type = false;
   }
 
+
     return(
         <div className="flex h-screen bg-gray-100">
       
-      <Sidebar type={type} />
+      <Sidebar type={type} usuarioId={getUserInfo().id} />
       <main className="flex-1 p-5">
         <h1 className="text-2xl font-bold">📊 Dashboard</h1>
 

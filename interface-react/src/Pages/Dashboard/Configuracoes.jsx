@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../../Componentes/Sidebar";
-import {getUserRole} from "../../Componentes/Auth/AuthToken";
+import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 
 const Configuracoes = () => {
   const [abaAtiva, setAbaAtiva] = useState("perfil");
@@ -13,7 +13,7 @@ const Configuracoes = () => {
    return(
         <div className="flex h-screen bg-gray-100">
         
-        <Sidebar type={type} />
+        <Sidebar type={type} usuarioId={getUserInfo().id} />
         <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Configurações do Administrador</h1>
       <div className="flex gap-4 border-b pb-2 mb-4">
