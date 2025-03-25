@@ -32,5 +32,20 @@ public class DependenteDetails implements UserDetails {
         return dependente;
     }
 
+    public String getNome() {
+        return dependente.getNome();
+    }
+
+    public String getEmail() {
+        return dependente.getEmail();
+    }
+
+    public String getTelefone() {
+        return dependente.getTelefone();
+    }
+    public long getIdDependente() {
+        return dependente.getId();
+    }
+
 }
 

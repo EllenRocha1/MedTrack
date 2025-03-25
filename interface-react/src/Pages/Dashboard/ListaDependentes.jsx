@@ -5,14 +5,19 @@ import CardDependente from "../../Componentes/Card/CardDependente.jsx";
 import Botao from "../../Componentes/Botao/index.jsx";
 import {getUserRole} from "../../Componentes/Auth/AuthToken";
 import api from "../../Service/api";
+import {useNavigate} from "react-router-dom";
 
 const ListaDependentes = () => {
-   // const [modoPesquisa, setModoPesquisa] = useState(false);
     const [termoPesquisa, setTermoPesquisa] = useState("");
     const [dependentes, setDependentes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const navigate = useNavigate();
+
+    const handleClickDependente = (dependenteId) => {
+        navigate(`/perfil_dependente/${dependenteId}`);
+    };
 
     const role = getUserRole()
     let type = true
@@ -67,7 +72,10 @@ const ListaDependentes = () => {
                         <h1 className="text-2xl font-bold mt-2 ">Lista de Dependentes</h1>
                         <Botao label={"Criar novo dependente"} destino={"/cadastro_dependente"} />
                     </div>
-                    <CardDependente termoPesquisa={termoPesquisa} dependentes={dependentes} removerDependente={removerDependente} />
+                    <CardDependente termoPesquisa={termoPesquisa}
+                                    dependentes={dependentes}
+                                    removerDependente={removerDependente}
+                                    onClickDependente={handleClickDependente}/>
                 </div>
             </div>
         </div>

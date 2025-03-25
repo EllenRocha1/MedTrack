@@ -1,13 +1,24 @@
 const api  = {
 
     get: async (url) => {
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json(); // Tenta obter detalhes do erro
+                throw new Error(errorData.message || "Erro ao buscar dados");
             }
-        });
-        return response.json()
+
+            return response.json();
+        } catch (error) {
+            console.error("Erro na requisição GET:", error);
+            throw error; // Propaga o erro para ser tratado no componente
+        }
     },
 
     post: async (url, data) => {
@@ -23,7 +34,8 @@ const api  = {
         if (response.status !== 201) {
             throw new Error('Erro ao fazer a requisição');
         }
-         return true
+        return true
+
     },
 
     put: async (url, data) => {

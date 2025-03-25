@@ -3,7 +3,7 @@ import { Phone, Trash, UserCircleIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../Service/api";
 
-const CardDependente = ({ termoPesquisa, dependentes, removerDependente }) => {
+const CardDependente = ({ termoPesquisa, dependentes, removerDependente, onClickDependente }) => {
     const navigate = useNavigate();
 
     const dependentesFiltrados = dependentes.filter(dep =>
@@ -26,14 +26,17 @@ const CardDependente = ({ termoPesquisa, dependentes, removerDependente }) => {
                         </div>
                         <div className="flex gap-5">
                             <button 
-                                onClick={() => removerDependente(dep.id)}
+                                onClick={(e) =>{
+                                    e.stopPropagation();
+                                    removerDependente(dep.id)}
+                                    }
                                 className="mt-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                             >
                                 <Trash size={16} />
                             </button>
                             <button
                                 className="mt-4 bg-green-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                                onClick={() => navigate("/perfil") }
+                                onClick={() => onClickDependente(dep.id) }
                             >
                                 <UserCircleIcon size={16} />
                             </button>

@@ -20,8 +20,12 @@ public class JwtService {
     public String generateToken(UsuarioDetails usuario) {
         Claims claims = Jwts.claims().setSubject(usuario.getUsername());
         claims.put("categoria", usuario.getTipoConta());
+        claims.put("nome", usuario.getNome());
+        claims.put("email", usuario.getEmail());
+        claims.put("id", usuario.getId());
 
         return Jwts.builder()
+
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
@@ -31,6 +35,9 @@ public class JwtService {
 
     public String generateTokenDependente(DependenteDetails dependenteDetails) {
         Claims claims = Jwts.claims().setSubject(dependenteDetails.getUsername());
+        claims.put("telefone", dependenteDetails.getTelefone());
+        claims.put("nome", dependenteDetails.getNome());
+        claims.put("id", dependenteDetails.getIdDependente());
 
         return Jwts.builder()
                 .setClaims(claims)

@@ -31,5 +31,17 @@ public class UsuarioDetails implements UserDetails {
     public Object getTipoConta() {
         return usuario.getTipoConta();
     }
+
+    public String getEmail() {
+        return usuario.getEmail();
+    }
+
+    public String getNome() {
+        return usuario.getNome();
+    }
+
+    public long getId() {
+        return usuario.getId();
+    }
 }
 

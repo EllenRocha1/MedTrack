@@ -7,8 +7,8 @@ const ListaFuncionalidades = ({type}) => {
   const rota2 = "/perfil"
   const rota3 =  "/relatorios"
   const rota4 = "/historico_medicacoes"
-  const home = "/home"
-  const config = "/configuracoes"
+   const home = "/home"
+   const config = "/configuracoes"
 
 
   return (
@@ -22,13 +22,13 @@ const ListaFuncionalidades = ({type}) => {
           </Link>
         </li>
         <li>
-          <Link to={type ? rota2 : rota1} className="flex items-center gap-2 hover:bg-gray-700 rounded">
+          <Link to={rota1} className="flex items-center gap-2 hover:bg-gray-700 rounded">
             <ClipboardList size={30} />
             <span className="hidden sm:inline ml-2">LISTA DE DEPENDENTES</span>
           </Link>
         </li>
         <li>
-          <Link to={type ? rota4 : rota3 } className="flex items-center gap-2 hover:bg-gray-700 rounded">
+          <Link to={rota3 } className="flex items-center gap-2 hover:bg-gray-700 rounded">
             <Box size={30}  />
             <span className="hidden sm:inline ml-2">RELATÓRIOS</span>
           </Link>

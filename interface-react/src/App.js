@@ -18,7 +18,7 @@ import Configuracoes from "./Pages/Dashboard/Configuracoes.jsx";
 
 function App() {
     return (
-        //<Router>
+        <Router>
             <Routes>
                 {/* Rotas Públicas */}
                 <Route path='/' element={<PaginaPrincipal />} />
@@ -29,27 +29,29 @@ function App() {
                 <Route path="/recuperacaosenha" element={<RecuperacaoSenha />} />
 
                 {/* Rotas privadas */}
-                <Route element={<PrivateRoute />}>
+                <Route element={<PrivateRoute requiredRole={["ADMINISTRADOR", "PESSOAL" ]} />}>
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/configuracoes" element={<Configuracoes />} />
+                    <Route path="/configuracoes" element={<Configuracoes />}/>
                 </Route>
 
                 {/* Rotas privadas com role ADMINISTRADOR */}
                 <Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>
                     <Route path="/home" element={<Dashboard />} />
-                    <Route path="/perfil" element={<PerfilDependente />} />
                     <Route path="/lista_dependentes" element={<ListaDependentes />} />
+                    <Route path="/perfil_dependente/:dependenteId" element={<PerfilDependente />} />
                     <Route path="/cadastro_dependente" element={<CadastroDependente />} />
-                    <Route path="/cadastro_medicamento" element={<CadastroMedicamentos />} />
+                    <Route path="/cadastro_medicamento/:dependenteId" element={<CadastroMedicamentos />} />
                     <Route path="/relatorios" element={<Relatorios />} />
                     <Route path="/historico_medicacoes" element={<PaginaHistoricoDependentes />} />
                 </Route>
 
-                <Route element={<PrivateRoute requiredRole="PESSOAL" />}>
-                    <Route path="/home-pessoal" element={<Dashboard />} />
-                </Route>
+                {/*<Route element={<PrivateRoute requiredRole="PESSOAL" />}>*/}
+                {/*    <Route path="/homel" element={<Dashboard />} />*/}
+                {/*    <Route path="/lista_dependentes" element={<PerfilDependente/>}/>*/}
+                {/*    <Route path="/relatorios" element={<PaginaHistoricoDependentes />} />*/}
+                {/*</Route>*/}
             </Routes>
-      //  </Router>
+        </Router>
 
     );
 }

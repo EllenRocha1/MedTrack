@@ -64,6 +64,17 @@ public class MedicamentoController {
         return ResponseEntity.ok(medicamento);
     }
 
+    @GetMapping("/todos/dependente/{dependenteId}")
+    public ResponseEntity<List<DadosMedicamentoGet>> getMedicamentosByDependenteId(@PathVariable Long dependenteId) {
+        List<Medicamento> medicamentos = repositorio.findByDependenteId(dependenteId);
+
+        List<DadosMedicamentoGet> medicamentoResponseDTOs = medicamentos.stream()
+                .map(DadosMedicamentoGet::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(medicamentoResponseDTOs);
+    }
+
     @PutMapping("/alterar/{id}")
     @Transactional
     public ResponseEntity<Void> atualizarMedicamento(@RequestBody @Valid DadosMedicamentoPut dadosMedicamentoPut, @PathVariable Long id) {
