@@ -14,7 +14,7 @@ const Main = () => {
                 setTermoPesquisa={() => {
                 }}
             />
-            <div className="flex flex-col w-full px-4 sm:px-6 lg:px-8 mx-auto mt-6 sm:mt-10">
+            <div className="flex flex-col w-full px-4 sm:px-6 lg:px-8 mx-auto mt-3 ">
 
                 <div
                     className="flex flex-col lg:flex-row items-center gap-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-6 sm:p-10 shadow-lg">
