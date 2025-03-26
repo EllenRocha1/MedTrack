@@ -6,7 +6,7 @@ const ListaFuncionalidades = ({type, usuarioId}) => {
   const rota1 = {rota: "/lista_dependentes", label: "LISTA DE DEPENDENTES"}
   const rota2 = {rota: `/perfil_usuario/${usuarioId}`, label: "PERFIL"}
   const rota3 =  "/relatorios"
-  const rota4 = "/historico_medicacoes"
+  const rota4 = `/historico_medicacoes/${usuarioId}`
 
   const home = "/home"
   const config = "/configuracoes"

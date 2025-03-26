@@ -16,6 +16,7 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
 
 
     async function remover(id) {
+        console.log(id)
         try {
             await api.delete(`/medicamentos/deletar/${id}`);
             console.log("Medicação removida com sucesso");

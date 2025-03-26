@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 
 const Header = ({ exibirPesquisa, h1, setTermoPesquisa }) => {
     return (
-        <header className="flex items-center gap-2 justify-between w-full md:px-8 py-4 ">
+        <header className="flex items-center gap-2 justify-between w-full md:px-10 sm:px-6 px-4 py-4 ">
 
             <h1 className="text-2xl font-bold text-cyan-500">{h1}</h1>
             <div className="flex gap-6 ">
@@ -18,7 +18,7 @@ const Header = ({ exibirPesquisa, h1, setTermoPesquisa }) => {
                         />
                     </div>
                 ) : (
-                    <>
+                    <div className="flex gap-4 items-center ">
                         <nav className="hidden md:flex gap-6 text-gray-700">
                             <a href="#" className="hover:text-cyan-500">Home</a>
                             <a href="#" className="hover:text-cyan-500">Contato</a>
@@ -26,7 +26,7 @@ const Header = ({ exibirPesquisa, h1, setTermoPesquisa }) => {
                             <a href="#" className="hover:text-cyan-500">Blog</a>
                         </nav>
                         <Botao label="Sign-Up" destino="/cadastro" />
-                    </>
+                    </div>
                 )}
             </div>
         </header>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../../Service/api";
 
 const Relatorio = ({ termoPesquisa }) => {
-
     const [dependentes, setDependentes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +12,13 @@ const Relatorio = ({ termoPesquisa }) => {
 
   const dependentesFiltrados = dependentes.filter((dep) =>
       dep.nome.toLowerCase().includes(termoPesquisa.toLowerCase())
-  );
+  )
+
+
+
+    const handleClickRelatorios = (dependenteId) => {
+        navigate(`/historico_medicacoes/${dependenteId}`);
+    };
 
     useEffect(() => {
         const fetchDependentes = async () => {
@@ -30,9 +35,6 @@ const Relatorio = ({ termoPesquisa }) => {
         fetchDependentes();
     }, []);
 
-    const adicionarDependente = (novoDependente) => {
-        setDependentes([...dependentes, novoDependente]);
-    };
 
   return (
       <div className="p-6">
@@ -41,7 +43,7 @@ const Relatorio = ({ termoPesquisa }) => {
               <div
                   key={dep.id}
                   className="flex justify-between bg-white p-5 border border-gray-300 items-center w-full"
-                  onClick={() => navigate("/historico_medicacoes")}
+                  onClick={(e) => handleClickRelatorios(dep.id)}
               >
                 <h1>{dep.nome}</h1>
                 {dep.emDia ? <Check color="green" /> : <X color="red" />}
