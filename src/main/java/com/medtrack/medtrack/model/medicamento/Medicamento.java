@@ -48,8 +48,9 @@ public class Medicamento {
     @JsonBackReference
     private Dependente dependente;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "frequencia_uso_id")
+    @MapsId
     @NotNull
     @Valid FrequenciaUso frequenciaUso;
 

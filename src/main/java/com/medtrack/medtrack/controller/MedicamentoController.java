@@ -86,12 +86,13 @@ public class MedicamentoController {
     }
 
     @DeleteMapping("/deletar/{id}")
-    @Transactional
     public ResponseEntity<Void> deletarMedicamento(@PathVariable Long id) {
-        if (!repositorio.existsById(id)) {
-            throw new EntityNotFoundException("Medicamento não encontrado para exclusão");
+        try {
+            medicamentoService.deletarMedicamento(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
         }
-        repositorio.deleteById(id);
-        return ResponseEntity.noContent().build();
+
     }
 }

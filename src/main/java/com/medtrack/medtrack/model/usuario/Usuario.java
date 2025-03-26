@@ -36,7 +36,7 @@ public class Usuario {
     private String nomeUsuario;
     private String numeroTelefone;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Medicamento> medicamentos = new ArrayList<>();
 

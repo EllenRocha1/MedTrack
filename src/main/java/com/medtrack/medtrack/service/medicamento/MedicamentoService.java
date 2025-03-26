@@ -12,15 +12,14 @@ import com.medtrack.medtrack.repository.FrequenciaUsoRepository;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -37,6 +36,19 @@ public class MedicamentoService {
         this.usuarioRepository = usuarioRepository;
         this.dependenteRepository = dependenteRepository;
         this.frequenciaUsoRepository = frequenciaUsoRepository;
+
+    }
+
+    @Transactional
+    public void deletarMedicamento(Long id) {
+        Medicamento medicamento = medicamentoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+
+        if (medicamento.getUsuario() != null) {
+            medicamento.getUsuario().getMedicamentos().remove(medicamento);
+        }
+
+        medicamentoRepository.delete(medicamento);
     }
 
     public Medicamento criarMedicamento(DadosMedicamento dadosMedicamento) {
