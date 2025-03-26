@@ -18,8 +18,9 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     async function remover(id) {
         console.log(id)
         try {
-            await api.delete(`/medicamentos/deletar/${id}`);
+            await api.delete(`http://localhost:8081/medicamentos/deletar/${id}`);
             console.log("Medicação removida com sucesso");
+            window.location.reload()
         } catch (error) {
             console.error("Erro ao remover medicação", error);
         }
@@ -27,14 +28,12 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
 
     return (
         <div className="flex flex-col gap-4">
-            {/* Feedback visual para pesquisa */}
             {termoPesquisa && (
                 <p className="text-gray-500 text-sm">
                     {medicacoesFiltradas.length} resultados para "{termoPesquisa}"
                 </p>
             )}
 
-            {/* Mensagem quando não há resultados */}
             {medicacoesFiltradas.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">
                     {termoPesquisa

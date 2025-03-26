@@ -55,15 +55,11 @@ const Dashboard = () => {
   }, [dadosGrafico]);
 
   return (
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex h-screen bg-gray-100 w-auto">
         {/* Sidebar recebe o estado de expansão */}
         <Sidebar type={isAdmin} usuarioId={userInfo.id} onToggle={handleSidebarToggle} />
 
-        <main
-            className={`transition-all duration-300 p-6 ${
-                sidebarExpandida ? "ml-64" : "ml-16"
-            }`}
-        >
+        <main className=" transition-all duration-300 p-6" >
           <div className="bg-white p-5 rounded-lg shadow-md mb-5">
             <h1 className="text-2xl font-bold text-gray-800">
               👋 Olá, {userInfo.nome}!

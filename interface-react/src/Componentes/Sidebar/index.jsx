@@ -5,9 +5,10 @@ import Perfil from "../Perfil";
 import ListaFuncionalidades from "../ListaFuncionalidades";
 import { getUserInfo } from "../Auth/AuthToken";
 
-export default function Sidebar({ type, usuarioId }) {
+export default function Sidebar({ type }) {
   const [expandida, setExpandida] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
+
 
   // Função para alternar a sidebar entre expandida e recolhida
   const toggleSidebar = () => {
@@ -51,14 +52,14 @@ export default function Sidebar({ type, usuarioId }) {
               transition={{ duration: 0.3 }}
               className="h-full bg-gray-900 text-white p-5 shadow-lg"
           >
-            <Perfil userInfo={userInfo} />
-            <ListaFuncionalidades type={type} usuarioId={usuarioId} />
+            <Perfil />
+            <ListaFuncionalidades type={type} usuarioId={userInfo.id} />
           </motion.div>
         </div>
 
         {/* Sidebar visível em telas pequenas (mobile) */}
         <div className="fixed flex space-between bottom-0 left-0 w-full bg-gray-900 text-white justify-around items-center p-3 sm:hidden">
-          <ListaFuncionalidades type={type} usuarioId={usuarioId} />
+          <ListaFuncionalidades type={type} usuarioId={userInfo.id} />
         </div>
       </>
   );

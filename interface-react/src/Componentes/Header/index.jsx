@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 
 const Header = ({ exibirPesquisa, h1, setTermoPesquisa }) => {
     return (
-        <header className="flex items-center gap-2 justify-between w-full md:px-10 sm:px-6 px-4 py-4 ">
+        <header className="flex cya items-center gap-2 justify-between w-full md:px-10 sm:px-6 px-4 py-4 ">
 
             <h1 className="text-2xl font-bold text-cyan-500">{h1}</h1>
             <div className="flex gap-6 ">
