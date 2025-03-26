@@ -20,7 +20,7 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Rotas Públicas */}
+
                 <Route path='/' element={<PaginaPrincipal />} />
                 <Route path="/login" element={<PaginaLogin />} />
                 <Route path="/cadastro" element={<PaginaCadastro h1='Bem-Vindo ao MedTrack' p='Cadastre-se e comece a gerenciar suas medicações.' />} />
@@ -28,29 +28,17 @@ function App() {
                 <Route path='/cadastro_concluido' element={<PaginaCadastro3 h1="Usuário Cadastrado com sucesso!" />} />
                 <Route path="/recuperacaosenha" element={<RecuperacaoSenha />} />
 
-                {/*/!* Rotas privadas *!/*/}
-                {/*<Route element={<PrivateRoute requiredRole={["ADMINISTRADOR", "PESSOAL" ]} />}>*/}
-                {/*    <Route path="/dashboard" element={<Dashboard />} />*/}
-                {/*    <Route path="/configuracoes" element={<Configuracoes />}/>*/}
-                {/*</Route>*/}
+                <Route path="/home" element={<Dashboard />} />
+                <Route path="/lista_dependentes" element={<ListaDependentes />} />
+                <Route path="/perfil_dependente/:dependenteId" element={<PerfilDependente />} />
+                <Route path="/cadastro_dependente" element={<CadastroDependente />} />
+                <Route path="/cadastro_medicamento/:dependenteId" element={<CadastroMedicamentos />} />
+                <Route path="/relatorios" element={<Relatorios />} />
+                <Route path="/historico_medicacoes/:dependenteId" element={<PaginaHistoricoDependentes />} />
+                <Route path="/historico_medicacoes/:usuarioId" element={<PaginaHistoricoDependentes/>}/>
+                <Route path="/perfil_usuario/:usuarioId" element={<PerfilDependente/>}/>
+                <Route path="/configuracoes" element={<Configuracoes/>}/>
 
-                {/* Rotas privadas com role ADMINISTRADOR */}
-                {/*<Route element={<PrivateRoute requiredRole="ADMINISTRADOR" />}>*/}
-                    <Route path="/home" element={<Dashboard />} />
-                    <Route path="/lista_dependentes" element={<ListaDependentes />} />
-                    <Route path="/perfil_dependente/:dependenteId" element={<PerfilDependente />} />
-                    <Route path="/cadastro_dependente" element={<CadastroDependente />} />
-                    <Route path="/cadastro_medicamento/:dependenteId" element={<CadastroMedicamentos />} />
-                    <Route path="/relatorios" element={<Relatorios />} />
-                    <Route path="/historico_medicacoes" element={<PaginaHistoricoDependentes />} />
-                    <Route path="/perfil_usuario/:usuarioId" element={<PerfilDependente/>}/>
-                {/*</Route>*/}
-
-                {/*<Route element={<PrivateRoute requiredRole="PESSOAL" />}>*/}
-                {/*    <Route path="/homel" element={<Dashboard />} />*/}
-                {/*    <Route path="/lista_dependentes" element={<PerfilDependente/>}/>*/}
-                {/*    <Route path="/relatorios" element={<PaginaHistoricoDependentes />} />*/}
-                {/*</Route>*/}
             </Routes>
         </Router>
 
