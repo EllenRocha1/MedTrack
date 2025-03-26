@@ -49,9 +49,7 @@ public class DependenteService {
         return dependenteRepository.save(dependente);
     }
 
-    public List<Dependente> listarTodos() {
-        return dependenteRepository.findAll();
-    }
+
 
     public List<Dependente> listarPorAdministradorId(Long administradorId) {
         return dependenteRepository.findByAdministradorId(administradorId);
@@ -63,6 +61,15 @@ public class DependenteService {
 
     public Dependente atualizar(DadosDependentePut dados) {
         var dependente = dependenteRepository.getReferenceById(dados.id());
+
+        if (dados.nomeUsuario() != null && !dados.nomeUsuario().equals(dependente.getNomeUsuario())) {
+            boolean existeEmUsuarios = usuarioRepository.existsByNomeUsuario(dados.nomeUsuario());
+            boolean existeEmDependentes = dependenteRepository.existsByNomeUsuario(dados.nomeUsuario());
+            if (existeEmUsuarios || existeEmDependentes) {
+                throw new RuntimeException("Nome de usuário já está em uso!");
+            }
+        }
+
         dependente.atualizarInformacoes(dados);
 
         return dependente;

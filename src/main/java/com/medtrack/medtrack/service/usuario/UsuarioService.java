@@ -45,9 +45,12 @@ public class UsuarioService {
         Usuario usuario = repositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
-        if (dados.nomeUsuario() != null && !dados.nomeUsuario().equals(usuario.getNomeUsuario()) &&
-                repositorio.existsByNomeUsuario(dados.nomeUsuario())) {
-            throw new RuntimeException("Nome de usuário já está em uso!");
+        if (dados.nomeUsuario() != null && !dados.nomeUsuario().equals(usuario.getNomeUsuario())) {
+            boolean existeEmUsuarios = repositorio.existsByNomeUsuario(dados.nomeUsuario());
+            boolean existeEmDependentes = dependenteRepository.existsByNomeUsuario(dados.nomeUsuario());
+            if (existeEmUsuarios || existeEmDependentes) {
+                throw new RuntimeException("Nome de usuário já está em uso!");
+            }
         }
 
         if (dados.nome() != null) {
