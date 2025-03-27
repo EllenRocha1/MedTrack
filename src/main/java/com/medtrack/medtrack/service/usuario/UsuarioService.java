@@ -71,6 +71,9 @@ public class UsuarioService {
         if (dados.tipoConta() != null) {
             usuario.setTipoConta(dados.tipoConta());
         }
+        if(dados.email() != null) {
+            usuario.setEmail(dados.email());
+        }
 
         return repositorio.save(usuario);
     }

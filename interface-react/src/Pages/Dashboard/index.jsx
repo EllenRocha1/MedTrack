@@ -2,6 +2,9 @@ import Sidebar from "../../Componentes/Sidebar";
 import { getUserRole, getUserInfo } from "../../Componentes/Auth/AuthToken";
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import Header from "../../Componentes/Header";
+import Botao from "../../Componentes/Botao";
+import CardDependente from "../../Componentes/Card/CardDependente";
 
 const Dashboard = () => {
   const userInfo = getUserInfo();
@@ -23,10 +26,6 @@ const Dashboard = () => {
       },
     ],
   });
-
-  const handleSidebarToggle = (expandida) => {
-    setSidebarExpandida(expandida);
-  };
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -55,43 +54,54 @@ const Dashboard = () => {
   }, [dadosGrafico]);
 
   return (
-      <div className="flex h-screen bg-gray-100 w-auto">
-        {/* Sidebar recebe o estado de expansão */}
-        <Sidebar type={isAdmin} usuarioId={userInfo.id} onToggle={handleSidebarToggle} />
+      <div className="flex h-screen w-full overflow-hidden">
+        <Sidebar
+            className="h-full"
+            type={isAdmin}
+            usuarioId={getUserInfo().id}
+            expandida={sidebarExpandida}
+            setExpandida={setSidebarExpandida}
+        />
 
-        <main className=" transition-all duration-300 p-6" >
-          <div className="bg-white p-5 rounded-lg shadow-md mb-5">
-            <h1 className="text-2xl font-bold text-gray-800">
-              👋 Olá, {userInfo.nome}!
-            </h1>
-            <p className="text-gray-600">Aqui está um resumo da sua medicação.</p>
-          </div>
+        <div className={`flex-1 flex flex-col h-full overflow-auto transition-all duration-300 ${
+            sidebarExpandida ? "ml-0" : "ml-16" // Ajuste esses valores conforme a largura da sua sidebar
+        }`}>
+          <header className="text-2xl font-bold text-cyan-500 p-4">MedTrack</header>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="bg-white shadow-md p-5 rounded-lg">
-              <h2 className="text-xl font-semibold">💊 Medicamentos Ativos</h2>
-              <p className="text-3xl font-bold text-blue-600">8</p>
+          <main className="flex-1 p-4 bg-gray-100">
+            <div className="bg-white p-5 rounded-lg shadow-md mb-5">
+              <h1 className="text-2xl font-bold text-gray-800">
+                👋 Olá, {userInfo.nome}!
+              </h1>
+              <p className="text-gray-600">Aqui está um resumo da sua medicação.</p>
             </div>
 
-            <div className="bg-white shadow-md p-5 rounded-lg">
-              <h2 className="text-xl font-semibold">⏰ Doses Tomadas Hoje</h2>
-              <p className="text-3xl font-bold text-green-600">5 / 7</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="bg-white shadow-md p-5 rounded-lg">
+                <h2 className="text-xl font-semibold">💊 Medicamentos Ativos</h2>
+                <p className="text-3xl font-bold text-blue-600">8</p>
+              </div>
+
+              <div className="bg-white shadow-md p-5 rounded-lg">
+                <h2 className="text-xl font-semibold">⏰ Doses Tomadas Hoje</h2>
+                <p className="text-3xl font-bold text-green-600">5 / 7</p>
+              </div>
+
+              <div className="bg-white shadow-md p-5 rounded-lg">
+                <h2 className="text-xl font-semibold">⚠️ Doses Perdidas</h2>
+                <p className="text-3xl font-bold text-red-600">2</p>
+              </div>
             </div>
 
-            <div className="bg-white shadow-md p-5 rounded-lg">
-              <h2 className="text-xl font-semibold">⚠️ Doses Perdidas</h2>
-              <p className="text-3xl font-bold text-red-600">2</p>
+            {/* Gráfico de Adesão */}
+            <div className="bg-white shadow-md p-5 rounded-lg mt-6">
+              <h2 className="text-xl font-semibold mb-3">📊 Adesão aos Medicamentos</h2>
+              <div className="h-40">
+                <canvas ref={chartRef} style={{height: "160px"}}></canvas>
+              </div>
             </div>
-          </div>
-
-          {/* Gráfico de Adesão */}
-          <div className="bg-white shadow-md p-5 rounded-lg mt-6">
-            <h2 className="text-xl font-semibold mb-3">📊 Adesão aos Medicamentos</h2>
-            <div className="h-40">
-              <canvas ref={chartRef} style={{ height: "160px" }}></canvas>
-            </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
   );
 };

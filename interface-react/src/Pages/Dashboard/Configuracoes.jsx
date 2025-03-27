@@ -3,8 +3,10 @@ import Sidebar from "../../Componentes/Sidebar";
 import { getUserInfo, getUserRole } from "../../Componentes/Auth/AuthToken";
 import api from "../../Service/api";
 import {useNavigate} from "react-router-dom";
+import Popup from "../../Componentes/PopUp";
 
 const Configuracoes = () => {
+    const [open, setOpen] = useState(false)
     const [abaAtiva, setAbaAtiva] = useState("perfil");
     const role = getUserRole();
     const [data, setData] = useState("")
@@ -81,8 +83,12 @@ const Configuracoes = () => {
 const Perfil = ({ usuarioInicial }) => {
     const [usuario, setUsuario] = useState(usuarioInicial || {});
     const [erro, setError] = useState(null);
+    const [open, setOpen] = useState(false)
+
+
 
     useEffect(() => {
+        console.log("Estado atualizado do usuário:", usuario);
         if (usuarioInicial) {
             setUsuario(usuarioInicial);
         }
@@ -94,19 +100,26 @@ const Perfil = ({ usuarioInicial }) => {
             return;
         }
 
+        console.log("Dados antes da atualização:", usuario); // Log para depuração
+
         try {
             const response = await api.put(
                 `http://localhost:8081/usuarios/atualizar/${usuario.id}`,
                 usuario
             );
-            console.log("Dados atualizados:", response);
-            setUsuario(response);
+
+            console.log("Resposta completa da API:", response);
+            console.log("Dados retornados pela API:", response.data);
+
+            setUsuario(response.data); // Garante que o estado recebe os dados novos
             setError(null);
             window.location.reload();
+
         } catch (err) {
             setError(err.message);
         }
     };
+
     const navigate = useNavigate()
     const handleDelete = async () => {
         if (!usuario?.id) {
@@ -124,6 +137,13 @@ const Perfil = ({ usuarioInicial }) => {
             setError(err.message);
         }
     };
+    const botao1 = {
+        label: "Excluir", funcao: handleDelete
+    }
+
+    const texto = {
+        h2: "Tem certeza que quer excluir? ", sub: "Excluir fará com que você perca seus dados"
+    }
 
     return (
         <div>
@@ -142,7 +162,7 @@ const Perfil = ({ usuarioInicial }) => {
             <label>Email </label>
             <input
                 className="border p-2 w-full mb-2"
-                type="email"
+                type="text"
                 placeholder="E-mail"
                 value={usuario?.email || ""}
                 onChange={(e) => setUsuario({...usuario, email: e.target.value})}
@@ -153,7 +173,7 @@ const Perfil = ({ usuarioInicial }) => {
                 type="text"
                 placeholder="Telefone"
                 value={usuario?.numeroTelefone || ""}
-                onChange={(e) => setUsuario({...usuario, telefone: e.target.value})}
+                onChange={(e) => setUsuario({...usuario, numeroTelefone: e.target.value})}
             />
             <label>Nome de Usuário </label>
             <input
@@ -172,10 +192,12 @@ const Perfil = ({ usuarioInicial }) => {
             </button>
             <button
                 className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
-                onClick={handleDelete}
+                onClick={()=>setOpen(true)}
             >
                 Excluir Conta
             </button>
+            <Popup open={open} setOpen={setOpen} botao1={botao1} texto={ texto }/>
+
         </div>
     );
 };
@@ -240,7 +262,7 @@ const Dependentes = ({dependentes}) => {
             <label>Numero </label>
             <input
                 className="border p-2 w-full mb-2"
-                type="number"
+                type="text"
                 placeholder="Número:"
                 value={dependenteSelecionado?.telefone || ""}
                 onChange={(e) => setDependenteSelecionado({...dependenteSelecionado, telefone: e.target.value})}
