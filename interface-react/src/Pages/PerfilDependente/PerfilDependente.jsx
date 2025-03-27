@@ -99,7 +99,7 @@ const PerfilDependente = () => {
                         <section className={`hidden sm:block transition-all duration-300 ${
                             sidebarExpanded ? "sm:w-[37.5%] lg:w-[30%] xl:w-[25%]" : "sm:w-[40%] lg:w-[35%] xl:w-[30%]"
                         } border border-cyan-300 rounded-lg p-4 bg-white shadow-sm`}>
-                            <Perfil vaiTer={true} userInfo={depInfo}/>
+                            <Perfil vaiTer={true} dependenteId={depInfo.id} />
                         </section>
                     )}
 

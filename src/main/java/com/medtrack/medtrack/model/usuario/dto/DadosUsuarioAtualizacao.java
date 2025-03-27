@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public record DadosUsuarioAtualizacao(
         String nome,
+        String email,
         String nomeUsuario,
         String numeroTelefone,
         String senha,

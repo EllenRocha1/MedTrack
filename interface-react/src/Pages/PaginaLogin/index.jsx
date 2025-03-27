@@ -43,7 +43,7 @@ const PaginaLogin = () => {
             navigate('/home');
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            setErro("Usuário ou senha incorretos. Tente novamente.");
+            alert("Usuário ou senha incorretos. Tente novamente.");
         }
     };
 
@@ -57,7 +57,6 @@ const PaginaLogin = () => {
                 formData={formData}
                 handleChange={handleChange}
             />
-            {erro && <p className="text-red-500 mt-4">{erro}</p>}
         </div>
     );
 };
