@@ -3,7 +3,6 @@ package com.medtrack.medtrack.controller;
 import com.medtrack.medtrack.model.confirmacao.Confirmacao;
 import com.medtrack.medtrack.model.confirmacao.dto.DadosConfirmacao;
 import com.medtrack.medtrack.service.ConfirmacaoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,8 +1,10 @@
 package com.medtrack.medtrack.controller.mobile;
 
+import com.medtrack.medtrack.model.dependente.Dependente;
 import com.medtrack.medtrack.model.medicamento.Medicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoMobile;
 import com.medtrack.medtrack.model.usuario.Usuario;
+import com.medtrack.medtrack.repository.DependenteRepository;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
 import com.medtrack.medtrack.service.jwt.JwtService;
@@ -29,32 +31,35 @@ public class MedicamentoMobileController {
     private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
     private final MedicamentoService medicamentoService;
+    private final DependenteRepository dependenteRepository;
 
     public MedicamentoMobileController(MedicamentoRepository medicamentoRepository, UsuarioRepository usuarioRepository,
-                                       JwtService jwtService, MedicamentoService medicamentoService ){
+                                       JwtService jwtService, MedicamentoService medicamentoService, DependenteRepository dependenteRepository){
         this.medicamentoRepository = medicamentoRepository;
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
         this.medicamentoService = medicamentoService;
+        this.dependenteRepository = dependenteRepository;
     }
 
 
     @GetMapping("/lista")
     public ResponseEntity<List<DadosMedicamentoMobile>> getMedicamentos(@RequestHeader("Authorization") String token) {
         String username = jwtService.extractUsername(token.replace("Bearer ", ""));
-        Optional<Usuario> optional = usuarioRepository.findByNomeUsuario(username);
-
-        if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Usuario usuario = optional.get();
-
+        Optional<Usuario> optionalUsuario = usuarioRepository.findByNomeUsuario(username);
+        Optional<Dependente> optionalDependente = dependenteRepository.findByNomeUsuario(username);
         List<Medicamento> medicamentos;
-        if (ADMINISTRADOR.equals(usuario.getTipoConta()) || PESSOAL.equals(usuario.getTipoConta())) {
+
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
             medicamentos = medicamentoRepository.findByUsuarioId(usuario.getId());
+        } else if (optionalDependente.isPresent()) {
+            Dependente dependente = optionalDependente.get();
+            System.out.println(dependente.toString());
+            medicamentos = medicamentoRepository.findByDependenteId(dependente.getId());
+            System.out.println(medicamentos);
         } else {
-            medicamentos = medicamentoRepository.findByDependenteId(usuario.getId());
+            return ResponseEntity.notFound().build();
         }
 
         List<DadosMedicamentoMobile> medicamentosMobile = medicamentos.stream()

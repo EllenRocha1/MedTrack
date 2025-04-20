@@ -1,8 +1,8 @@
 package com.medtrack.medtrack.model.medicamento;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.medtrack.medtrack.model.dependente.Dependente;
+import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.model.usuario.Usuario;
 import jakarta.persistence.*;
@@ -14,9 +14,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
-import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @Table(name = "Medicamentos")
@@ -40,12 +38,12 @@ public class Medicamento {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonBackReference
+    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "dependente_id")
-    @JsonBackReference
+    @JsonIgnore
     private Dependente dependente;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
