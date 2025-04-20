@@ -1,5 +1,6 @@
 package com.medtrack.medtrack.model.usuario.dto;
 
+import com.medtrack.medtrack.model.dependente.Dependente;
 import com.medtrack.medtrack.model.usuario.Usuario;
 
 public record DadosUsuarioMobile(
@@ -11,5 +12,9 @@ public record DadosUsuarioMobile(
         ) {
     public DadosUsuarioMobile(Usuario usuario) {
         this(usuario.getId(), usuario.getNome(),usuario.getNomeUsuario(), usuario.getEmail());
+    }
+
+    public DadosUsuarioMobile(Dependente dependente) {
+        this(dependente.getId(), dependente.getNome(), dependente.getNomeUsuario(), dependente.getEmail());
     }
 }

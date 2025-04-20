@@ -44,7 +44,9 @@ public class AuthMobileController {
         System.out.println("🔐 Senha fornecida: " + dados.password());
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findByNomeUsuario(dados.username());
+        System.out.println("Usuário " + usuarioOpt.isPresent());
         Optional<Dependente> dependenteOpt = dependenteRepository.findByNomeUsuario(dados.username());
+        System.out.println("Dependente " + dependenteOpt.isPresent());
 
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
@@ -57,6 +59,7 @@ public class AuthMobileController {
             Map<String, String> response = new HashMap<>();
             response.put("token", jwt);
             return ResponseEntity.ok(response);
+
         } else if (dependenteOpt.isPresent()) {
             Dependente dependente = dependenteOpt.get();
             if (!passwordEncoder.matches(dados.password(), dependente.getSenhaHashed())) {
