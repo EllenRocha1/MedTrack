@@ -1,7 +1,6 @@
-# MedTrack Web: Dashboard & API 🌐
-
-<div align="center">
-    <img width="30%" src="assets/logo-medtrack.png" alt="Logo do MedTrack">
+<div align="center" justify="center">
+    <img width="15%" src="assets/logo-medtrack.png" alt="Logo do MedTrack"> 
+    <h1>MedTrack Web: Dashboard & API </h1>
 </div>
 
 > Plataforma web completa para gerenciamento de medicação com dashboard adaptável e API robusta
