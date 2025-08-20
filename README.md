@@ -199,19 +199,6 @@ O **MedTrack Mobile** é o aplicativo Android que se integra perfeitamente com a
 <table>
   <tr>
     <td align="center">
-        <img src="https://github.com/MClaraFerreira5.png" width="100px;" alt="Maria Clara"/><br />
-        <sub><b>Maria Clara</b></sub>
-      <br />
-      <a href="https://github.com/MClaraFerreira5">
-        <img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github" />
-      </a>
-      <a href="https://www.linkedin.com/in/clara-ferreira-dev/">
-        <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin" />
-      </a>
-      <br />
-      <code>Frontend & Mobile</code>
-    </td>
-    <td align="center">
         <img src="https://github.com/EllenRocha1.png" width="100px;" alt="Ellen Rocha"/><br />
         <sub><b>Ellen Rocha</b></sub>
       <br />
@@ -223,6 +210,19 @@ O **MedTrack Mobile** é o aplicativo Android que se integra perfeitamente com a
       </a>
       <br />
       <code>Backend & Frontend</code>
+    </td>
+    <td align="center">
+        <img src="https://github.com/MClaraFerreira5.png" width="100px;" alt="Maria Clara"/><br />
+        <sub><b>Maria Clara</b></sub>
+      <br />
+      <a href="https://github.com/MClaraFerreira5">
+        <img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github" />
+      </a>
+      <a href="https://www.linkedin.com/in/clara-ferreira-dev/">
+        <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat-square&logo=linkedin" />
+      </a>
+      <br />
+      <code>Frontend & Mobile</code>
     </td>
     <td align="center">
         <img src="https://github.com/YannLeao.png" width="100px;" alt="Yann Leão"/><br />
@@ -242,11 +242,28 @@ O **MedTrack Mobile** é o aplicativo Android que se integra perfeitamente com a
 
 </div>
 
+## 🎓 Orientação
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+        <img src="https://github.com/ygoramaral.png" width="100px;" alt="Prof. Igor Amaral"/><br />
+        <sub><b>Prof. Igor Amaral</b></sub>
+      <br />
+      <a href="https://github.com/ygoramaral">
+        <img src="https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=github" />
+      </a>
+      <br />
+      <code>Orientador</code>
+    </td>
+  </tr>
+</table>
+
+</div>
+
 ## 📄 Licença
 
 Projeto acadêmico desenvolvido para a disciplina de **Projeto Interdisciplinar de Engenharia da Computação 1 (PIEC1)**  
 Universidade Federal Rural de Pernambuco — Unidade Acadêmica de Belo Jardim (UFRPE/UABJ)
-
-
-
-
