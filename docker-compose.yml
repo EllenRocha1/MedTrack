@@ -31,5 +31,18 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    build: ./interface-react
+    container_name: medtrack-frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
