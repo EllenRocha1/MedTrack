@@ -149,6 +149,52 @@ Documentação completa dos endpoints REST disponível em dois formatos:
 
 ### 🚀 Como Executar
 
+## Rodando com Docker (Recomendado)
+ 
+O ecossistema MedTrack está completamente dockerizado. Banco de Dados, Backend e Frontend rodam de forma isolada e orquestrada via Docker Compose.
+ 
+### Pré-requisitos
+ 
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e em execução
+ 
+### Passo a passo
+ 
+1. Clone o repositório e navegue até a raiz do projeto.
+ 
+2. Crie o arquivo de variáveis de ambiente a partir do exemplo:
+   ```bash
+   cp .env.example .env
+   ```
+   Edite o `.env` com suas configurações (credenciais do banco, etc.).
+ 
+3. Na **primeira execução**, faça o build e suba os containers:
+   ```bash
+   docker compose up --build
+   ```
+ 
+4. Nas execuções seguintes, basta:
+   ```bash
+   docker compose up
+   ```
+ 
+5. Acesse os serviços:
+   | Serviço  | URL                          |
+   |----------|------------------------------|
+   | Frontend | http://localhost:3000        |
+   | Backend  | http://localhost:8081        |
+ 
+### Detalhes da infraestrutura Docker
+ 
+| Componente | Tecnologia | Detalhes |
+|---|---|---|
+| **Backend** | Spring Boot + JRE 21 | Build multi-stage (Maven + JRE 21) para imagens leves e seguras |
+| **Frontend** | React + Node 18 | Suporte a Hot-Reload no Windows via Polling |
+| **Banco de Dados** | PostgreSQL | Volumes persistentes e Healthcheck para garantir a ordem de subida dos serviços |
+ 
+---
+ 
+## 🚀 Rodando Localmente (sem Docker)
+
 ##### **Pré-requisitos**
    - Node.js 18+ (Frontend)
    - Java 21+ JDK (Backend)
