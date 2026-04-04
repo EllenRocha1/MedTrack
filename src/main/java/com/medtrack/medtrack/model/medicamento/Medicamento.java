@@ -64,6 +64,13 @@ public class Medicamento {
         this.usuario = usuario;
         var dadosFrequenciaUso = dadosMedicamento.frequenciaUso();
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
+        if (dadosMedicamento.estoque() != null) {
+            this.estoque = new Estoque(
+                dadosMedicamento.estoque().quantidadeAtual(),
+                dadosMedicamento.estoque().quantidadeMinima(),
+                this
+            );
+        }
     }
 
     public Medicamento(@Valid DadosMedicamento dadosMedicamento, Dependente dependente) {
@@ -74,6 +81,13 @@ public class Medicamento {
         var dadosFrequenciaUso = dadosMedicamento.frequenciaUso();
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
         this.dependente = dependente;
+        if (dadosMedicamento.estoque() != null) {
+            this.estoque = new Estoque(
+                dadosMedicamento.estoque().quantidadeAtual(),
+                dadosMedicamento.estoque().quantidadeMinima(),
+                this
+            );
+        }
     }
 
 
@@ -86,6 +100,13 @@ public class Medicamento {
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
         this.dependente = dependente;
         this.usuario = usuario;
+        if (dadosMedicamento.estoque() != null) {
+            this.estoque = new Estoque(
+                dadosMedicamento.estoque().quantidadeAtual(),
+                dadosMedicamento.estoque().quantidadeMinima(),
+                this
+            );
+        }
     }
 
     public Medicamento atualizarInformacoes(DadosMedicamentoPut dadosMedicamentoPut, Medicamento medicamento) {
@@ -100,5 +121,13 @@ public class Medicamento {
                 .filter(name -> wrappedSource.getPropertyValue(name) == null)
                 .toArray(String[]::new);
     }
+   
+
+    public Long getId() { return id; }
+    public String getNome() { return nome; }
+    public String getPrincipioAtivo() { return principioAtivo; }
+    public String getDosagem() { return dosagem; }
+    public String getObservacoes() { return observacoes; }
+    public Estoque getEstoque() { return estoque; }
 
 }

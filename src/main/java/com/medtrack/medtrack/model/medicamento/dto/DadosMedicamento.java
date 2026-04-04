@@ -25,9 +25,10 @@ public record DadosMedicamento(
 
         @NotNull
         @Valid
-        DadosFrequenciaUso frequenciaUso
+        DadosFrequenciaUso frequenciaUso,
 
-
+        @Valid
+        DadosEstoque estoque
 
 ) {
 

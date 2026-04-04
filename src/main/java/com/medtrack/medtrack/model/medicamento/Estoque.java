@@ -25,7 +25,6 @@ public class Estoque {
     @JsonBackReference
     private Medicamento medicamento;
 
-    // Construtor auxiliar
     public Estoque(Integer quantidadeAtual, Integer quantidadeMinima, Medicamento medicamento) {
         this.quantidadeAtual = quantidadeAtual != null ? quantidadeAtual : 0;
         this.quantidadeMinima = quantidadeMinima;
@@ -47,4 +46,10 @@ public class Estoque {
         }
         return false;
     }
+
+    public Long getId() { return id; }
+    public Integer getQuantidadeAtual() { return quantidadeAtual; }
+    public Integer getQuantidadeMinima() { return quantidadeMinima; }
+
+
 }

@@ -8,7 +8,8 @@ import com.medtrack.medtrack.model.medicamento.Medicamento;
             String nome,
             String principioAtivo,
             String dosagem,
-            String observacoes
+            String observacoes,
+            DadosEstoqueGet estoque
 
     ) {
         public DadosMedicamentoGet(Medicamento medicamento) {
@@ -17,7 +18,8 @@ import com.medtrack.medtrack.model.medicamento.Medicamento;
                     medicamento.getNome(),
                     medicamento.getPrincipioAtivo(),
                     medicamento.getDosagem(),
-                    medicamento.getObservacoes()
+                    medicamento.getObservacoes(),
+                    medicamento.getEstoque() != null ? new DadosEstoqueGet(medicamento.getEstoque()) : null
             );
         }
     }
