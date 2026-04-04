@@ -52,6 +52,9 @@ public class Medicamento {
     @NotNull
     @Valid FrequenciaUso frequenciaUso;
 
+    @OneToOne(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Estoque estoque;
+
 
     public Medicamento(@Valid DadosMedicamento dadosMedicamento, Usuario usuario) {
         nome = dadosMedicamento.nome();
