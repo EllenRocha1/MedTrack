@@ -48,9 +48,7 @@ public class Medicamento {
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "frequencia_uso_id")
-    @MapsId
-    @NotNull
-    @Valid FrequenciaUso frequenciaUso;
+    FrequenciaUso frequenciaUso;
 
     @OneToOne(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private Estoque estoque;
@@ -121,13 +119,22 @@ public class Medicamento {
                 .filter(name -> wrappedSource.getPropertyValue(name) == null)
                 .toArray(String[]::new);
     }
-   
+
+    public void setFrequenciaUso(FrequenciaUso frequenciaUso) {
+        this.frequenciaUso = frequenciaUso;
+    }
+
+    public void setEstoque(Estoque estoque) {
+        this.estoque = estoque;
+    }
 
     public Long getId() { return id; }
     public String getNome() { return nome; }
     public String getPrincipioAtivo() { return principioAtivo; }
     public String getDosagem() { return dosagem; }
     public String getObservacoes() { return observacoes; }
-    public Estoque getEstoque() { return estoque; }
-
+    public Estoque getEstoque() { return this.estoque; }
+    public Usuario getUsuario() { return this.usuario; }
+    public Dependente getDependente() { return this.dependente; }
+    public FrequenciaUso getFrequenciaUso() { return this.frequenciaUso; }
 }
