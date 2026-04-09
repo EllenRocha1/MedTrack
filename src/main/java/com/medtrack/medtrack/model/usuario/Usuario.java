@@ -54,7 +54,7 @@ public class Usuario {
         nomeUsuario = dados.nomeUsuario();
     }
 
-
+    public List<Medicamento> getMedicamentos() { return medicamentos; }
 
 }
 

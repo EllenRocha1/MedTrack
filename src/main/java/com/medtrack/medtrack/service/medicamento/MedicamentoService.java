@@ -11,9 +11,17 @@ import com.medtrack.medtrack.repository.DependenteRepository;
 import com.medtrack.medtrack.repository.FrequenciaUsoRepository;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
+import com.medtrack.medtrack.model.medicamento.dto.DadosEstoquePut;
+import com.medtrack.medtrack.model.medicamento.Estoque;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -51,6 +59,7 @@ public class MedicamentoService {
         medicamentoRepository.delete(medicamento);
     }
 
+    @Transactional
     public Medicamento criarMedicamento(DadosMedicamento dadosMedicamento) {
         Usuario usuario = usuarioRepository.findById(dadosMedicamento.usuarioId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
@@ -77,8 +86,24 @@ public class MedicamentoService {
                 .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
 
         medicamentoExistente.atualizarInformacoes(dadosMedicamentoPut, medicamentoExistente);
+
+
+        if (dadosMedicamentoPut.estoque() != null) {
+          var estoque = medicamentoExistente.getEstoque();
+
+           if (estoque != null) {
+              if (dadosMedicamentoPut.estoque().quantidadeAtual() != null) {
+                estoque.setQuantidadeAtual(dadosMedicamentoPut.estoque().quantidadeAtual());
+              }
+              if (dadosMedicamentoPut.estoque().quantidadeMinima() != null) {
+                estoque.setQuantidadeMinima(dadosMedicamentoPut.estoque().quantidadeMinima());
+              }
+            }
+        }
+
         medicamentoRepository.save(medicamentoExistente);
     }
+
 
     public List<LocalTime> calcularHorarios(Medicamento medicamento) {
         List<LocalTime> horariosNotificacao = new ArrayList<>();
@@ -123,4 +148,8 @@ public class MedicamentoService {
 
         return horariosNotificacao;
     }
+
+    public List<Medicamento> listarEstoqueCritico(Long usuarioId) {
+    return medicamentoRepository.findEstoqueBaixoByUsuarioId(usuarioId);
+}
 }

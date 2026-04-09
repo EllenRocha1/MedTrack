@@ -1,6 +1,7 @@
 package com.medtrack.medtrack.model.medicamento.dto;
 
 import jakarta.validation.constraints.NotNull;
+import com.medtrack.medtrack.model.medicamento.dto.DadosEstoquePut;
 
 public record DadosMedicamentoPut(
         @NotNull
@@ -14,9 +15,10 @@ public record DadosMedicamentoPut(
 
         String observacoes,
 
+        DadosEstoquePut estoque,
+
         DadosFrequenciaPut dadosFrequenciaPut
         ) {
-
 
 
 

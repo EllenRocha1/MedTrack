@@ -1,6 +1,7 @@
 package com.medtrack.medtrack.controller;
 
 import com.medtrack.medtrack.model.medicamento.Medicamento;
+import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
@@ -33,7 +34,7 @@ public class MedicamentoController {
 
     @PostMapping("/cadastro")
     @Transactional
-    public ResponseEntity<Medicamento> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
+    public ResponseEntity<DadosMedicamentoGet> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
         logger.info("Recebendo requisição para criar medicamento: {}", dadosMedicamento);
         Medicamento medicamento = medicamentoService.criarMedicamento(dadosMedicamento);
 
@@ -42,7 +43,7 @@ public class MedicamentoController {
                 .buildAndExpand(medicamento.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(new DadosMedicamentoGet(medicamento));
 
     }
 
@@ -58,10 +59,10 @@ public class MedicamentoController {
     }
 
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<Medicamento> detalharMedicamento(@PathVariable Long id) {
+    public ResponseEntity<DadosMedicamentoGet> detalharMedicamento(@PathVariable Long id) {
         Medicamento medicamento = repositorio.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
-        return ResponseEntity.ok(medicamento);
+        return ResponseEntity.ok(new DadosMedicamentoGet(medicamento));
     }
 
     @GetMapping("/todos/dependente/{dependenteId}")
@@ -74,6 +75,51 @@ public class MedicamentoController {
 
         return ResponseEntity.ok(medicamentoResponseDTOs);
     }
+
+    @GetMapping("/estoque-critico/{usuarioId}")
+    public ResponseEntity<List<DadosMedicamentoGet>> getEstoqueCritico(@PathVariable Long usuarioId) {
+        List<Medicamento> medicamentos = medicamentoService.listarEstoqueCritico(usuarioId);
+
+        List<DadosMedicamentoGet> medicamentoResponseDTOs = medicamentos.stream()
+                .map(DadosMedicamentoGet::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(medicamentoResponseDTOs);
+    }
+
+    @PatchMapping("/{id}/consumir")
+    @Transactional
+    public ResponseEntity<DadosEstoqueGet> consumirDose(@PathVariable Long id) {
+       var medicamento = repositorio.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+
+       if (medicamento.getEstoque() != null) {
+          medicamento.getEstoque().decrementar();
+
+        } else {
+        throw new IllegalArgumentException("Este medicamento não possui estoque configurado.");
+        }
+       return ResponseEntity.ok(new DadosEstoqueGet(medicamento.getEstoque()));
+    }
+
+    @PatchMapping("/{id}/repor")
+    @Transactional
+    public ResponseEntity<DadosEstoqueGet> reporEstoque(@PathVariable Long id, @RequestBody Integer quantidadeAdicionada) {
+      var medicamentoEncontrado = repositorio.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+
+      var estoqueAtual = medicamentoEncontrado.getEstoque();
+
+      if (estoqueAtual != null) {
+        int novaQuantidade = estoqueAtual.getQuantidadeAtual() + quantidadeAdicionada;
+        estoqueAtual.setQuantidadeAtual(novaQuantidade);
+
+    } else {
+        return ResponseEntity.badRequest().build();
+    }
+
+    return ResponseEntity.ok(new DadosEstoqueGet(estoqueAtual));
+}
 
     @PutMapping("/alterar/{id}")
     @Transactional
@@ -93,6 +139,5 @@ public class MedicamentoController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 }

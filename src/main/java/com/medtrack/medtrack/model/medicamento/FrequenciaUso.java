@@ -45,4 +45,12 @@ public class FrequenciaUso {
         dataTermino = dados.dataTermino();
     }
 
+    public FrequenciaUsoTipo getFrequenciaUsoTipo() { return frequenciaUsoTipo; }
+    public boolean isUsoContinuo() { return usoContinuo; }
+    public List<LocalTime> getHorariosEspecificos() { return horariosEspecificos; }
+    public Integer getIntervaloHoras() { return intervaloHoras; }
+    public LocalTime getPrimeiroHorario() { return primeiroHorario; }
+    public LocalDate getDataInicio() { return dataInicio; }
+    public LocalDate getDataTermino() { return dataTermino; }
+
 }

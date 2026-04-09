@@ -1,0 +1,1483 @@
+{
+	"log": {
+		"version": "1.2",
+		"creator": {
+			"name": "Insomnia REST Client",
+			"version": "insomnia.desktop.app:v12.5.0"
+		},
+		"entries": [
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 839.596,
+				"request": {
+					"method": "PATCH",
+					"url": "http://localhost:8081/medicamentos/6/consumir",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/12.5.0"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQzMDgyNywiZXhwIjoxNzc1NDY2ODI3fQ.xa5wFjxwtKetSmAOdDnkEM9IbWZuGpbqcNsIBgLjdVE"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 23:33:32 GMT"
+						}
+					],
+					"content": {
+						"size": 72,
+						"mimeType": "application/json",
+						"text": "{\"id\":3,\"quantidadeAtual\":17,\"quantidadeMinima\":10,\"estoqueBaixo\":false}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 839.596,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "{id_)medicamento}/consumir"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 8005.391,
+				"request": {
+					"method": "PATCH",
+					"url": "http://localhost:8081/medicamentos/6/repor",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/12.5.0"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQzMDgyNywiZXhwIjoxNzc1NDY2ODI3fQ.xa5wFjxwtKetSmAOdDnkEM9IbWZuGpbqcNsIBgLjdVE"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "10"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 23:16:06 GMT"
+						}
+					],
+					"content": {
+						"size": 72,
+						"mimeType": "application/json",
+						"text": "{\"id\":3,\"quantidadeAtual\":18,\"quantidadeMinima\":10,\"estoqueBaixo\":false}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 8005.391,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "{id_medicamento}/repor"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 234.928,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/medicamentos/estoque-critico/1",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/12.5.0"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQyNzk2NCwiZXhwIjoxNzc1NDYzOTY0fQ.bfxRGVmW55WZNUkNV3gObGyPZpBSv1FEvpoCwjIn3vQ"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 22:34:43 GMT"
+						}
+					],
+					"content": {
+						"size": 193,
+						"mimeType": "application/json",
+						"text": "[{\"id\":6,\"nome\":\"dipirona\",\"principioAtivo\":\"Dipirona\",\"dosagem\":\"300.0\",\"observacoes\":\"Tomar antes de dormir\",\"estoque\":{\"id\":3,\"quantidadeAtual\":8,\"quantidadeMinima\":10,\"estoqueBaixo\":true}}]"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 234.928,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "estoque-critico/{id_usuario}"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "POST",
+					"url": "http://localhost:8081/auth/mobile/login",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n\t\"username\": \"maryjane\",\n  \"password\": \"senha123\"\n}"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "auth/mobile/login"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "DELETE",
+					"url": "http://localhost:8081/dependentes/deletar/2",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE1ODcxNzIsImV4cCI6MTc0MTYyMzE3Mn0.MRDerKqfwTHNC93yJDjCWwVhmLf4JBtVuykNurLomno"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Deletar por Id"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/dependentes/buscar/todos",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE1NTEyOTAsImV4cCI6MTc0MTU4NzI5MH0.IHkLvMPbqVlicjxfWEX38fmnHPi1sGbJpznD6znk0So"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Buscar todos"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/dependentes/buscar/3",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE1ODI2OTIsImV4cCI6MTc0MTYxODY5Mn0.DOTxqO25fSrMQJy-ObYRumHq-CEarvfQVcugxXTtiVE"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Buscar por Id"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 5249.749000000001,
+				"request": {
+					"method": "POST",
+					"url": "http://localhost:8081/dependentes/cadastrar",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTM2MTE4MiwiZXhwIjoxNzc1Mzk3MTgyfQ.N0BAvGH4-oPuhaO5ChFLzb69B37PKpdyWJCvapXqFF4"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n  \"nome\": \"James Ingram\",\n  \"email\": \"james@example.com\",\n  \"telefone\": \"+5581912345678\",\n  \"administradorId\": 1,\n\t\"nomeUsuario\": \"james_igram\",\n  \"senha\": \"senha123\"\n}\n"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 201,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "Location",
+							"value": "http://localhost:8081/dependentes/cadastrar/2"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Length",
+							"value": "0"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 03:56:15 GMT"
+						}
+					],
+					"content": {
+						"size": 0,
+						"mimeType": "",
+						"text": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 5249.749000000001,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Cadastrar"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "PUT",
+					"url": "http://localhost:8081/dependentes/atualizar/1",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE0OTE0MTksImV4cCI6MTc0MTUyNzQxOX0.fL1FRfbRc2adcfRKZkEIg86GGG6qaocDZEivepMhHx4"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n  \"id\": 1,\n  \"nome\": \"Maria Souza\",\n  \"email\": \"maria.souza@novoemail.com\",\n  \"telefone\": \"+5581998765432\"\n}\n"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Atualizar por Id"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "PUT",
+					"url": "http://localhost:8081/usuarios/atualizar/9",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE0ODExMTYsImV4cCI6MTc0MTUxNzExNn0.FJ_kQsYgHXC9CdbJWlGrMmrSf9md_VgvzP40TccNcyw"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n  \"nome\": \"joao silva\",\n  \"nomeUsuario\": \"joao_silva\",\n  \"numeroTelefone\": \"+5581912345678\",\n  \"senha\": \"novaSenha123\",\n  \"usuarioId\": 9\n}"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Atualizar"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 5206.974,
+				"request": {
+					"method": "POST",
+					"url": "http://localhost:8081/medicamentos/cadastro",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQyNzk2NCwiZXhwIjoxNzc1NDYzOTY0fQ.bfxRGVmW55WZNUkNV3gObGyPZpBSv1FEvpoCwjIn3vQ"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n  \"nome\": \"dipirona\",\n  \"principioAtivo\": \"Dipirona\",\n  \"dosagem\": 300.0,\n\t\"usuarioId\": 1,\n  \"observacoes\": \"Tomar antes de dormir\",\n\t\"dependenteId\": null,\n  \"frequenciaUso\": {\n    \"frequenciaUsoTipo\": \"HORARIOS_ESPECIFICOS\",\n    \"usoContinuo\": true,\n    \"horariosEspecificos\": [\"08:00\", \"14:00\", \"20:00\"],\n    \"intervaloHoras\": 0,\n    \"primeiroHorario\": null,\n    \"dataInicio\": \"2026-04-05\",\n    \"dataTermino\": null\n},\n  \"estoque\": {\n    \"quantidadeAtual\":8,\n    \"quantidadeMinima\": 10\n  }\n}"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 201,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "Location",
+							"value": "http://localhost:8081/medicamentos/cadastro/6"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 22:28:00 GMT"
+						}
+					],
+					"content": {
+						"size": 191,
+						"mimeType": "application/json",
+						"text": "{\"id\":6,\"nome\":\"dipirona\",\"principioAtivo\":\"Dipirona\",\"dosagem\":\"300.0\",\"observacoes\":\"Tomar antes de dormir\",\"estoque\":{\"id\":3,\"quantidadeAtual\":8,\"quantidadeMinima\":10,\"estoqueBaixo\":true}}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 5206.974,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Cadastro"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "PUT",
+					"url": "http://localhost:8081/medicamentos/alterar/3",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJpYXQiOjE3NDE1NTEyOTAsImV4cCI6MTc0MTU4NzI5MH0.IHkLvMPbqVlicjxfWEX38fmnHPi1sGbJpznD6znk0So"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n\t\"nome\": \"Para\",\n  \"principioAtivo\": \"Paracetamol\",\n\t\"usuarioId\": 9\n\n}"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Atualizar"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 0,
+				"request": {
+					"method": "DELETE",
+					"url": "http://localhost:8081/deletar/%7Bid%7D",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 0,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [],
+					"content": {
+						"size": 0,
+						"mimeType": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 0,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Deletar por id"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 1774.3139999999999,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/medicamentos/buscar/todos/1",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTM2MTE4MiwiZXhwIjoxNzc1Mzk3MTgyfQ.N0BAvGH4-oPuhaO5ChFLzb69B37PKpdyWJCvapXqFF4"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 500,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"name": "Content-Length",
+							"value": "53"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 03:57:02 GMT"
+						},
+						{
+							"name": "Connection",
+							"value": "close"
+						}
+					],
+					"content": {
+						"size": 53,
+						"mimeType": "text/plain;charset=UTF-8",
+						"text": "Erro: No static resource medicamentos/buscar/todos/1."
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 1774.3139999999999,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "todos"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 179.59900000000002,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/usuarios/buscar/3",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQyNzk2NCwiZXhwIjoxNzc1NDYzOTY0fQ.bfxRGVmW55WZNUkNV3gObGyPZpBSv1FEvpoCwjIn3vQ"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 22:30:31 GMT"
+						}
+					],
+					"content": {
+						"size": 180,
+						"mimeType": "application/json",
+						"text": "{\"id\":3,\"tipoConta\":\"ADMINISTRADOR\",\"nome\":\"João Silva\",\"email\":\"joao.silva@example.com\",\"dataNascimento\":\"1990-05-20\",\"nomeUsuario\":\"joaosilva\",\"numeroTelefone\":\"+5511999999999\"}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 179.59900000000002,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "buscar por id"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 9431.91,
+				"request": {
+					"method": "POST",
+					"url": "http://localhost:8081/auth/login",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n\t\"username\": \"joaosilva\",\n  \"password\": \"senhaSegura123\"\n}"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 23:13:47 GMT"
+						}
+					],
+					"content": {
+						"size": 267,
+						"mimeType": "application/json",
+						"text": "{\"token\":\"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQzMDgyNywiZXhwIjoxNzc1NDY2ODI3fQ.xa5wFjxwtKetSmAOdDnkEM9IbWZuGpbqcNsIBgLjdVE\"}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 9431.91,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Login"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 5325.331,
+				"request": {
+					"method": "POST",
+					"url": "http://localhost:8081/usuarios/cadastro",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "application/json",
+						"text": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@example.com\",\n  \"dataNascimento\": \"1990-05-20\",\n  \"numeroTelefone\": \"+5511999999999\",\n  \"nomeUsuario\": \"joaosilva\",\n  \"senha\": \"senhaSegura123\",\n  \"categoria\": \"ADMINISTRADOR\"\n}\n"
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 201,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "Location",
+							"value": "http://localhost:8081/usuarios/cadastro/3"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Length",
+							"value": "0"
+						},
+						{
+							"name": "Date",
+							"value": "Fri, 03 Apr 2026 22:57:35 GMT"
+						}
+					],
+					"content": {
+						"size": 0,
+						"mimeType": "",
+						"text": ""
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 5325.331,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "Cadastro"
+			},
+			{
+				"startedDateTime": "2026-04-09T00:49:03.727Z",
+				"time": 1332.44,
+				"request": {
+					"method": "GET",
+					"url": "http://localhost:8081/medicamentos/buscar/4",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "User-Agent",
+							"value": "insomnia/10.3.1"
+						},
+						{
+							"name": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2Fvc2lsdmEiLCJjYXRlZ29yaWEiOiJBRE1JTklTVFJBRE9SIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiZW1haWwiOiJqb2FvLnNpbHZhQGV4YW1wbGUuY29tIiwiaWQiOjMsImlhdCI6MTc3NTQyNzk2NCwiZXhwIjoxNzc1NDYzOTY0fQ.bfxRGVmW55WZNUkNV3gObGyPZpBSv1FEvpoCwjIn3vQ"
+						}
+					],
+					"queryString": [],
+					"postData": {
+						"mimeType": "",
+						"text": ""
+					},
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"response": {
+					"status": 200,
+					"statusText": "",
+					"httpVersion": "HTTP/1.1",
+					"cookies": [],
+					"headers": [
+						{
+							"name": "Vary",
+							"value": "Origin"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"name": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"name": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"name": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"name": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"name": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"name": "Expires",
+							"value": "0"
+						},
+						{
+							"name": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"name": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"name": "Date",
+							"value": "Sun, 05 Apr 2026 22:27:13 GMT"
+						}
+					],
+					"content": {
+						"size": 193,
+						"mimeType": "application/json",
+						"text": "{\"id\":4,\"nome\":\"dipirona\",\"principioAtivo\":\"Dipirona\",\"dosagem\":\"300.0\",\"observacoes\":\"Tomar antes de dormir\",\"estoque\":{\"id\":1,\"quantidadeAtual\":50,\"quantidadeMinima\":10,\"estoqueBaixo\":false}}"
+					},
+					"redirectURL": "",
+					"headersSize": -1,
+					"bodySize": -1
+				},
+				"cache": {},
+				"timings": {
+					"blocked": -1,
+					"dns": -1,
+					"connect": -1,
+					"send": 0,
+					"wait": 1332.44,
+					"receive": 0,
+					"ssl": -1
+				},
+				"comment": "por id"
+			}
+		]
+	}
+}
