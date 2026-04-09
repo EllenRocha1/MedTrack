@@ -12,10 +12,16 @@ public record DadosMedicamentoMobile(
         String compostoAtivo,
         String dosagem,
         List<LocalTime> horarios,
-        boolean usoContinuo
+        boolean usoContinuo,
+        DadosEstoqueGet estoque
 ) {
     public DadosMedicamentoMobile(Medicamento medicamento, List<LocalTime> horarios, boolean usoContinuo) {
-        this(medicamento.getId(), medicamento.getNome(),
-                medicamento.getPrincipioAtivo(), medicamento.getDosagem(), horarios, usoContinuo);
+        this(medicamento.getId(),
+             medicamento.getNome(),
+             medicamento.getPrincipioAtivo(),
+             medicamento.getDosagem(),
+             horarios,
+             usoContinuo,
+             medicamento.getEstoque() != null ? new DadosEstoqueGet(medicamento.getEstoque()) : null);
     }
 }
