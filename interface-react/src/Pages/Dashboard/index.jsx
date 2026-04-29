@@ -69,7 +69,7 @@ const DashboardPessoal = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             <section className="lg:col-span-2 bg-white rounded-2xl shadow-sm border p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 font-inter">Próximas Tomadas</h3>
+              <h3 className="text-lg font-bold text-gray-800 mb-4 font-inter">Próximas Doses</h3>
               <div className="space-y-4">
                 <div className="flex items-center p-4 bg-gray-50 rounded-xl border-l-4 border-cyan-500">
                   <span className="text-lg font-bold text-gray-700 w-16">08:00</span>
