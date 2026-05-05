@@ -21,22 +21,26 @@ const PaginaHistoricoDependentes = () => {
     useEffect(() => {
         const fetchDados = async () => {
             try {
-                if (userRole === "ADMINISTRADOR") {
-                    const response = await api.get(`http://localhost:8081/dependentes/buscar/${dependenteId}`);
-                    setDados(response);
-                    console.log("Dados: "+ response)
-                } else if (userRole === "PESSOAL" && usuarioId) { // Garante que usuarioId não seja undefined
-                    console.log("ID do usuário:", usuarioId);
-                    const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`);
-                    setDados(response);
+                const idParaBusca = userRole === "ADMINISTRADOR" ? dependenteId : usuarioId;
 
+                if (idParaBusca) {
+                    const registrosVindosDaApi = await api.get(`http://localhost:8081/api/confirmacao/usuario/${idParaBusca}`);
+
+                    console.log("Registros recebidos:", registrosVindosDaApi);
+
+                    setDados({
+                        nome: getUserInfo().nome,
+                        semana: "Maio/2026",
+                        registros: Array.isArray(registrosVindosDaApi) ? registrosVindosDaApi : []
+                    });
                 }
             } catch (error) {
+                console.error("Erro ao buscar:", error);
                 setError(error.message);
             }
         };
 
-        if (userRole) { // Só chama a função se o userRole estiver definido
+        if (userRole) {
             fetchDados();
         }
     }, [userRole, dependenteId, usuarioId]);
