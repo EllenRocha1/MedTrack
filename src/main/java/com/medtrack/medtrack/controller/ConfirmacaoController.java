@@ -4,10 +4,9 @@ import com.medtrack.medtrack.model.confirmacao.Confirmacao;
 import com.medtrack.medtrack.model.confirmacao.dto.DadosConfirmacao;
 import com.medtrack.medtrack.service.ConfirmacaoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/confirmacao")
@@ -27,6 +26,16 @@ public class ConfirmacaoController {
 
         } catch(Exception e) {
             return ResponseEntity.badRequest().body("Erro ao confirmar medicamento: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<Confirmacao>> listarPorUsuario(@PathVariable Long usuarioId) {
+        try {
+            List<Confirmacao> lista = service.listarConfirmacoesDoUsuario(usuarioId);
+            return ResponseEntity.ok(lista);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

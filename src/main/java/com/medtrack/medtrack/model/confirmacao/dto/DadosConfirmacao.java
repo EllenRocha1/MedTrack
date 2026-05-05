@@ -1,6 +1,5 @@
 package com.medtrack.medtrack.model.confirmacao.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -14,13 +13,13 @@ public record DadosConfirmacao(
         @NotNull
         Long medicamentoId,
 
-        @NotBlank
+        @NotNull
         LocalTime horario,
 
-        @NotBlank
+        @NotNull
         LocalDate data,
 
-        @NotBlank
+        @NotNull
         boolean foiTomado,
         String observacao
 ) {

@@ -7,6 +7,8 @@ import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ConfirmacaoService {
 
@@ -32,5 +34,9 @@ public class ConfirmacaoService {
         var confirmacao = new Confirmacao(dados, usuario, medicamento);
 
         return confirmacaoRepository.save(confirmacao);
+    }
+
+    public List<Confirmacao> listarConfirmacoesDoUsuario(Long usuarioId) {
+        return confirmacaoRepository.findByUsuarioId(usuarioId);
     }
 }

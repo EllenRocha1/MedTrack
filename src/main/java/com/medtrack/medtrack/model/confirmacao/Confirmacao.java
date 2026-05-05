@@ -38,10 +38,10 @@ public class Confirmacao {
     public Confirmacao(DadosConfirmacao dados, Usuario usuario, Medicamento medicamento) {
         this.usuario = usuario;
         this.medicamento = medicamento;
-        horario = dados.horario();
-        data = dados.data();
-        foiTomado = dados.foiTomado();;
-        observacao = dados.observacao();
+        this.horario = dados.horario();
+        this.data = dados.data();
+        this.foiTomado = dados.foiTomado();;
+        this.observacao = dados.observacao();
 
     }
 }
