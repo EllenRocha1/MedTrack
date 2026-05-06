@@ -11,12 +11,17 @@ const CadastroMedicamentos = () => {
     const { buscarAgenteAtivo, filtrarMedicamentos } = useMedicamentos();
     const [sugestoes, setSugestoes] = useState([]);
     const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
+    
     const [formData, setFormData] = useState({
         nome: "",
         principioAtivo: "",
         dosagemQuantidade: "",
         dosagemUnidade: "mg",
         observacoes: "",
+        estoque: {
+            quantidadeAtual: "",
+            quantidadeMinima: ""
+        },
         frequenciaUso: {
             frequenciaUsoTipo: "",
             usoContinuo: null,
@@ -81,7 +86,9 @@ const CadastroMedicamentos = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+        
         const isFrequenciaUsoField = Object.keys(formData.frequenciaUso).includes(name);
+        const isEstoqueField = Object.keys(formData.estoque).includes(name);
 
         if (name === "nome") {
             setFormData(prev => ({ ...prev, [name]: value }));
@@ -102,6 +109,14 @@ const CadastroMedicamentos = () => {
                             ...prevState.frequenciaUso,
                             [name]: name === "usoContinuo" ? value === "true" : type === "checkbox" ? checked : value,
                         },
+                    };
+                } else if (isEstoqueField) {
+                    return {
+                        ...prevState,
+                        estoque: {
+                            ...prevState.estoque,
+                            [name]: value
+                        }
                     };
                 } else {
                     return {
@@ -159,12 +174,27 @@ const CadastroMedicamentos = () => {
         {
             type: "dosagem",
             id: "dosagem",
-            label: "Dosagem:",
+            label: "Dosagem da Embalagem (ex: 500mg):",
             name: "dosagem",
             quantidadeName: "dosagemQuantidade",
             unidadeName: "dosagemUnidade",
             unidades: unidadesMedida,
             placeholder: "Dosagem..."
+        },
+        
+        {
+            type: "number",
+            id: "quantidadeAtual",
+            label: "Quantas unidades (comprimidos/frascos) você tem agora?",
+            name: "quantidadeAtual",
+            placeholder: "Ex: 30"
+        },
+        {
+            type: "number",
+            id: "quantidadeMinima",
+            label: "Avisar de estoque baixo quando chegar em:",
+            name: "quantidadeMinima",
+            placeholder: "Ex: 5"
         },
         {
             type: "textarea",
@@ -232,12 +262,19 @@ const CadastroMedicamentos = () => {
     }, [formData.frequenciaUso]);
 
     const getDadosCadastro = (userRole) => {
+        const temEstoque = formData.estoque.quantidadeAtual !== "";
+        const dadosEstoque = temEstoque ? {
+            quantidadeAtual: Number(formData.estoque.quantidadeAtual),
+            quantidadeMinima: formData.estoque.quantidadeMinima !== "" ? Number(formData.estoque.quantidadeMinima) : 0
+        } : null;
+
         const dadosBase = {
             nome: formData.nome,
             principioAtivo: formData.principioAtivo,
             dosagem: `${formData.dosagemQuantidade}${formData.dosagemUnidade}`,
             observacoes: formData.observacoes,
             usuarioId: usuarioId,
+            estoque: dadosEstoque,
             frequenciaUso: {
                 frequenciaUsoTipo: formData.frequenciaUso.frequenciaUsoTipo,
                 usoContinuo: formData.frequenciaUso.usoContinuo,
@@ -258,7 +295,7 @@ const CadastroMedicamentos = () => {
         e.preventDefault();
 
         if (!formData.nome || !formData.principioAtivo || !formData.dosagemQuantidade || !formData.dosagemUnidade) {
-            alert('Por favor, preencha todos os campos.');
+            alert('Por favor, preencha todos os campos obrigatórios.');
             return;
         }
 
@@ -275,6 +312,14 @@ const CadastroMedicamentos = () => {
             alert('Erro ao cadastrar medicamento. Verifique sua conexão ou tente novamente mais tarde.');
         }
     };
+
+    const getValorCampo = (nomeCampo) => {
+        if (nomeCampo in formData.frequenciaUso) return formData.frequenciaUso[nomeCampo] || "";
+        if (nomeCampo in formData.estoque) return formData.estoque[nomeCampo] || "";
+        return formData[nomeCampo] || "";
+    };   
+
+    console.log("Campos renderizados:", [...camposBase, ...camposExtras].map(c => c.id));
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -317,11 +362,7 @@ const CadastroMedicamentos = () => {
                                 <select
                                     id={campo.id}
                                     name={campo.name}
-                                    value={
-                                        campo.name in formData.frequenciaUso
-                                            ? formData.frequenciaUso[campo.name] || ""
-                                            : formData[campo.name] || ""
-                                    }
+                                    value={getValorCampo(campo.name)}
                                     onChange={handleChange}
                                     className="border p-2 border-blue-400 rounded-lg"
                                 >
@@ -361,7 +402,7 @@ const CadastroMedicamentos = () => {
                                 <textarea
                                     id={campo.id}
                                     name={campo.name}
-                                    value={formData[campo.name] || ""}
+                                    value={getValorCampo(campo.name)}
                                     onChange={handleChange}
                                     className="border p-2 border-blue-400 rounded-lg"
                                     placeholder={campo.placeholder}
@@ -371,11 +412,7 @@ const CadastroMedicamentos = () => {
                                     type={campo.type}
                                     id={campo.id}
                                     name={campo.name}
-                                    value={
-                                        campo.name in formData.frequenciaUso
-                                            ? formData.frequenciaUso[campo.name] || ""
-                                            : formData[campo.name] || ""
-                                    }
+                                    value={getValorCampo(campo.name)}
                                     onChange={handleChange}
                                     className="border p-2 border-blue-400 rounded-lg"
                                     placeholder={campo.placeholder}
