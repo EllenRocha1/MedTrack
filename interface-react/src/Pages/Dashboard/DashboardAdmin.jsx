@@ -8,7 +8,7 @@ const DashboardAdmin = () => {
     const userInfo = getUserInfo();
     const isAdmin = getUserRole() === "ADMINISTRADOR";
     const [sidebarExpandida, setSidebarExpandida] = useState(true);
-    const [stats, setStats] = useState({ totalDependentes: 0, alertasCriticos: 0, adesaoMedia: "0%" });
+    const [stats, setStats] = useState({ totalDependentes: 2, alertasCriticos: 0, adesaoMedia: "0%" });
     const [recentAlerts, setRecentAlerts] = useState([]);
 
     return (
