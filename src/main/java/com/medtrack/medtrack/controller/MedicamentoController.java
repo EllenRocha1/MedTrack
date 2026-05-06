@@ -4,6 +4,7 @@ import com.medtrack.medtrack.model.medicamento.Medicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
+import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.service.medicamento.MedicamentoService;
@@ -85,6 +86,12 @@ public class MedicamentoController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(medicamentoResponseDTOs);
+    }
+
+    @GetMapping("/dashboard/resumo/{usuarioId}")
+    public ResponseEntity<DadosDashboardPessoal> getDashboardResumo(@PathVariable Long usuarioId) {
+        DadosDashboardPessoal dados = medicamentoService.obterDadosDashboardPessoal(usuarioId);
+        return ResponseEntity.ok(dados);
     }
 
     @PatchMapping("/{id}/consumir")

@@ -13,4 +13,7 @@ public interface MedicamentoRepository extends JpaRepository<Medicamento, Long> 
 
     @Query("SELECT m FROM Medicamento m JOIN m.estoque e WHERE m.usuario.id = :usuarioId AND e.quantidadeAtual <= e.quantidadeMinima")
     List<Medicamento> findEstoqueBaixoByUsuarioId(@Param("usuarioId") Long usuarioId);
+    long countByUsuarioId(Long usuarioId);
+    @Query("SELECT m FROM Medicamento m WHERE m.usuario.id = :usuarioId AND m.estoque IS NOT NULL")
+    List<Medicamento> findAllWithEstoqueByUsuarioId(Long usuarioId);
 }
