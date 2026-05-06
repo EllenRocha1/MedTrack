@@ -91,7 +91,7 @@ const DashboardPessoal = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <section className="lg:col-span-2 bg-white rounded-2xl shadow-sm border p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Próximas Doses (Hoje)</h3>
+              <h3 className="text-lg font-bold text-gray-800 mb-4 font-inter">Próximas Doses</h3>
               <div className="space-y-4">
                 {dashboardData?.listaMedicamentosHoje?.length > 0 ? (
                   dashboardData.listaMedicamentosHoje.map((medicamento) => (
