@@ -50,6 +50,24 @@ const api  = {
         return response.json();
     },
 
+    patch: async (url, data) => {
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: data ? JSON.stringify(data) : null
+    });
+
+        if (!response.ok) {
+            throw new Error('Erro ao fazer a requisição');
+        }
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : true;
+    },
+
     delete: async (url) => {
         const response = await fetch(url, {
             method: 'DELETE',

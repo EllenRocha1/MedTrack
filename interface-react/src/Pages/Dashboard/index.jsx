@@ -10,23 +10,29 @@ const DashboardPessoal = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const usuarioId = userInfo.id;
-        console.log("Buscando dashboard para usuário:", usuarioId);
-        const response = await api.get(`http://localhost:8081/medicamentos/dashboard/resumo/${usuarioId}`);
-        
-        console.log("Dados recebidos:", response); 
-        setDashboardData(response);
-        
-      } catch (error) {
-        console.error("Erro ao buscar o dashboard:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchDashboard = async () => {
+    try {
+      const usuarioId = userInfo.id;
+      const response = await api.get(`http://localhost:8081/medicamentos/dashboard/resumo/${usuarioId}`);
+      setDashboardData(response.data ? response.data : response);
+    } catch (error) {
+      console.error("Erro ao buscar o dashboard:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleConfirmarDose = async (medicamentoId) => {
+    try {
+      await api.patch(`http://localhost:8081/medicamentos/${medicamentoId}/consumir`);
+      fetchDashboard();
+    } catch (error) {
+      console.error("Erro ao confirmar dose:", error);
+      alert("Não foi possível confirmar a dose. Verifique se este medicamento tem um estoque configurado.");
+    }
+  };
+
+  useEffect(() => {
     if (userInfo && userInfo.id) {
       fetchDashboard();
     }
@@ -58,7 +64,6 @@ const DashboardPessoal = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
             <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center space-x-4">
               <div className="p-3 bg-blue-50 text-blue-600 rounded-lg text-2xl"><FiPackage /></div>
               <div>
@@ -82,7 +87,6 @@ const DashboardPessoal = () => {
                 <p className="text-2xl font-bold text-green-600">{dashboardData?.proximasDoses || 0}</p>
               </div>
             </div>
-
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -97,7 +101,9 @@ const DashboardPessoal = () => {
                         <p className="font-bold text-gray-800">{medicamento.nome}</p>
                         <p className="text-xs text-gray-500">{medicamento.dosagem}</p>
                       </div>
-                      <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                      <button
+                        onClick={() => handleConfirmarDose(medicamento.id)}
+                        className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors">
                         Confirmar
                       </button>
                     </div>
