@@ -2,14 +2,71 @@ import Sidebar from "../../Componentes/Sidebar";
 import { getUserRole, getUserInfo } from "../../Componentes/Auth/AuthToken";
 import { useEffect, useState } from "react";
 import api from "../../Service/api";
-import { FiUsers, FiAlertCircle, FiActivity, FiPackage } from "react-icons/fi"; // Ícones para melhor UX
+import { useNavigate } from "react-router-dom";
+import { FiUsers, FiAlertCircle, FiActivity, FiPackage } from "react-icons/fi";
 
 const DashboardAdmin = () => {
     const userInfo = getUserInfo();
     const isAdmin = getUserRole() === "ADMINISTRADOR";
     const [sidebarExpandida, setSidebarExpandida] = useState(true);
-    const [stats, setStats] = useState({ totalDependentes: 2, alertasCriticos: 0, adesaoMedia: "0%" });
-    const [recentAlerts, setRecentAlerts] = useState([]);
+    const [dependentes, setDependentes] = useState([]);
+    const [alertas, setAlertas] = useState([]);
+    const [stats, setStats] = useState({
+        totalDependentes: 0,
+        alertasCriticos: 0,
+        totalMedicamentos: 0,
+        reposicoesPendentes: 0
+    });
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchDados = async () => {
+            try {
+                const deps = await api.get("http://localhost:8081/dependentes/buscar/todos");
+
+                let totalMed = 0;
+                let totalCrit = 0;
+                const alertasEncontrados = [];
+                const linhas = [];
+
+                await Promise.all(deps.map(async (dep) => {
+                    try {
+                        const meds = await api.get(`http://localhost:8081/medicamentos/todos/dependente/${dep.id}`);
+                        totalMed += meds.length;
+
+                        const criticos = meds.filter(m => m.estoque?.estoqueBaixo);
+                        totalCrit += criticos.length;
+
+                        criticos.forEach(m => alertasEncontrados.push({
+                            nome: m.nome,
+                            dep: dep.nome,
+                            qtd: m.estoque.quantidadeAtual
+                        }));
+
+                        linhas.push({ dep, meds: meds.length, criticos: criticos.length });
+                    } catch {
+                        linhas.push({ dep, meds: 0, criticos: 0 });
+                    }
+                }));
+
+                setDependentes(linhas);
+                setAlertas(alertasEncontrados);
+                setStats({
+                    totalDependentes: deps.length,
+                    alertasCriticos: totalCrit,
+                    totalMedicamentos: totalMed,
+                    reposicoesPendentes: totalCrit
+                });
+            } catch (error) {
+                console.error("Erro ao carregar dashboard admin:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDados();
+    }, []);
 
     return (
         <div className="flex h-screen w-full bg-slate-50 font-sans">
@@ -33,10 +90,10 @@ const DashboardAdmin = () => {
 
                 <main className="p-8 space-y-8">
                     <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <StatCard icon={<FiUsers />} label="Dependentes" value={stats.totalDependentes} color="text-blue-600" />
-                        <StatCard icon={<FiAlertCircle />} label="Alertas Críticos" value={stats.alertasCriticos} color="text-red-600" />
-                        <StatCard icon={<FiActivity />} label="Adesão Geral" value="88%" color="text-emerald-600" />
-                        <StatCard icon={<FiPackage />} label="Reposições Pendentes" value="3" color="text-amber-600" />
+                        <StatCard icon={<FiUsers />} label="Dependentes" value={stats.totalDependentes} color="text-blue-600" bg="bg-blue-50" />
+                        <StatCard icon={<FiAlertCircle />} label="Alertas Críticos" value={stats.alertasCriticos} color="text-red-600" bg="bg-red-50" />
+                        <StatCard icon={<FiActivity />} label="Medicamentos" value={stats.totalMedicamentos} color="text-emerald-600" bg="bg-emerald-50" />
+                        <StatCard icon={<FiPackage />} label="Reposições Pendentes" value={stats.reposicoesPendentes} color="text-amber-600" bg="bg-amber-50" />
                     </section>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -46,7 +103,7 @@ const DashboardAdmin = () => {
                             </div>
                             <div className="p-0">
                                 {loading ? (
-                                     <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
+                                    <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
                                 ) : dependentes.length === 0 ? (
                                     <p className="text-center text-slate-400 py-8 text-sm">Nenhum dependente cadastrado.</p>
                                 ) : (
@@ -93,7 +150,7 @@ const DashboardAdmin = () => {
                             <h3 className="font-semibold text-slate-800 text-lg mb-4">Reposições Urgentes</h3>
                             <div className="space-y-4">
                                 {loading ? (
-                                     <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
+                                    <p className="text-center text-slate-400 text-sm py-4">Carregando...</p>
                                 ) : alertas.length === 0 ? (
                                     <p className="text-center text-slate-400 text-sm py-4">Nenhuma reposição urgente 🎉</p>
                                 ) : (
@@ -116,9 +173,9 @@ const DashboardAdmin = () => {
     );
 };
 
-const StatCard = ({ icon, label, value, color }) => (
+const StatCard = ({ icon, label, value, color, bg }) => (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center space-x-4">
-        <div className={`p-3 rounded-lg bg-slate-50 ${color} text-2xl`}>
+        <div className={`p-3 rounded-lg ${bg} ${color} text-2xl`}>
             {icon}
         </div>
         <div>
