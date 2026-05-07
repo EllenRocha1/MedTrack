@@ -150,7 +150,7 @@ const DashboardAdmin = () => {
                             <h3 className="font-semibold text-slate-800 text-lg mb-4">Reposições Urgentes</h3>
                             <div className="space-y-4">
                                 {loading ? (
-                                    <p className="text-center text-slate-400 text-sm py-4">Carregando...</p>
+                                    <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
                                 ) : alertas.length === 0 ? (
                                     <p className="text-center text-slate-400 text-sm py-4">Nenhuma reposição urgente 🎉</p>
                                 ) : (
