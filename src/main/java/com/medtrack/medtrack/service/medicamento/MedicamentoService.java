@@ -104,67 +104,6 @@ public class MedicamentoService {
         medicamentoRepository.save(medicamentoExistente);
     }
 
-
-    public List<LocalTime> calcularHorarios(Medicamento medicamento) {
-        List<LocalTime> horariosNotificacao = new ArrayList<>();
-        FrequenciaUso frequenciaUso = medicamento.getFrequenciaUso();
-
-        // 1. Se for uso contínuo, ignora datas e retorna os horários
-        if (frequenciaUso.isUsoContinuo()) {
-            return frequenciaUso.getHorariosEspecificos() != null ? frequenciaUso.getHorariosEspecificos() : new ArrayList<>();
-        }
-
-        LocalDate dataInicio = frequenciaUso.getDataInicio();
-        LocalDate dataTermino = frequenciaUso.getDataTermino();
-
-        // 2. Proteção contra Data de Término nula
-        if (dataTermino != null && dataTermino.isBefore(LocalDate.now())) {
-            return new ArrayList<>();
-        }
-
-        // 3. Proteção contra Data de Início nula (Erro que você tomou)
-        if (dataInicio == null || dataInicio.isBefore(LocalDate.now())) {
-            dataInicio = LocalDate.now();
-        }
-
-        // 4. Se chegou aqui e a dataTermino for nula por erro de cadastro, 
-        // definimos um limite padrão (ex: 30 dias) para não dar erro no loop (while) abaixo
-        if (dataTermino == null) {
-            dataTermino = dataInicio.plusDays(30);
-        }
-
-        if (frequenciaUso.getFrequenciaUsoTipo() == FrequenciaUsoTipo.INTERVALO_ENTRE_DOSES) {
-            LocalTime primeiroHorario = frequenciaUso.getPrimeiroHorario();
-            
-            // Proteção extra caso o primeiroHorario também seja nulo
-            if (primeiroHorario == null) primeiroHorario = LocalTime.of(8, 0); 
-            
-            int intervaloHoras = frequenciaUso.getIntervaloHoras();
-            if (intervaloHoras <= 0) intervaloHoras = 8; // Evita divisão por zero
-
-            int horariosPorDia = 24 / intervaloHoras;
-
-            LocalDate dataAtual = dataInicio;
-            while (!dataAtual.isAfter(dataTermino)) {
-                for (int i = 0; i < horariosPorDia; i++) {
-                    LocalTime horarioAtual = primeiroHorario.plusHours(i * intervaloHoras);
-                    horariosNotificacao.add(horarioAtual);
-                }
-                dataAtual = dataAtual.plusDays(1);
-            }
-        } else if (frequenciaUso.getFrequenciaUsoTipo() == FrequenciaUsoTipo.HORARIOS_ESPECIFICOS) {
-            LocalDate dataAtual = dataInicio;
-            while (!dataAtual.isAfter(dataTermino)) {
-                if (frequenciaUso.getHorariosEspecificos() != null) {
-                    horariosNotificacao.addAll(frequenciaUso.getHorariosEspecificos());
-                }
-                dataAtual = dataAtual.plusDays(1);
-            }
-        }
-
-        return horariosNotificacao;
-    }
-
     public List<Medicamento> listarEstoqueCritico(Long usuarioId) {
     return medicamentoRepository.findEstoqueBaixoByUsuarioId(usuarioId);
 }

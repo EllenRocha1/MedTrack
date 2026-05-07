@@ -36,12 +36,14 @@ public class Usuario {
     private String nomeUsuario;
     private String numeroTelefone;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
+    @ToString.Exclude
     private List<Medicamento> medicamentos = new ArrayList<>();
 
     @OneToMany(mappedBy = "administrador", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @ToString.Exclude
     private List<Dependente> dependentes = new ArrayList<>();
 
     public Usuario(@Valid DadosUsuarioCadastro dados) {
