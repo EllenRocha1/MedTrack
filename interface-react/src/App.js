@@ -42,7 +42,8 @@ function App() {
                 <Route path="/cadastro_dependente" element={<CadastroDependente />} />
                 <Route path="/cadastro_medicamento/:dependenteId" element={<CadastroMedicamentos />} />
                 <Route path="/relatorios" element={<Relatorios />} />
-                <Route path="/historico_medicacoes/:id" element={<PaginaHistoricoDependentes />} />
+                <Route path="/historico_medicacoes/:dependenteId" element={<PaginaHistoricoDependentes />} />
+                <Route path="/historico_medicacoes/:usuarioId" element={<PaginaHistoricoDependentes />} />
                 <Route path="/perfil_usuario/:usuarioId" element={<PerfilDependente />} />
                 <Route path="/configuracoes" element={<Configuracoes />} />
 
