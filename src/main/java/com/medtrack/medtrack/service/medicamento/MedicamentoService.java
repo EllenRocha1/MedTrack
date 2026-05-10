@@ -2,32 +2,22 @@ package com.medtrack.medtrack.service.medicamento;
 
 import com.medtrack.medtrack.model.dependente.Dependente;
 import com.medtrack.medtrack.model.medicamento.FrequenciaUso;
-import com.medtrack.medtrack.model.medicamento.FrequenciaUsoTipo;
 import com.medtrack.medtrack.model.medicamento.Medicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
+import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.model.usuario.Usuario;
+import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.repository.DependenteRepository;
 import com.medtrack.medtrack.repository.FrequenciaUsoRepository;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
-import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
-import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-
 
 
 @Service
