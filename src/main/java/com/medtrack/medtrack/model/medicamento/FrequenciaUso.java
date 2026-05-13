@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "frequencia_uso")
+@EqualsAndHashCode(of = "id")
 public class FrequenciaUso {
 
     @Id

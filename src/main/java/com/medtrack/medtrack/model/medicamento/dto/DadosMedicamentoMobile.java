@@ -2,26 +2,20 @@ package com.medtrack.medtrack.model.medicamento.dto;
 
 import com.medtrack.medtrack.model.medicamento.Medicamento;
 
-import java.time.LocalTime;
-import java.util.List;
-
 public record DadosMedicamentoMobile(
-
         Long id,
         String nome,
         String compostoAtivo,
         String dosagem,
-        List<LocalTime> horarios,
-        boolean usoContinuo,
-        DadosEstoqueGet estoque
+        FrequenciaUsoMobile frequenciaUso
 ) {
-    public DadosMedicamentoMobile(Medicamento medicamento, List<LocalTime> horarios, boolean usoContinuo) {
-        this(medicamento.getId(),
-             medicamento.getNome(),
-             medicamento.getPrincipioAtivo(),
-             medicamento.getDosagem(),
-             horarios,
-             usoContinuo,
-             medicamento.getEstoque() != null ? new DadosEstoqueGet(medicamento.getEstoque()) : null);
+    public DadosMedicamentoMobile(Medicamento medicamento) {
+        this(
+                medicamento.getId(),
+                medicamento.getNome(),
+                medicamento.getPrincipioAtivo(),
+                medicamento.getDosagem(),
+                new FrequenciaUsoMobile(medicamento.getFrequenciaUso())
+        );
     }
 }

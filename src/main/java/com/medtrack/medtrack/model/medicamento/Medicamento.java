@@ -39,11 +39,13 @@ public class Medicamento {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     @JsonIgnore
+    @ToString.Exclude
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "dependente_id")
     @JsonIgnore
+    @ToString.Exclude
     private Dependente dependente;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,6 +53,7 @@ public class Medicamento {
     FrequenciaUso frequenciaUso;
 
     @OneToOne(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private Estoque estoque;
 
 
