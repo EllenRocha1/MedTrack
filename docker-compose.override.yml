@@ -1,0 +1,14 @@
+services:
+  backend:
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2  # cache do Maven entre rebuilds
+
+  frontend:
+    volumes:
+      - ./interface-react:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    command: npm start
