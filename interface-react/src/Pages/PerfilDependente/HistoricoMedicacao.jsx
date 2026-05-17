@@ -1,7 +1,7 @@
 import RelatorioMedicacao from "../../Componentes/HistoricoMedicacoes";
 import Sidebar from "../../Componentes/Sidebar";
 import { useEffect, useState } from "react";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import { getUserInfo, getUserRole } from "../../Componentes/Auth/AuthToken";
 import { useParams } from "react-router-dom";
 
@@ -36,12 +36,12 @@ const PaginaHistoricoDependentes = () => {
 
                 if (userRole === "PESSOAL") {
                     // Usa o próprio id do token, ignora o da URL para segurança
-                    medicamentos = await api.get(`http://localhost:8081/medicamentos/todos/${userInfo.id}`);
+                    medicamentos = await api.get(`${BACKEND_URL}/medicamentos/todos/${userInfo.id}`);
                     nomePaciente = userInfo.nome;
                 } else if (userRole === "ADMINISTRADOR") {
                     // id da URL é o dependenteId
-                    medicamentos = await api.get(`http://localhost:8081/medicamentos/todos/dependente/${id}`);
-                    const dependente = await api.get(`http://localhost:8081/dependentes/buscar/${id}`);
+                    medicamentos = await api.get(`${BACKEND_URL}/medicamentos/todos/dependente/${id}`);
+                    const dependente = await api.get(`${BACKEND_URL}/dependentes/buscar/${id}`);
                     nomePaciente = dependente.nome;
                 }
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FormularioCadastro from '../../Componentes/FormularioCadastro';
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {cadastrarUsuario} from "../../Service/cadastrarUsuario";
 import {useNavigate} from "react-router-dom";
 
@@ -45,7 +45,7 @@ const CadastroDependente = () => {
     setFormData({ nome: "", telefone: "", email: "" , nomeUsuario: "", senha: ""});
 
     try {
-      const sucesso = await api.post("http://localhost:8081/dependentes/cadastrar", dadosCadastro);
+      const sucesso = await api.post(`${BACKEND_URL}/dependentes/cadastrar`, dadosCadastro);
       console.log("Dependente cadastrado com sucesso!");
       console.log(sucesso)
       if (sucesso) {

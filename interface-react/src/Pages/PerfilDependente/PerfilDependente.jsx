@@ -3,7 +3,7 @@ import Header from "../../Componentes/Header";
 import { Bell } from "lucide-react";
 import Perfil from "../../Componentes/Perfil";
 import Medicacoes from "../../Componentes/Medicacoes/Medicacoes";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {useParams} from "react-router-dom";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import Sidebar from "../../Componentes/Sidebar";
@@ -26,11 +26,11 @@ const PerfilDependente = () => {
         const fetchDados = async () => {
             try {
                 if (userRole === "ADMINISTRADOR") {
-                    const response = await api.get(`http://localhost:8081/dependentes/buscar/${dependenteId}`);
+                    const response = await api.get(`${BACKEND_URL}/dependentes/buscar/${dependenteId}`);
                     setDepInfo(response);
                 } else if (userRole === "PESSOAL" && usuarioId) {
                     console.log("ID do usuário:", usuarioId);
-                    const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`);
+                    const response = await api.get(`${BACKEND_URL}/usuarios/buscar/${usuarioId}`);
                     setDepInfo(response);
                 }
             } catch (error) {

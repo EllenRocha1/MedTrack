@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import { Check, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 
 const Relatorio = ({ termoPesquisa }) => {
     const [dependentes, setDependentes] = useState([]);
@@ -23,7 +23,7 @@ const Relatorio = ({ termoPesquisa }) => {
     useEffect(() => {
         const fetchDependentes = async () => {
             try {
-                const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                const data = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
                 setDependentes(data);
             } catch (err) {
                 setError(err.message);

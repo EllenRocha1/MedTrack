@@ -1,7 +1,7 @@
 import Sidebar from "../../Componentes/Sidebar";
 import { getUserRole, getUserInfo } from "../../Componentes/Auth/AuthToken";
 import { useEffect, useState } from "react";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import { useNavigate } from "react-router-dom";
 import { FiUsers, FiAlertCircle, FiActivity, FiPackage } from "react-icons/fi";
 
@@ -23,7 +23,7 @@ const DashboardAdmin = () => {
     useEffect(() => {
         const fetchDados = async () => {
             try {
-                const deps = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                const deps = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
 
                 let totalMed = 0;
                 let totalCrit = 0;
@@ -32,7 +32,7 @@ const DashboardAdmin = () => {
 
                 await Promise.all(deps.map(async (dep) => {
                     try {
-                        const meds = await api.get(`http://localhost:8081/medicamentos/todos/dependente/${dep.id}`);
+                        const meds = await api.get(`${BACKEND_URL}/medicamentos/todos/dependente/${dep.id}`);
                         totalMed += meds.length;
 
                         const criticos = meds.filter(m => m.estoque?.estoqueBaixo);

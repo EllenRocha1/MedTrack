@@ -1,6 +1,6 @@
 import {useState, useMemo, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import useMedicamentos from "../../Componentes/ListaDeMed";
 
@@ -61,7 +61,7 @@ const CadastroMedicamentos = () => {
         if (userRole === "ADMINISTRADOR") {
             const fetchDependentes = async () => {
                 try {
-                    const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                    const data = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
                     setDependentes(data.data);
                 } catch (err) {
                     setError(err.message);
@@ -72,7 +72,7 @@ const CadastroMedicamentos = () => {
         else if (userRole === "PESSOAL") {
             const fetchMedicamentoPessoal = async () => {
                 try {
-                    const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`);
+                    const response = await api.get(`${BACKEND_URL}/usuarios/buscar/${usuarioId}`);
                     setDependentes(response.data);
                 } catch (error) {
                     setError(error.message);
@@ -300,7 +300,7 @@ const CadastroMedicamentos = () => {
         }
 
         try {
-            const response = await api.post("http://localhost:8081/medicamentos/cadastro", getDadosCadastro(userRole));
+            const response = await api.post(`${BACKEND_URL}/medicamentos/cadastro`, getDadosCadastro(userRole));
             if (response) {
                 const redirectPath = userRole === "ADMINISTRADOR"
                     ? `/perfil_dependente/${dependenteId}`
