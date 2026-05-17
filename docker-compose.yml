@@ -44,6 +44,7 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
+      - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
     command: npm start
     depends_on:
       - backend
