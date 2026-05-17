@@ -1,7 +1,7 @@
 import Sidebar from "../../Componentes/Sidebar";
 import { getUserInfo } from "../../Componentes/Auth/AuthToken";
 import { useEffect, useState } from "react";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import { FiPackage, FiAlertTriangle, FiClock } from "react-icons/fi";
 
 const DashboardPessoal = () => {
@@ -13,7 +13,7 @@ const DashboardPessoal = () => {
   const fetchDashboard = async () => {
     try {
       const usuarioId = userInfo.id;
-      const response = await api.get(`http://localhost:8081/medicamentos/dashboard/resumo/${usuarioId}`);
+      const response = await api.get(`${BACKEND_URL}/medicamentos/dashboard/resumo/${usuarioId}`);
       setDashboardData(response.data ? response.data : response);
     } catch (error) {
       console.error("Erro ao buscar o dashboard:", error);
@@ -24,7 +24,7 @@ const DashboardPessoal = () => {
 
   const handleConfirmarDose = async (medicamentoId) => {
     try {
-      await api.patch(`http://localhost:8081/medicamentos/${medicamentoId}/consumir`);
+      await api.patch(`${BACKEND_URL}/medicamentos/${medicamentoId}/consumir`);
       fetchDashboard();
     } catch (error) {
       console.error("Erro ao confirmar dose:", error);

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Sidebar from "../../Componentes/Sidebar";
 import { getUserInfo, getUserRole } from "../../Componentes/Auth/AuthToken";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {useNavigate} from "react-router-dom";
 import Popup from "../../Componentes/PopUp";
 
@@ -18,7 +18,7 @@ const Configuracoes = () => {
     useEffect(() => {
         const getUsuario = async ()=>{
             try {
-                const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`);
+                const response = await api.get(`${BACKEND_URL}/usuarios/buscar/${usuarioId}`);
                 console.log("Dados recebidos USuea:", response);
                 setUsuario(response);
             } catch (err) {
@@ -32,7 +32,7 @@ const Configuracoes = () => {
         const fetchDependentes = async () => {
             if (role === "ADMINISTRADOR") {
                 try {
-                    const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                    const data = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
                     console.log("Dados recebidos:", data);
                     setData(data);
                 } catch (err) {
@@ -104,7 +104,7 @@ const Perfil = ({ usuarioInicial }) => {
 
         try {
             const response = await api.put(
-                `http://localhost:8081/usuarios/atualizar/${usuario.id}`,
+                `${BACKEND_URL}/usuarios/atualizar/${usuario.id}`,
                 usuario
             );
 
@@ -128,7 +128,7 @@ const Perfil = ({ usuarioInicial }) => {
         }
 
         try {
-            await api.delete(`http://localhost:8081/usuarios/deletar/${usuario.id}`);
+            await api.delete(`${BACKEND_URL}/usuarios/deletar/${usuario.id}`);
             console.log("Conta excluída com sucesso!");
             setUsuario({});
             setError(null);
@@ -218,7 +218,7 @@ const Dependentes = ({dependentes}) => {
 
         try {
             const response = await api.put(
-                `http://localhost:8081/dependentes/atualizar/${dependenteSelecionado.id}`,
+                `${BACKEND_URL}/dependentes/atualizar/${dependenteSelecionado.id}`,
                 dependenteSelecionado
             );
             console.log("Dados atualizados:", response.data);

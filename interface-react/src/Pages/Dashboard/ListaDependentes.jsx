@@ -4,7 +4,7 @@ import Sidebar from "../../Componentes/Sidebar/index.jsx";
 import CardDependente from "../../Componentes/Card/CardDependente.jsx";
 import Botao from "../../Componentes/Botao/index.jsx";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {useNavigate} from "react-router-dom";
 
 const ListaDependentes = () => {
@@ -29,7 +29,7 @@ const ListaDependentes = () => {
         const fetchDependentes = async () => {
             if (role === "ADMINISTRADOR") {
                 try {
-                    const data = await api.get("http://localhost:8081/dependentes/buscar/todos");
+                    const data = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
                     console.log("Dados recebidos:", data);
                     setDependentes(data);
                 } catch (err) {
@@ -48,7 +48,7 @@ const ListaDependentes = () => {
     const removerDependente = async (id) => {
         try {
             console.log(`Id do dependente deletado: ${id}`)
-            await api.delete(`http://localhost:8081/dependentes/deletar/${id}`);
+            await api.delete(`${BACKEND_URL}/dependentes/deletar/${id}`);
             setDependentes(dependentes.filter(dep => dep.id !== id));
         } catch (err) {
             console.error("Erro ao remover dependente:", err);

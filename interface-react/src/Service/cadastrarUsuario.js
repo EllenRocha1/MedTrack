@@ -1,8 +1,10 @@
+import { BACKEND_URL } from "./api";
+
 export const cadastrarUsuario = async (dadosCadastro) => {
     console.log('Dados enviados para a API:', dadosCadastro);
 
     try {
-        const response = await fetch('http://localhost:8081/usuarios/cadastro', {
+        const response = await fetch(`${BACKEND_URL}/usuarios/cadastro`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

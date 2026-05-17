@@ -3,7 +3,7 @@ import Box from '../Box';
 import { CircleUser } from 'lucide-react';
 import {getUserInfo, getUserRole} from "../Auth/AuthToken";
 import {useEffect, useState} from "react";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 
 const Perfil = ({vaiTer, dependenteId}) => {
     const [usuario, setUsuario] = useState("")
@@ -24,7 +24,7 @@ const Perfil = ({vaiTer, dependenteId}) => {
         if(!vaiTer || !isAdmin ){
             const getUsuario = async ()=>{
                 try {
-                    const response = await api.get(`http://localhost:8081/usuarios/buscar/${usuarioId}`);
+                    const response = await api.get(`${BACKEND_URL}/usuarios/buscar/${usuarioId}`);
                     console.log("Dados recebidos USuea:", response);
                     setUsuario(response);
                 } catch (err) {
@@ -35,7 +35,7 @@ const Perfil = ({vaiTer, dependenteId}) => {
             else if (vaiTer || isAdmin){
                 const getDependente = async ()=>{
                     try {
-                        const response = await api.get(`http://localhost:8081/dependentes/buscar/${dependenteId}`);
+                        const response = await api.get(`${BACKEND_URL}/dependentes/buscar/${dependenteId}`);
                         console.log("Dados recebidos USuea:", response);
                         setDependente(response);
                     } catch (err) {

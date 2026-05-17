@@ -1,7 +1,7 @@
 import BoxMedicacao from "../BoxMedicacao";
 import Botao from "../Botao";
 import {useEffect, useState} from "react";
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../Auth/AuthToken";
 import {useParams} from "react-router-dom";
 
@@ -29,9 +29,9 @@ const Medicacoes = ({termoPesquisa}) => {
                 let endpoint = "";
 
                 if (userRole === "ADMINISTRADOR") {
-                    endpoint = `http://localhost:8081/medicamentos/todos/dependente/${dependenteId}`;
+                    endpoint = `${BACKEND_URL}/medicamentos/todos/dependente/${dependenteId}`;
                 } else if (userRole === "PESSOAL") {
-                    endpoint = `http://localhost:8081/medicamentos/todos/${usuarioId}`;
+                    endpoint = `${BACKEND_URL}/medicamentos/todos/${usuarioId}`;
                 }
 
                 if (endpoint) {

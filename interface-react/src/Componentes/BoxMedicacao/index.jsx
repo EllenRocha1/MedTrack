@@ -1,4 +1,4 @@
-import api from "../../Service/api";
+import api, { BACKEND_URL } from "../../Service/api";
 
 const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     // Filtro mais completo e seguro
@@ -18,7 +18,7 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     async function remover(id) {
         console.log(id)
         try {
-            await api.delete(`http://localhost:8081/medicamentos/deletar/${id}`);
+            await api.delete(`${BACKEND_URL}/medicamentos/deletar/${id}`);
             console.log("Medicação removida com sucesso");
             window.location.reload()
         } catch (error) {

@@ -99,7 +99,7 @@
                     dataNascimento: dataNascimento
                 };
 
-                fetch("http://localhost:8081/cadastro", {
+                fetch("${BACKEND_URL}/cadastro", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
