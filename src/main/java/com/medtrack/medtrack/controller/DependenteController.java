@@ -16,7 +16,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/dependentes")
 public class DependenteController {
