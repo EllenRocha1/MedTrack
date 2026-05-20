@@ -1,5 +1,5 @@
 <div align="center" justify="center">
-    <img width="15%" src="assets/logo-medtrack.png" alt="Logo do MedTrack"> 
+    <img width="15%" src="docs/_assets/logo-medtrack.png" alt="Logo do MedTrack"> 
     <h1>MedTrack Web: Dashboard & API </h1>
 </div>
 
@@ -8,7 +8,7 @@
 ## Visão Geral
 
 <div align="center">
-  <img src="assets/web-dashboard-preview.gif" width="80%" alt="Demonstração do Dashboard">
+  <img src="docs/_assets/web-dashboard-preview.gif" width="80%" alt="Demonstração do Dashboard">
 </div>
 
 O **MedTrack Web** é uma plataforma completa desenvolvida para:
@@ -31,7 +31,7 @@ O **MedTrack Web** é uma plataforma completa desenvolvida para:
 - **Tailwind CSS** para estilização
 
 <div align="center">
-  <img src="assets/frontend-architecture.png" width="40%" alt="Diagrama Frontend">
+  <img src="docs/_assets/frontend-architecture.png" width="40%" alt="Diagrama Frontend">
 </div>
 
 #### Backend (Spring Boot)
@@ -42,7 +42,7 @@ O **MedTrack Web** é uma plataforma completa desenvolvida para:
 - PostgreSQL como banco de dados
 
 <div align="center">
-  <img src="assets/backend-architecture.png" width="80%" alt="Diagrama Backend">
+  <img src="docs/_assets/backend-architecture.png" width="80%" alt="Diagrama Backend">
 </div>
 
 ### 📊 Dashboard Interativo
@@ -53,8 +53,8 @@ O **MedTrack Web** é uma plataforma completa desenvolvida para:
 - CRUD de medicamentos para qualquer usuário
 
 <div align="center">
-  <img src="assets/admin-view.png" width="45%" alt="Dashboard Admin">
-  <img src="assets/admin-meds.png" width="45%" alt="Gerenciamento Admin">
+  <img src="docs/_assets/admin-view.png" width="45%" alt="Dashboard Admin">
+  <img src="docs/_assets/admin-meds.png" width="45%" alt="Gerenciamento Admin">
 </div>
 
 > 👤 **Visão Usuário**
@@ -63,8 +63,8 @@ O **MedTrack Web** é uma plataforma completa desenvolvida para:
 - Adição/remoção de medicamentos
 
 <div align="center">
-  <img src="assets/user-view.png" width="45%" alt="Dashboard User">
-  <img src="assets/user-config.png" width="45%" alt="Configurações User">
+  <img src="docs/_assets/user-view.png" width="45%" alt="Dashboard User">
+  <img src="docs/_assets/user-config.png" width="45%" alt="Configurações User">
 </div>
 
 ### 🔐 Sistema de Autenticação
@@ -117,7 +117,7 @@ public class SecurityConfig {
   - Relações entre usuários, medicamentos, dependentes, frequencia de uso e confirmações
 
 <div align="center"> 
-    <img src="assets/database-diagram.png" width="80%" alt="Diagrama do Banco de Dados"> 
+    <img src="docs/_assets/database-diagram.png" width="80%" alt="Diagrama do Banco de Dados"> 
 </div>
 
 ### 🌐 API Endpoints
@@ -144,7 +144,7 @@ Documentação completa dos endpoints REST disponível em dois formatos:
 </div>
 
 <div align="center"> 
-    <img src="assets/insomnia-dashboard.png" width="80%" alt="Rotas no Insomnia"> 
+    <img src="docs/_assets/insomnia-dashboard.png" width="80%" alt="Rotas no Insomnia"> 
 </div>
 
 ### 🚀 Como Executar
@@ -230,7 +230,7 @@ O **MedTrack Mobile** é o aplicativo Android que se integra perfeitamente com a
 - ✅ Confirmação de medicamentos que sincroniza com o dashboard web
 
 <div align="center"> 
-  <img src="assets/mobile-preview.jpg" width="30%" alt="App Mobile"> 
+  <img src="docs/_assets/mobile-preview.jpg" width="30%" alt="App Mobile"> 
 </div>
 
 ### Integração Mobile-Web
