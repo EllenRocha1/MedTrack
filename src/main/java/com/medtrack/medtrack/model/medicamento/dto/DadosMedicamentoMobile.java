@@ -7,6 +7,7 @@ public record DadosMedicamentoMobile(
         String nome,
         String compostoAtivo,
         String dosagem,
+        String imagemUrl,
         FrequenciaUsoMobile frequenciaUso
 ) {
     public DadosMedicamentoMobile(Medicamento medicamento) {
@@ -15,6 +16,7 @@ public record DadosMedicamentoMobile(
                 medicamento.getNome(),
                 medicamento.getPrincipioAtivo(),
                 medicamento.getDosagem(),
+                medicamento.getImagemUrl(),
                 new FrequenciaUsoMobile(medicamento.getFrequenciaUso())
         );
     }
