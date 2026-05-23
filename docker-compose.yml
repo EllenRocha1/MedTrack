@@ -22,6 +22,7 @@ services:
     ports:
       - "${BACKEND_PORT:-8081}:8081"
     environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
@@ -38,6 +39,7 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
     environment:
       - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
+      - REACT_APP_FRONTEND_URL=${REACT_APP_FRONTEND_URL}
     depends_on:
       - backend
 

@@ -166,6 +166,12 @@ O ecossistema MedTrack está completamente dockerizado. Banco de Dados, Backend 
    cp .env.example .env
    ```
    Edite o `.env` com suas configurações (credenciais do banco, etc.).
+   - Para backend local, use `SPRING_PROFILES_ACTIVE=dev`.
+   - Em produção, defina `SPRING_PROFILES_ACTIVE=prod` na plataforma de deploy.
+   - No frontend React, use `.env` em desenvolvimento e `.env.production` em produção.
+   - Use `SET_ENV_PROD=false` em desenvolvimento.
+   - Nas plataformas de deploy, defina `SET_ENV_PROD=true`.
+   - Para o frontend React, use `REACT_APP_SET_ENV_PROD=false` em dev e `REACT_APP_SET_ENV_PROD=true` em produção.
  
 3. Na **primeira execução**, faça o build e suba os containers:
    ```bash
