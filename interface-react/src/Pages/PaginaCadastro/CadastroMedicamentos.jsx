@@ -18,6 +18,7 @@ const CadastroMedicamentos = () => {
         dosagemQuantidade: "",
         dosagemUnidade: "mg",
         observacoes: "",
+        imagemUrl: "",
         estoque: {
             quantidadeAtual: "",
             quantidadeMinima: ""
@@ -203,6 +204,13 @@ const CadastroMedicamentos = () => {
             name: "observacoes"
         },
         {
+            type: "url",
+            id: "imagemUrl",
+            label: "Imagem do Medicamento (URL ou referência):",
+            name: "imagemUrl",
+            placeholder: "https://exemplo.com/imagem.jpg"
+        },
+        {
             type: "select",
             id: "usoContinuo",
             label: "Uso Contínuo?",
@@ -273,6 +281,7 @@ const CadastroMedicamentos = () => {
             principioAtivo: formData.principioAtivo,
             dosagem: `${formData.dosagemQuantidade}${formData.dosagemUnidade}`,
             observacoes: formData.observacoes,
+            imagemUrl: formData.imagemUrl || null,
             usuarioId: usuarioId,
             estoque: dadosEstoque,
             frequenciaUso: {

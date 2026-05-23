@@ -50,7 +50,13 @@ const api  = {
             },
             body: JSON.stringify(data)
         });
-        return response.json();
+
+        if (!response.ok) {
+            throw new Error('Erro ao fazer a requisição');
+        }
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : true;
     },
 
     patch: async (url, data) => {
