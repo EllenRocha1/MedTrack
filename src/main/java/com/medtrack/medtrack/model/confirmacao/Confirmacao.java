@@ -35,13 +35,21 @@ public class Confirmacao {
     private boolean foiTomado;
     private String observacao;
 
+    @Column(name = "comprovante_imagem_url")
+    private String comprovanteImagemUrl;
+
     public Confirmacao(DadosConfirmacao dados, Usuario usuario, Medicamento medicamento) {
+        this(dados, usuario, medicamento, null);
+    }
+
+    public Confirmacao(DadosConfirmacao dados, Usuario usuario, Medicamento medicamento, String comprovanteImagemUrl) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.horario = dados.horario();
         this.data = dados.data();
         this.foiTomado = dados.foiTomado();;
         this.observacao = dados.observacao();
+        this.comprovanteImagemUrl = comprovanteImagemUrl;
 
     }
 }

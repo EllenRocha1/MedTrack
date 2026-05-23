@@ -13,25 +13,30 @@ import java.util.List;
 public class ConfirmacaoService {
 
     private final ConfirmacaoRepository confirmacaoRepository;
-
     private final UsuarioRepository usuarioRepository;
-
     private final MedicamentoRepository medicamentoRepository;
 
-    public ConfirmacaoService(ConfirmacaoRepository confirmationRepository, UsuarioRepository userRepository, MedicamentoRepository medicineRepository) {
-        this.confirmacaoRepository = confirmationRepository;
-        this.usuarioRepository = userRepository;
-        this.medicamentoRepository = medicineRepository;
+    public ConfirmacaoService(
+            ConfirmacaoRepository confirmacaoRepository,
+            UsuarioRepository usuarioRepository,
+            MedicamentoRepository medicamentoRepository
+    ) {
+        this.confirmacaoRepository = confirmacaoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.medicamentoRepository = medicamentoRepository;
     }
 
     public Confirmacao salvarConfirmacao(DadosConfirmacao dados) {
+        return salvarConfirmacao(dados, null);
+    }
 
+    public Confirmacao salvarConfirmacao(DadosConfirmacao dados, String comprovanteImagemUrl) {
         var usuario = usuarioRepository.findById(dados.usuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
         var medicamento = medicamentoRepository.findById(dados.medicamentoId())
-                .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Medicamento nao encontrado"));
 
-        var confirmacao = new Confirmacao(dados, usuario, medicamento);
+        var confirmacao = new Confirmacao(dados, usuario, medicamento, comprovanteImagemUrl);
 
         return confirmacaoRepository.save(confirmacao);
     }
