@@ -1,8 +1,15 @@
 services:
   backend:
+    build:
+      context: .
+      target: build
     volumes:
       - .:/app
       - ~/.m2:/root/.m2  # cache do Maven entre rebuilds
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    entrypoint: ["sh", "-c"]
+    command: ["chmod +x mvnw && ./mvnw spring-boot:run"]
 
   frontend:
     volumes:
@@ -11,7 +18,6 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-      - SPRING_PROFILES_ACTIVE=dev
       - REACT_APP_BACKEND_URL=http://localhost:8081
       - REACT_APP_FRONTEND_URL=http://localhost:3000
     command: npm start
