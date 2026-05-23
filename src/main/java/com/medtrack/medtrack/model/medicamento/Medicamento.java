@@ -7,7 +7,6 @@ import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.model.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -35,6 +34,7 @@ public class Medicamento {
     private String principioAtivo;
     private String dosagem;
     private String observacoes = null;
+    private String imagemUrl;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -62,6 +62,7 @@ public class Medicamento {
         principioAtivo = dadosMedicamento.principioAtivo();
         dosagem = dadosMedicamento.dosagem();
         observacoes = dadosMedicamento.observacoes();
+        imagemUrl = dadosMedicamento.imagemUrl();
         this.usuario = usuario;
         var dadosFrequenciaUso = dadosMedicamento.frequenciaUso();
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
@@ -79,6 +80,7 @@ public class Medicamento {
         principioAtivo = dadosMedicamento.principioAtivo();
         dosagem = dadosMedicamento.dosagem();
         observacoes = dadosMedicamento.observacoes();
+        imagemUrl = dadosMedicamento.imagemUrl();
         var dadosFrequenciaUso = dadosMedicamento.frequenciaUso();
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
         this.dependente = dependente;
@@ -97,6 +99,7 @@ public class Medicamento {
         principioAtivo = dadosMedicamento.principioAtivo();
         dosagem = dadosMedicamento.dosagem();
         observacoes = dadosMedicamento.observacoes();
+        imagemUrl = dadosMedicamento.imagemUrl();
         var dadosFrequenciaUso = dadosMedicamento.frequenciaUso();
         this.frequenciaUso = new FrequenciaUso(dadosFrequenciaUso);
         this.dependente = dependente;
@@ -136,6 +139,7 @@ public class Medicamento {
     public String getPrincipioAtivo() { return principioAtivo; }
     public String getDosagem() { return dosagem; }
     public String getObservacoes() { return observacoes; }
+    public String getImagemUrl() { return imagemUrl; }
     public Estoque getEstoque() { return this.estoque; }
     public Usuario getUsuario() { return this.usuario; }
     public Dependente getDependente() { return this.dependente; }
