@@ -6,23 +6,23 @@ import { getUserInfo, getUserRole } from "../../Componentes/Auth/AuthToken";
 import { useParams } from "react-router-dom";
 
 const formatarHorarios = (frequenciaUso) => {
-    if (!frequenciaUso) return "—";
+    if (!frequenciaUso) return "-";
     if (frequenciaUso.frequenciaUsoTipo === "HORARIOS_ESPECIFICOS") {
         const horarios = frequenciaUso.horariosEspecificos;
         if (horarios && horarios.length > 0) return horarios.map(h => h.substring(0, 5)).join(", ");
         if (frequenciaUso.primeiroHorario) return frequenciaUso.primeiroHorario.substring(0, 5);
     }
     if (frequenciaUso.frequenciaUsoTipo === "INTERVALO_ENTRE_DOSES") {
-        const inicio = frequenciaUso.primeiroHorario?.substring(0, 5) || "—";
-        return `A cada ${frequenciaUso.intervaloHoras}h (início: ${inicio})`;
+        const inicio = frequenciaUso.primeiroHorario?.substring(0, 5) || "-";
+        return `A cada ${frequenciaUso.intervaloHoras}h (inicio: ${inicio})`;
     }
-    return "—";
+    return "-";
 };
 
 const PaginaHistoricoDependentes = () => {
     const userRole = getUserRole();
     const userInfo = getUserInfo();
-    const { id } = useParams(); // id genérico — pode ser usuário ou dependente
+    const { id } = useParams();
     const type = userRole !== "PESSOAL";
 
     const [dados, setDados] = useState({ nome: "", semana: "", registros: [] });
@@ -32,26 +32,35 @@ const PaginaHistoricoDependentes = () => {
         const fetchDados = async () => {
             try {
                 let medicamentos = [];
+                let confirmacoes = [];
                 let nomePaciente = "";
 
                 if (userRole === "PESSOAL") {
-                    // Usa o próprio id do token, ignora o da URL para segurança
                     medicamentos = await api.get(`${BACKEND_URL}/medicamentos/todos/${userInfo.id}`);
+                    confirmacoes = await api.get(`${BACKEND_URL}/api/confirmacao/usuario/${userInfo.id}`);
                     nomePaciente = userInfo.nome;
                 } else if (userRole === "ADMINISTRADOR") {
-                    // id da URL é o dependenteId
                     medicamentos = await api.get(`${BACKEND_URL}/medicamentos/todos/dependente/${id}`);
+                    confirmacoes = await api.get(`${BACKEND_URL}/api/confirmacao/dependente/${id}`);
                     const dependente = await api.get(`${BACKEND_URL}/dependentes/buscar/${id}`);
                     nomePaciente = dependente.nome;
                 }
 
-                const registros = medicamentos.map(m => ({
-                    nome: m.nome,
-                    dosagem: m.dosagem,
-                    horarios: formatarHorarios(m.frequenciaUso),
-                    usoContinuo: m.frequenciaUso?.usoContinuo,
-                    observacoes: m.observacoes || "—"
-                }));
+                const registros = medicamentos.map(m => {
+                    const confirmacoesDoMedicamento = confirmacoes.filter(c => String(c.medicamentoId) === String(m.id));
+
+                    return {
+                        id: m.id,
+                        nome: m.nome,
+                        principioAtivo: m.principioAtivo,
+                        dosagem: m.dosagem,
+                        imagemUrl: m.imagemUrl,
+                        horarios: formatarHorarios(m.frequenciaUso),
+                        usoContinuo: m.frequenciaUso?.usoContinuo,
+                        observacoes: m.observacoes || "-",
+                        confirmacoes: confirmacoesDoMedicamento
+                    };
+                });
 
                 setDados({
                     nome: nomePaciente,
@@ -66,7 +75,7 @@ const PaginaHistoricoDependentes = () => {
         };
 
         if (userRole) fetchDados();
-    }, [userRole, id]);
+    }, [userRole, id, userInfo.id, userInfo.nome]);
 
     return (
         <div className="flex flex-col h-screen">

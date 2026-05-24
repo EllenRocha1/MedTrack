@@ -37,7 +37,27 @@ const api  = {
         if (response.status !== 201) {
             throw new Error('Erro ao fazer a requisição');
         }
-        return true
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : true;
+
+    },
+
+    postForm: async (url, data) => {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: data
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao fazer a requisição');
+        }
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : true;
 
     },
 

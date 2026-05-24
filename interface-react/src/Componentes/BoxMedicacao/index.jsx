@@ -1,19 +1,18 @@
-import api, {BACKEND_URL} from "../../Service/api";
-import {FiPlusCircle} from "react-icons/fi"
-import {useState} from "react";
-import {getUserInfo} from "../Auth/AuthToken";
+import api, { BACKEND_URL } from "../../Service/api";
+import { FiImage, FiUpload } from "react-icons/fi";
+import { useState } from "react";
 
 const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     const [medicacaoSelecionada, setMedicacaoSelecionada] = useState(null);
-    const [imagemUrl, setImagemUrl] = useState("");
+    const [imagemPreview, setImagemPreview] = useState("");
+    const [imagemArquivo, setImagemArquivo] = useState(null);
     const [salvandoImagem, setSalvandoImagem] = useState(false);
     const [erroImagem, setErroImagem] = useState("");
 
-    // Filtro mais completo e seguro
     const medicacoesFiltradas = (Array.isArray(medicacoes) ? medicacoes : []).filter(med => {
         if (!med) return false;
 
-        const searchTerm = termoPesquisa?.toLowerCase() || '';
+        const searchTerm = termoPesquisa?.toLowerCase() || "";
         return (
             (med.nome?.toLowerCase().includes(searchTerm)) ||
             (med.principioAtivo?.toLowerCase().includes(searchTerm)) ||
@@ -21,48 +20,62 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
         );
     });
 
-
-
     async function remover(id) {
-        console.log(id)
         try {
             await api.delete(`${BACKEND_URL}/medicamentos/deletar/${id}`);
-            console.log("Medicação removida com sucesso");
-            window.location.reload()
+            window.location.reload();
         } catch (error) {
-            console.error("Erro ao remover medicação", error);
+            console.error("Erro ao remover medicacao", error);
         }
     }
 
     function abrirDialogImagem(med) {
         setMedicacaoSelecionada(med);
-        setImagemUrl(med.imagemUrl || "");
+        setImagemPreview(med.imagemUrl || "");
+        setImagemArquivo(null);
         setErroImagem("");
     }
 
     function fecharDialogImagem() {
         if (salvandoImagem) return;
         setMedicacaoSelecionada(null);
-        setImagemUrl("");
+        setImagemPreview("");
+        setImagemArquivo(null);
         setErroImagem("");
+    }
+
+    function selecionarImagem(event) {
+        const arquivo = event.target.files?.[0] || null;
+        setImagemArquivo(arquivo);
+        setErroImagem("");
+
+        if (arquivo) {
+            setImagemPreview(URL.createObjectURL(arquivo));
+        } else {
+            setImagemPreview(medicacaoSelecionada?.imagemUrl || "");
+        }
     }
 
     async function atualizarImagem() {
         if (!medicacaoSelecionada) return;
 
+        if (!imagemArquivo) {
+            setErroImagem("Selecione uma imagem PNG ou JPEG.");
+            return;
+        }
+
         try {
             setSalvandoImagem(true);
             setErroImagem("");
 
-            await api.put(`${BACKEND_URL}/medicamentos/alterar/${medicacaoSelecionada.id}`, {
-                usuarioId: getUserInfo()?.id,
-                imagemUrl: imagemUrl.trim() || null
-            });
+            const dadosImagem = new FormData();
+            dadosImagem.append("imagem", imagemArquivo);
+            await api.postForm(`${BACKEND_URL}/medicamentos/${medicacaoSelecionada.id}/imagem`, dadosImagem);
 
             window.location.reload();
         } catch (error) {
             console.error("Erro ao atualizar imagem do medicamento", error);
-            setErroImagem("Não foi possível atualizar a imagem.");
+            setErroImagem("Nao foi possivel atualizar a imagem.");
         } finally {
             setSalvandoImagem(false);
         }
@@ -106,7 +119,7 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
                                     className="w-14 h-14 rounded-md border border-gray-200 bg-blue-50 text-blue-700 flex items-center justify-center text-xs font-semibold flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     aria-label={`Adicionar imagem para ${med.nome}`}
                                 >
-                                    <FiPlusCircle size={24} />
+                                    <FiImage size={24} />
                                 </button>
                             )}
                             <div className="min-w-0">
@@ -134,9 +147,7 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
                     <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
                         <div className="flex items-start justify-between gap-4">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-800">
-                                    Imagem do medicamento
-                                </h3>
+                                <h3 className="text-lg font-semibold text-gray-800">Imagem do medicamento</h3>
                                 <p className="text-sm text-gray-500">{medicacaoSelecionada.nome}</p>
                             </div>
                             <button
@@ -145,35 +156,55 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
                                 className="text-gray-400 hover:text-gray-700 text-2xl leading-none"
                                 aria-label="Fechar"
                             >
-                                ×
+                                x
                             </button>
                         </div>
 
                         <div className="mt-5 flex justify-center rounded-lg border border-gray-200 bg-gray-50 p-4">
-                            {imagemUrl ? (
+                            {imagemPreview ? (
                                 <img
-                                    src={imagemUrl}
+                                    src={imagemPreview}
                                     alt={medicacaoSelecionada.nome ? `Imagem de ${medicacaoSelecionada.nome}` : "Imagem do medicamento"}
                                     className="max-h-80 w-full rounded-md object-contain"
                                 />
                             ) : (
                                 <div className="flex h-56 w-full items-center justify-center rounded-md bg-blue-50 text-blue-700">
-                                    <FiPlusCircle size={48} />
+                                    <FiImage size={48} />
                                 </div>
                             )}
                         </div>
 
-                        <label className="mt-5 block text-sm font-medium text-gray-700" htmlFor="imagemMedicamentoUrl">
-                            URL ou referência da imagem
+                        <label className="mt-5 block text-sm font-medium text-gray-700" htmlFor="imagemMedicamentoArquivo">
+                            Nova imagem
                         </label>
-                        <input
-                            id="imagemMedicamentoUrl"
-                            type="url"
-                            value={imagemUrl}
-                            onChange={(event) => setImagemUrl(event.target.value)}
-                            className="mt-2 w-full rounded-lg border border-blue-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="https://exemplo.com/imagem.jpg"
-                        />
+                        <div className="mt-2">
+                            <input
+                                id="imagemMedicamentoArquivo"
+                                type="file"
+                                accept="image/png,image/jpeg"
+                                onChange={selecionarImagem}
+                                className="sr-only"
+                            />
+                            <label
+                                htmlFor="imagemMedicamentoArquivo"
+                                className="flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-blue-300 bg-blue-50 p-3 text-blue-700 transition hover:border-blue-500 hover:bg-blue-100"
+                            >
+                                <span className="flex min-w-0 items-center gap-3">
+                                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-white text-blue-600 shadow-sm">
+                                        <FiImage size={20} />
+                                    </span>
+                                    <span className="min-w-0">
+                                        <span className="block truncate text-sm font-semibold">
+                                            {imagemArquivo?.name || "Selecionar nova imagem"}
+                                        </span>
+                                        <span className="block text-xs text-blue-500">
+                                            PNG ou JPEG
+                                        </span>
+                                    </span>
+                                </span>
+                                <FiUpload className="flex-shrink-0" size={20} />
+                            </label>
+                        </div>
 
                         {erroImagem && (
                             <p className="mt-3 text-sm text-red-600">{erroImagem}</p>

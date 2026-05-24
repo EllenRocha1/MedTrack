@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import useMedicamentos from "../../Componentes/ListaDeMed";
+import { FiImage, FiUpload } from "react-icons/fi";
 
 const CadastroMedicamentos = () => {
     const userRole = getUserRole();
@@ -18,7 +19,7 @@ const CadastroMedicamentos = () => {
         dosagemQuantidade: "",
         dosagemUnidade: "mg",
         observacoes: "",
-        imagemUrl: "",
+        imagemArquivo: null,
         estoque: {
             quantidadeAtual: "",
             quantidadeMinima: ""
@@ -204,11 +205,11 @@ const CadastroMedicamentos = () => {
             name: "observacoes"
         },
         {
-            type: "url",
-            id: "imagemUrl",
-            label: "Imagem do Medicamento (URL ou referência):",
-            name: "imagemUrl",
-            placeholder: "https://exemplo.com/imagem.jpg"
+            type: "file",
+            id: "imagemArquivo",
+            label: "Imagem do Medicamento:",
+            name: "imagemArquivo",
+            accept: "image/png,image/jpeg"
         },
         {
             type: "select",
@@ -281,7 +282,6 @@ const CadastroMedicamentos = () => {
             principioAtivo: formData.principioAtivo,
             dosagem: `${formData.dosagemQuantidade}${formData.dosagemUnidade}`,
             observacoes: formData.observacoes,
-            imagemUrl: formData.imagemUrl || null,
             usuarioId: usuarioId,
             estoque: dadosEstoque,
             frequenciaUso: {
@@ -311,6 +311,12 @@ const CadastroMedicamentos = () => {
         try {
             const response = await api.post(`${BACKEND_URL}/medicamentos/cadastro`, getDadosCadastro(userRole));
             if (response) {
+                if (formData.imagemArquivo && response.id) {
+                    const dadosImagem = new FormData();
+                    dadosImagem.append("imagem", formData.imagemArquivo);
+                    await api.postForm(`${BACKEND_URL}/medicamentos/${response.id}/imagem`, dadosImagem);
+                }
+
                 const redirectPath = userRole === "ADMINISTRADOR"
                     ? `/perfil_dependente/${dependenteId}`
                     : `/perfil_usuario/${usuarioId}`;
@@ -416,6 +422,39 @@ const CadastroMedicamentos = () => {
                                     className="border p-2 border-blue-400 rounded-lg"
                                     placeholder={campo.placeholder}
                                 />
+                            ) : campo.type === "file" ? (
+                                <div>
+                                    <input
+                                        type="file"
+                                        id={campo.id}
+                                        name={campo.name}
+                                        accept={campo.accept}
+                                        onChange={(event) => setFormData(prev => ({
+                                            ...prev,
+                                            [campo.name]: event.target.files?.[0] || null
+                                        }))}
+                                        className="sr-only"
+                                    />
+                                    <label
+                                        htmlFor={campo.id}
+                                        className="flex cursor-pointer items-center justify-between gap-3 rounded-lg border border-blue-300 bg-blue-50 p-3 text-blue-700 transition hover:border-blue-500 hover:bg-blue-100"
+                                    >
+                                        <span className="flex min-w-0 items-center gap-3">
+                                            <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-white text-blue-600 shadow-sm">
+                                                <FiImage size={20} />
+                                            </span>
+                                            <span className="min-w-0">
+                                                <span className="block truncate text-sm font-semibold">
+                                                    {formData[campo.name]?.name || "Selecionar imagem"}
+                                                </span>
+                                                <span className="block text-xs text-blue-500">
+                                                    PNG ou JPEG
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <FiUpload className="flex-shrink-0" size={20} />
+                                    </label>
+                                </div>
                             ) : (
                                 <input
                                     type={campo.type}

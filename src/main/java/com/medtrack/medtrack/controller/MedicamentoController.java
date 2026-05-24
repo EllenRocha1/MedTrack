@@ -7,14 +7,17 @@ import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
 import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
+import com.medtrack.medtrack.service.CloudinaryService;
 import com.medtrack.medtrack.service.medicamento.MedicamentoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,10 +30,12 @@ public class MedicamentoController {
     private static final Logger logger = LoggerFactory.getLogger(MedicamentoController.class);
     private final MedicamentoRepository repositorio;
     private final MedicamentoService medicamentoService;
+    private final CloudinaryService cloudinaryService;
 
-    public MedicamentoController(MedicamentoRepository repositorio, MedicamentoService medicamentoService) {
+    public MedicamentoController(MedicamentoRepository repositorio, MedicamentoService medicamentoService, CloudinaryService cloudinaryService) {
         this.repositorio = repositorio;
         this.medicamentoService = medicamentoService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/cadastro")
@@ -136,6 +141,16 @@ public class MedicamentoController {
         }
         medicamentoService.atualizarMedicamento(dadosMedicamentoPut, id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/{id}/imagem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<DadosMedicamentoGet> atualizarImagem(
+            @PathVariable Long id,
+            @RequestPart("imagem") MultipartFile imagem
+    ) {
+        String imagemUrl = cloudinaryService.uploadImagemMedicamento(imagem);
+        Medicamento medicamento = medicamentoService.atualizarImagem(id, imagemUrl);
+        return ResponseEntity.ok(new DadosMedicamentoGet(medicamento));
     }
 
     @DeleteMapping("/deletar/{id}")
