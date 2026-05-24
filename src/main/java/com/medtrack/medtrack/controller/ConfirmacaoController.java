@@ -65,4 +65,24 @@ public class ConfirmacaoController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/dependente/{dependenteId}")
+    public ResponseEntity<List<DadosConfirmacaoResponse>> listarPorDependente(@PathVariable Long dependenteId) {
+        try {
+            List<Confirmacao> lista = service.listarConfirmacoesDoDependente(dependenteId);
+            return ResponseEntity.ok(lista.stream().map(DadosConfirmacaoResponse::new).toList());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/medicamento/{medicamentoId}")
+    public ResponseEntity<List<DadosConfirmacaoResponse>> listarPorMedicamento(@PathVariable Long medicamentoId) {
+        try {
+            List<Confirmacao> lista = service.listarConfirmacoesDoMedicamento(medicamentoId);
+            return ResponseEntity.ok(lista.stream().map(DadosConfirmacaoResponse::new).toList());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

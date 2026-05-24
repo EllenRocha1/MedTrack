@@ -44,4 +44,12 @@ public class ConfirmacaoService {
     public List<Confirmacao> listarConfirmacoesDoUsuario(Long usuarioId) {
         return confirmacaoRepository.findByUsuarioId(usuarioId);
     }
+
+    public List<Confirmacao> listarConfirmacoesDoDependente(Long dependenteId) {
+        return confirmacaoRepository.findByMedicamentoDependenteId(dependenteId);
+    }
+
+    public List<Confirmacao> listarConfirmacoesDoMedicamento(Long medicamentoId) {
+        return confirmacaoRepository.findByMedicamentoId(medicamentoId);
+    }
 }

@@ -94,6 +94,15 @@ public class MedicamentoService {
         medicamentoRepository.save(medicamentoExistente);
     }
 
+    @Transactional
+    public Medicamento atualizarImagem(Long id, String imagemUrl) {
+        var medicamentoExistente = medicamentoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+
+        medicamentoExistente.setImagemUrl(imagemUrl);
+        return medicamentoRepository.save(medicamentoExistente);
+    }
+
     public List<Medicamento> listarEstoqueCritico(Long usuarioId) {
     return medicamentoRepository.findEstoqueBaixoByUsuarioId(usuarioId);
 }

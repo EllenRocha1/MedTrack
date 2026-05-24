@@ -12,6 +12,7 @@ import java.util.Map;
 public class CloudinaryService {
 
     private static final String PASTA_CONFIRMACOES = "medtrack/confirmacoes";
+    private static final String PASTA_MEDICAMENTOS = "medtrack/medicamentos";
 
     private final Cloudinary cloudinary;
 
@@ -34,6 +35,14 @@ public class CloudinaryService {
     }
 
     public String uploadImagem(MultipartFile arquivo) {
+        return uploadImagem(arquivo, PASTA_CONFIRMACOES);
+    }
+
+    public String uploadImagemMedicamento(MultipartFile arquivo) {
+        return uploadImagem(arquivo, PASTA_MEDICAMENTOS);
+    }
+
+    private String uploadImagem(MultipartFile arquivo, String pasta) {
         if (arquivo == null || arquivo.isEmpty()) {
             return null;
         }
@@ -47,7 +56,7 @@ public class CloudinaryService {
         try {
             Map<?, ?> resultado = cloudinary.uploader().upload(
                     arquivo.getBytes(),
-                    ObjectUtils.asMap("folder", PASTA_CONFIRMACOES)
+                    ObjectUtils.asMap("folder", pasta)
             );
 
             Object secureUrl = resultado.get("secure_url");
