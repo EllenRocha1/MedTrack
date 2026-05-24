@@ -42,7 +42,7 @@ public class ConfirmacaoService {
     }
 
     public List<Confirmacao> listarConfirmacoesDoUsuario(Long usuarioId) {
-        return confirmacaoRepository.findByUsuarioId(usuarioId);
+        return confirmacaoRepository.findByMedicamentoUsuarioId(usuarioId);
     }
 
     public List<Confirmacao> listarConfirmacoesDoDependente(Long dependenteId) {

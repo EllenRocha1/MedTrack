@@ -46,17 +46,21 @@ const PaginaHistoricoDependentes = () => {
                     nomePaciente = dependente.nome;
                 }
 
-                const registros = medicamentos.map(m => ({
-                    id: m.id,
-                    nome: m.nome,
-                    principioAtivo: m.principioAtivo,
-                    dosagem: m.dosagem,
-                    imagemUrl: m.imagemUrl,
-                    horarios: formatarHorarios(m.frequenciaUso),
-                    usoContinuo: m.frequenciaUso?.usoContinuo,
-                    observacoes: m.observacoes || "-",
-                    confirmacoes: confirmacoes.filter(c => c.medicamentoId === m.id)
-                }));
+                const registros = medicamentos.map(m => {
+                    const confirmacoesDoMedicamento = confirmacoes.filter(c => String(c.medicamentoId) === String(m.id));
+
+                    return {
+                        id: m.id,
+                        nome: m.nome,
+                        principioAtivo: m.principioAtivo,
+                        dosagem: m.dosagem,
+                        imagemUrl: m.imagemUrl,
+                        horarios: formatarHorarios(m.frequenciaUso),
+                        usoContinuo: m.frequenciaUso?.usoContinuo,
+                        observacoes: m.observacoes || "-",
+                        confirmacoes: confirmacoesDoMedicamento
+                    };
+                });
 
                 setDados({
                     nome: nomePaciente,
