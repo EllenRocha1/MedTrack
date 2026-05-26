@@ -3,6 +3,7 @@ package com.medtrack.medtrack.service.medicamento;
 import com.medtrack.medtrack.model.dependente.Dependente;
 import com.medtrack.medtrack.model.medicamento.FrequenciaUso;
 import com.medtrack.medtrack.model.medicamento.Medicamento;
+import com.medtrack.medtrack.model.medicamento.dto.DadosDuplicidadeMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
@@ -12,6 +13,7 @@ import com.medtrack.medtrack.repository.DependenteRepository;
 import com.medtrack.medtrack.repository.FrequenciaUsoRepository;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
+import com.medtrack.medtrack.util.NormalizeString;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,8 @@ public class MedicamentoService {
                     .orElseThrow(() -> new IllegalArgumentException("Dependente não encontrado"));
         }
 
+        verificarDuplicidadePrincipioAtivo(dadosMedicamento);
+
         FrequenciaUso frequenciaUso = dadosMedicamento.frequenciaUso().id() != null
                 ? frequenciaUsoRepository.findById(dadosMedicamento.frequenciaUso().id())
                 .orElseThrow(() -> new IllegalArgumentException("Frequência de uso não encontrada"))
@@ -69,6 +73,30 @@ public class MedicamentoService {
         medicamento.setFrequenciaUso(frequenciaUso);
 
         return medicamentoRepository.save(medicamento);
+    }
+
+    private void verificarDuplicidadePrincipioAtivo(DadosMedicamento dadosMedicamento) {
+        if (Boolean.TRUE.equals(dadosMedicamento.ignorarDuplicidade())) {
+            return;
+        }
+
+        String principioAtivoNormalizado = NormalizeString.normalize(dadosMedicamento.principioAtivo());
+        if (principioAtivoNormalizado.isBlank()) {
+            return;
+        }
+
+        List<Medicamento> medicamentosDoContexto = dadosMedicamento.dependenteId() != null
+                ? medicamentoRepository.findByDependenteId(dadosMedicamento.dependenteId())
+                : medicamentoRepository.findByUsuarioIdAndDependenteIsNull(dadosMedicamento.usuarioId());
+
+        medicamentosDoContexto.stream()
+                .filter(medicamento -> principioAtivoNormalizado.equals(
+                        NormalizeString.normalize(medicamento.getPrincipioAtivo())
+                ))
+                .findFirst()
+                .ifPresent(medicamento -> {
+                    throw new DuplicidadeMedicamentoException(new DadosDuplicidadeMedicamento(medicamento));
+                });
     }
 
     public void atualizarMedicamento(DadosMedicamentoPut dadosMedicamentoPut, Long id) {
