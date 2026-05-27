@@ -1,36 +1,41 @@
 import { useState } from 'react';
 import FormularioCadastro from '../../Componentes/FormularioCadastro';
 import api, { BACKEND_URL } from "../../Service/api";
-import {cadastrarUsuario} from "../../Service/cadastrarUsuario";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CadastroDependente = () => {
   const [formData, setFormData] = useState({
     nome: "",
     telefone: "",
     email: "",
-    nomeUsuario:"",
-    senha:""
+    nomeUsuario: "",
+    senha: ""
   });
+  const [errors, setErrors] = useState({});
+  const [globalError, setGlobalError] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setErrors({ ...errors, [e.target.name]: undefined });
+    setGlobalError('');
   };
 
   const handleSubmit = async (e) => {
     console.log('Formulário do Dependente submetido ');
     e.preventDefault();
 
+    setErrors({});
+    setGlobalError('');
 
     console.log('Dados do formulário:', formData);
 
-    if (!formData.nome || !formData.telefone|| !formData.email || !formData.nomeUsuario || !formData.senha) {
-      alert('Por favor, preencha todos os campos.');
+    if (!formData.nome || !formData.telefone || !formData.email || !formData.nomeUsuario || !formData.senha) {
+      setGlobalError('Por favor, preencha todos os campos.');
       return;
     }
 
@@ -42,19 +47,21 @@ const CadastroDependente = () => {
       senha: formData.senha
     };
 
-    setFormData({ nome: "", telefone: "", email: "" , nomeUsuario: "", senha: ""});
-
     try {
       const sucesso = await api.post(`${BACKEND_URL}/dependentes/cadastrar`, dadosCadastro);
       console.log("Dependente cadastrado com sucesso!");
       console.log(sucesso)
       if (sucesso) {
         navigate('/lista_dependentes');
-      } else {
       }
     } catch (error) {
       console.error('Erro ao cadastrar usuário:', error);
-      alert('Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
+      if (error.details && Array.isArray(error.details)) {
+        setErrors(Object.fromEntries(error.details.map((item) => [item.campo, item.mensagem])));
+        setGlobalError(error.details.map((item) => item.mensagem).join(' '));
+      } else {
+        setGlobalError(error.message || 'Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
+      }
     }
   };
   const camposCadastro = [
@@ -76,7 +83,8 @@ const CadastroDependente = () => {
             formData={formData}
             handleChange={handleChange}
             onSubmit={handleSubmit}
-
+            errors={errors}
+            globalError={globalError}
         />
       </div>
   );

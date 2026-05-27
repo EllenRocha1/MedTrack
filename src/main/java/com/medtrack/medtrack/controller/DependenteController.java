@@ -35,7 +35,7 @@ public class DependenteController {
     @PostMapping("/cadastrar")
     public ResponseEntity<Dependente> cadastrar(
             @RequestHeader("Authorization") String token,
-            @RequestBody DadosDependente dadosDependente) {
+            @RequestBody @Valid DadosDependente dadosDependente) {
         String nomeUsuario = jwtService.extractUsername(token.replace("Bearer ", ""));
 
         System.out.println("Nome Usuário: " + nomeUsuario);

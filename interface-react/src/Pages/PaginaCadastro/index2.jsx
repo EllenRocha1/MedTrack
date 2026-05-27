@@ -13,10 +13,14 @@ const PaginaCadastro2 = ({ h1, p }) => {
         confSenha: '',
         categoria: ''
     });
+    const [errors, setErrors] = useState({});
+    const [globalError, setGlobalError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: undefined });
+        setGlobalError('');
     };
 
     const handleSubmit = async (e) => {
@@ -26,17 +30,19 @@ const PaginaCadastro2 = ({ h1, p }) => {
         console.log('Dados do formulário:', formData);
 
         if (!formData.nomeUsuario || !formData.senha || !formData.confSenha || !formData.categoria) {
-            alert('Por favor, preencha todos os campos.');
+            setGlobalError('Por favor, preencha todos os campos.');
             return;
         }
 
         if (formData.senha !== formData.confSenha) {
-            alert('As senhas não coincidem!');
+            setErrors({ senha: 'As senhas não coincidem!', confSenha: 'As senhas não coincidem!' });
+            setGlobalError('As senhas não coincidem.');
             return;
         }
 
         if (formData.categoria === '') {
-            alert('Por favor, selecione um tipo de conta.');
+            setErrors({ categoria: 'Por favor, selecione um tipo de conta.' });
+            setGlobalError('Por favor, selecione um tipo de conta.');
             return;
         }
 
@@ -50,15 +56,29 @@ const PaginaCadastro2 = ({ h1, p }) => {
         console.log('Dados enviados para a API:', dadosCadastro);
 
         try {
-            const sucesso = await cadastrarUsuario(dadosCadastro);
+            const resposta = await cadastrarUsuario(dadosCadastro);
 
-            if (sucesso) {
+            if (resposta.success) {
                 navigate('/cadastro_concluido');
-            } else {
+                return;
             }
+
+            if (resposta.errors) {
+                setErrors(Object.fromEntries(resposta.errors.map((erro) => [erro.campo, erro.mensagem])));
+                setGlobalError(
+                    resposta.errors
+                        .map((erro) => erro.mensagem)
+                        .filter(Boolean)
+                        .join(' ')
+                        .trim() || 'Verifique os campos e tente novamente.'
+                );
+                return;
+            }
+
+            setGlobalError(resposta.message || 'Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
         } catch (error) {
             console.error('Erro ao cadastrar usuário:', error);
-            alert('Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
+            setGlobalError('Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
         }
     };
 
@@ -92,6 +112,8 @@ const PaginaCadastro2 = ({ h1, p }) => {
                 onSubmit={handleSubmit}
                 formData={formData}
                 handleChange={handleChange}
+                errors={errors}
+                globalError={globalError}
             />
         </div>
     );

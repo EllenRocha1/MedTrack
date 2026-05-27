@@ -6,13 +6,21 @@ const PaginaCadastro = ({ h1, p }) => {
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
+    numeroTelefone: "",
     dataNascimento: ""
   });
+  const [errors, setErrors] = useState({});
+  const [globalError, setGlobalError] = useState('');
 
   const navigate = useNavigate();
 
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const telefoneRegex = /^(?:(?:\+?55\s?)?(?:\(?\d{2}\)?\s?)?(?:9\d{3}[-\s]?\d{4}|\d{4}[-\s]?\d{4})|(?:\+?[1-9]\d{0,2}\s?)?(?:\(?\d{1,4}\)?\s?)?(?:\d{4,5}[-\s]?\d{4}))$/;
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: undefined });
+    setGlobalError('');
   };
 
   const camposCadastro = [
@@ -28,9 +36,30 @@ const PaginaCadastro = ({ h1, p }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const newErrors = {};
+    if (!formData.nome || !formData.email || !formData.numeroTelefone || !formData.dataNascimento) {
+      setGlobalError('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = 'E-mail inválido. Informe um endereço de e-mail válido.';
+    }
+
+    if (!telefoneRegex.test(formData.numeroTelefone.trim())) {
+      newErrors.numeroTelefone = 'Número de telefone inválido. Use formato BR ou internacional válido.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setGlobalError('Corrija os campos destacados antes de avançar.');
+      return;
+    }
+
     navigate('/cadastro_user', { state: formData });
     console.log('1° Formulário submetido!');
-    console.log("Dados da primeira tela_1:", formData)
+    console.log('Dados da primeira tela_1:', formData);
   };
 
   return (
@@ -44,6 +73,8 @@ const PaginaCadastro = ({ h1, p }) => {
             formData={formData}
             handleChange={handleChange}
             onSubmit={handleSubmit}
+            errors={errors}
+            globalError={globalError}
         />
       </div>
   );
