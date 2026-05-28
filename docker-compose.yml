@@ -48,5 +48,17 @@ services:
     depends_on:
       - backend
 
+  ai:
+    container_name: medtrack-ai
+    build:
+      context: ../MedTrack-IA
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../MedTrack-IA/src:/app/src
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app/src
 volumes:
   postgres_data:
