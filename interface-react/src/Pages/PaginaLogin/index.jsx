@@ -3,11 +3,13 @@ import FormularioCadastro from '../../Componentes/FormularioCadastro';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../Service/auth';
 import Loading from '../../Componentes/Loading';
+import Popup from '../../Componentes/PopUp';
 
 const PaginaLogin = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState("");
+    const [popupOpen, setPopupOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -46,7 +48,7 @@ const PaginaLogin = () => {
             navigate('/home');
         } catch (error) {
             console.error("Erro ao fazer login:", error);
-            alert("Usuário ou senha incorretos. Tente novamente.");
+            setPopupOpen(true);
         } finally {
             setLoading(false);
         }
@@ -62,6 +64,12 @@ const PaginaLogin = () => {
 
     return (
         <div className="h-screen flex justify-center items-center w-full text-center">
+            <Popup
+                open={popupOpen}
+                setOpen={setPopupOpen}
+                texto={{ h2: "Erro de Autenticação", sub: "Usuário ou senha incorretos. Tente novamente." }}
+                botao1={{ label: "Tentar Novamente", funcao: () => setPopupOpen(false) }}
+            />
             <FormularioCadastro
                 h1={"Login"}
                 campos={camposCadastro}

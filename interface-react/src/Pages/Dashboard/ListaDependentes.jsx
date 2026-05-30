@@ -7,12 +7,15 @@ import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import api, { BACKEND_URL } from "../../Service/api";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../Componentes/Loading";
+import Popup from "../../Componentes/PopUp";
 
 const ListaDependentes = () => {
     const [termoPesquisa, setTermoPesquisa] = useState("");
     const [dependentes, setDependentes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [idParaRemover, setIdParaRemover] = useState(null);
     const usuarioId = getUserInfo().id
     const navigate = useNavigate();
 
@@ -51,9 +54,15 @@ const ListaDependentes = () => {
             console.log(`Id do dependente deletado: ${id}`)
             await api.delete(`${BACKEND_URL}/dependentes/deletar/${id}`);
             setDependentes(dependentes.filter(dep => dep.id !== id));
+            setPopupOpen(false);
         } catch (err) {
             console.error("Erro ao remover dependente:", err);
         }
+    };
+
+    const handleConfirmarRemocao = (id) => {
+        setIdParaRemover(id);
+        setPopupOpen(true);
     };
 
     if (loading) {
@@ -70,6 +79,12 @@ const ListaDependentes = () => {
 
     return (
         <div>
+            <Popup
+                open={popupOpen}
+                setOpen={setPopupOpen}
+                texto={{ h2: "Confirmar exclusão", sub: "Tem certeza que deseja remover este dependente? Todos os dados associados serão perdidos." }}
+                botao1={{ label: "Remover", funcao: () => removerDependente(idParaRemover) }}
+            />
             <div className="flex flex-1 w-full h-10">
                 <Sidebar className="w-64" type={type} usuarioId={getUserInfo().id} />
                 <div className="flex-col w-full p-4 transition-all duration-300">
@@ -80,7 +95,7 @@ const ListaDependentes = () => {
                     </div>
                     <CardDependente termoPesquisa={termoPesquisa}
                                     dependentes={dependentes}
-                                    removerDependente={removerDependente}
+                                    removerDependente={handleConfirmarRemocao}
                                     onClickDependente={handleClickDependente}/>
                 </div>
             </div>
