@@ -16,6 +16,43 @@ const parseErrorResponse = async (response) => {
     return text || response.statusText;
 };
 
+const parseResponseBody = async (response) => {
+    const text = await response.text();
+    if (!text) {
+        return true;
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        return text;
+    }
+};
+
+const getErrorMessage = (errorData, fallbackMessage) => {
+    if (Array.isArray(errorData)) {
+        return errorData.map((item) => item.mensagem || item.message).filter(Boolean).join(' ') || fallbackMessage;
+    }
+
+    if (typeof errorData === 'string') {
+        return errorData;
+    }
+
+    return errorData?.message || errorData?.mensagem || fallbackMessage;
+};
+
+const createApiError = (response, errorData, fallbackMessage = 'Erro ao fazer a requisição') => {
+    const error = new Error(getErrorMessage(errorData, fallbackMessage));
+    error.status = response.status;
+    error.data = errorData;
+
+    if (Array.isArray(errorData)) {
+        error.details = errorData;
+    }
+
+    return error;
+};
+
 const api  = {
 
     get: async (url) => {
@@ -28,11 +65,11 @@ const api  = {
             });
 
             if (!response.ok) {
-                const errorData = await response.json(); // Tenta obter detalhes do erro
-                throw new Error(errorData.message || "Erro ao buscar dados");
+                const errorData = await parseErrorResponse(response);
+                throw createApiError(response, errorData, "Erro ao buscar dados");
             }
 
-            return response.json();
+            return parseResponseBody(response);
         } catch (error) {
             console.error("Erro na requisição GET:", error);
             throw error; // Propaga o erro para ser tratado no componente
@@ -51,17 +88,10 @@ const api  = {
 
         if (!response.ok) {
             const errorData = await parseErrorResponse(response);
-            if (response.status === 400 && Array.isArray(errorData)) {
-                const validationMessage = errorData.map((item) => item.mensagem).join(' ');
-                const error = new Error(validationMessage || 'Erro ao fazer a requisição');
-                error.details = errorData;
-                throw error;
-            }
-            throw new Error(typeof errorData === 'string' ? errorData : errorData?.message || 'Erro ao fazer a requisição');
+            throw createApiError(response, errorData);
         }
 
-        const text = await response.text();
-        return text ? JSON.parse(text) : true;
+        return parseResponseBody(response);
 
     },
 
@@ -76,16 +106,10 @@ const api  = {
 
         if (!response.ok) {
             const errorData = await parseErrorResponse(response);
-            if (response.status === 400 && Array.isArray(errorData)) {
-                const error = new Error(errorData.map((item) => item.mensagem).join(' ') || 'Erro ao fazer a requisição');
-                error.details = errorData;
-                throw error;
-            }
-            throw new Error(typeof errorData === 'string' ? errorData : errorData?.message || 'Erro ao fazer a requisição');
+            throw createApiError(response, errorData);
         }
 
-        const text = await response.text();
-        return text ? JSON.parse(text) : true;
+        return parseResponseBody(response);
 
     },
 
@@ -101,16 +125,10 @@ const api  = {
 
         if (!response.ok) {
             const errorData = await parseErrorResponse(response);
-            if (response.status === 400 && Array.isArray(errorData)) {
-                const error = new Error(errorData.map((item) => item.mensagem).join(' ') || 'Erro ao fazer a requisição');
-                error.details = errorData;
-                throw error;
-            }
-            throw new Error(typeof errorData === 'string' ? errorData : errorData?.message || 'Erro ao fazer a requisição');
+            throw createApiError(response, errorData);
         }
 
-        const text = await response.text();
-        return text ? JSON.parse(text) : true;
+        return parseResponseBody(response);
     },
 
     patch: async (url, data) => {
@@ -125,16 +143,10 @@ const api  = {
 
         if (!response.ok) {
             const errorData = await parseErrorResponse(response);
-            if (response.status === 400 && Array.isArray(errorData)) {
-                const error = new Error(errorData.map((item) => item.mensagem).join(' ') || 'Erro ao fazer a requisição');
-                error.details = errorData;
-                throw error;
-            }
-            throw new Error(typeof errorData === 'string' ? errorData : errorData?.message || 'Erro ao fazer a requisição');
+            throw createApiError(response, errorData);
         }
 
-        const text = await response.text();
-        return text ? JSON.parse(text) : true;
+        return parseResponseBody(response);
     },
 
     delete: async (url) => {
@@ -147,7 +159,8 @@ const api  = {
         });
 
         if (response.status !== 204) {
-            throw new Error('Erro ao fazer a requisição');
+            const errorData = await parseErrorResponse(response);
+            throw createApiError(response, errorData);
         }
         return true
     }

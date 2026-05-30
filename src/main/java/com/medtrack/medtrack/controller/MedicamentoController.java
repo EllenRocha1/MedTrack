@@ -8,6 +8,7 @@ import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.repository.MedicamentoRepository;
 import com.medtrack.medtrack.service.CloudinaryService;
+import com.medtrack.medtrack.service.medicamento.DuplicidadeMedicamentoException;
 import com.medtrack.medtrack.service.medicamento.MedicamentoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -39,10 +40,15 @@ public class MedicamentoController {
     }
 
     @PostMapping("/cadastro")
-    @Transactional
-    public ResponseEntity<DadosMedicamentoGet> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
+    public ResponseEntity<?> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
         logger.info("Recebendo requisição para criar medicamento: {}", dadosMedicamento);
-        Medicamento medicamento = medicamentoService.criarMedicamento(dadosMedicamento);
+        Medicamento medicamento;
+
+        try {
+            medicamento = medicamentoService.criarMedicamento(dadosMedicamento);
+        } catch (DuplicidadeMedicamentoException e) {
+            return ResponseEntity.status(409).body(e.getDadosDuplicidade());
+        }
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

@@ -28,7 +28,9 @@ public record DadosMedicamento(
         DadosFrequenciaUso frequenciaUso,
 
         @Valid
-        DadosEstoque estoque
+        DadosEstoque estoque,
+
+        Boolean ignorarDuplicidade
 
 ) {
 

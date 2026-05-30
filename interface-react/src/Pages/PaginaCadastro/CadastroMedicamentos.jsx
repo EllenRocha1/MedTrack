@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import useMedicamentos from "../../Componentes/ListaDeMed";
-import { FiImage, FiUpload } from "react-icons/fi";
+import { FiAlertTriangle, FiCheckCircle, FiImage, FiUpload, FiX } from "react-icons/fi";
 
 const CadastroMedicamentos = () => {
     const userRole = getUserRole();
@@ -12,6 +12,8 @@ const CadastroMedicamentos = () => {
     const { buscarAgenteAtivo, filtrarMedicamentos } = useMedicamentos();
     const [sugestoes, setSugestoes] = useState([]);
     const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
+    const [duplicidade, setDuplicidade] = useState(null);
+    const [salvando, setSalvando] = useState(false);
     
     const [formData, setFormData] = useState({
         nome: "",
@@ -270,7 +272,7 @@ const CadastroMedicamentos = () => {
         return extras;
     }, [formData.frequenciaUso]);
 
-    const getDadosCadastro = (userRole) => {
+    const getDadosCadastro = (userRole, opcoes = {}) => {
         const temEstoque = formData.estoque.quantidadeAtual !== "";
         const dadosEstoque = temEstoque ? {
             quantidadeAtual: Number(formData.estoque.quantidadeAtual),
@@ -284,6 +286,7 @@ const CadastroMedicamentos = () => {
             observacoes: formData.observacoes,
             usuarioId: usuarioId,
             estoque: dadosEstoque,
+            ignorarDuplicidade: opcoes.ignorarDuplicidade || false,
             frequenciaUso: {
                 frequenciaUsoTipo: formData.frequenciaUso.frequenciaUsoTipo,
                 usoContinuo: formData.frequenciaUso.usoContinuo,
@@ -300,16 +303,19 @@ const CadastroMedicamentos = () => {
             : dadosBase;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
+    const cadastrarMedicamento = async ({ ignorarDuplicidade = false } = {}) => {
         if (!formData.nome || !formData.principioAtivo || !formData.dosagemQuantidade || !formData.dosagemUnidade) {
             alert('Por favor, preencha todos os campos obrigatórios.');
             return;
         }
 
+        setSalvando(true);
+
         try {
-            const response = await api.post(`${BACKEND_URL}/medicamentos/cadastro`, getDadosCadastro(userRole));
+            const response = await api.post(
+                `${BACKEND_URL}/medicamentos/cadastro`,
+                getDadosCadastro(userRole, { ignorarDuplicidade })
+            );
             if (response) {
                 if (formData.imagemArquivo && response.id) {
                     const dadosImagem = new FormData();
@@ -324,8 +330,26 @@ const CadastroMedicamentos = () => {
             }
         } catch (error) {
             console.error('Erro ao cadastrar medicamento:', error);
+
+            if (error.status === 409 && error.data?.duplicidade) {
+                setDuplicidade(error.data);
+                return;
+            }
+
             alert('Erro ao cadastrar medicamento. Verifique sua conexão ou tente novamente mais tarde.');
+        } finally {
+            setSalvando(false);
         }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await cadastrarMedicamento();
+    };
+
+    const continuarComDuplicidade = async () => {
+        setDuplicidade(null);
+        await cadastrarMedicamento({ ignorarDuplicidade: true });
     };
 
     const getValorCampo = (nomeCampo) => {
@@ -333,8 +357,6 @@ const CadastroMedicamentos = () => {
         if (nomeCampo in formData.estoque) return formData.estoque[nomeCampo] || "";
         return formData[nomeCampo] || "";
     };   
-
-    console.log("Campos renderizados:", [...camposBase, ...camposExtras].map(c => c.id));
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -506,9 +528,10 @@ const CadastroMedicamentos = () => {
                 <div className="flex justify-end gap-2 mt-6">
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                        disabled={salvando}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-300"
                     >
-                        Salvar
+                        {salvando ? "Salvando..." : "Salvar"}
                     </button>
                     <button
                         type="button"
@@ -519,6 +542,62 @@ const CadastroMedicamentos = () => {
                     </button>
                 </div>
             </form>
+
+            {duplicidade && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+                    <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+                        <div className="flex items-start gap-3">
+                            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                                <FiAlertTriangle size={24} />
+                            </span>
+                            <div>
+                                <h2 className="text-lg font-semibold text-gray-900">
+                                    Possível duplicidade de princípio ativo
+                                </h2>
+                                <p className="mt-2 text-sm text-gray-600">
+                                    {duplicidade.mensagem}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                            <p className="text-sm text-gray-700">
+                                Medicamento já cadastrado:
+                            </p>
+                            <p className="mt-1 font-semibold text-gray-900">
+                                {duplicidade.nomeMedicamentoExistente}
+                            </p>
+                            <p className="mt-1 text-sm text-gray-600">
+                                Princípio ativo: {duplicidade.principioAtivoConflitante}
+                            </p>
+                        </div>
+
+                        <p className="mt-4 text-sm text-gray-600">
+                            Verifique se há risco de uso simultâneo antes de continuar.
+                        </p>
+
+                        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setDuplicidade(null)}
+                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50"
+                            >
+                                <FiX size={18} />
+                                Cancelar cadastro
+                            </button>
+                            <button
+                                type="button"
+                                onClick={continuarComDuplicidade}
+                                disabled={salvando}
+                                className="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-amber-300"
+                            >
+                                <FiCheckCircle size={18} />
+                                Continuar mesmo assim
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
