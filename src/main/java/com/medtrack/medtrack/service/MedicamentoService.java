@@ -1,11 +1,14 @@
-package com.medtrack.medtrack.service.medicamento;
+package com.medtrack.medtrack.service;
 
+import com.medtrack.medtrack.util.exception.DuplicidadeMedicamentoException;
 import com.medtrack.medtrack.model.dependente.Dependente;
 import com.medtrack.medtrack.model.medicamento.FrequenciaUso;
 import com.medtrack.medtrack.model.medicamento.Medicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosDuplicidadeMedicamento;
+import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
+import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoMobile;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
 import com.medtrack.medtrack.model.usuario.Usuario;
 import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
@@ -49,6 +52,22 @@ public class MedicamentoService {
         }
 
         medicamentoRepository.delete(medicamento);
+    }
+
+    public List<DadosMedicamentoGet> listarPorUsuario(Long usuarioId) {
+        return medicamentoRepository.findByUsuarioId(usuarioId).stream()
+                .map(DadosMedicamentoGet::new)
+                .toList();
+    }
+
+    public List<DadosMedicamentoGet> listarPorDependente(Long dependenteId) {
+        return medicamentoRepository.findByDependenteId(dependenteId).stream()
+                .map(DadosMedicamentoGet::new)
+                .toList();
+    }
+
+    public DadosMedicamentoGet detalhar(Long id) {
+        return new DadosMedicamentoGet(buscarMedicamento(id));
     }
 
     @Transactional
@@ -99,9 +118,9 @@ public class MedicamentoService {
                 });
     }
 
+    @Transactional
     public void atualizarMedicamento(DadosMedicamentoPut dadosMedicamentoPut, Long id) {
-        var medicamentoExistente = medicamentoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+        var medicamentoExistente = buscarMedicamento(id);
 
         medicamentoExistente.atualizarInformacoes(dadosMedicamentoPut, medicamentoExistente);
 
@@ -124,8 +143,7 @@ public class MedicamentoService {
 
     @Transactional
     public Medicamento atualizarImagem(Long id, String imagemUrl) {
-        var medicamentoExistente = medicamentoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
+        var medicamentoExistente = buscarMedicamento(id);
 
         medicamentoExistente.setImagemUrl(imagemUrl);
         return medicamentoRepository.save(medicamentoExistente);
@@ -134,6 +152,48 @@ public class MedicamentoService {
     public List<Medicamento> listarEstoqueCritico(Long usuarioId) {
     return medicamentoRepository.findEstoqueBaixoByUsuarioId(usuarioId);
 }
+
+    public List<DadosMedicamentoGet> listarEstoqueCriticoDto(Long usuarioId) {
+        return listarEstoqueCritico(usuarioId).stream()
+                .map(DadosMedicamentoGet::new)
+                .toList();
+    }
+
+    @Transactional
+    public DadosEstoqueGet consumirDose(Long id) {
+        var medicamento = buscarMedicamento(id);
+
+        if (medicamento.getEstoque() == null) {
+            throw new IllegalArgumentException("Este medicamento nao possui estoque configurado.");
+        }
+
+        medicamento.getEstoque().decrementar();
+        return new DadosEstoqueGet(medicamento.getEstoque());
+    }
+
+    @Transactional
+    public DadosEstoqueGet reporEstoque(Long id, Integer quantidadeAdicionada) {
+        var medicamento = buscarMedicamento(id);
+        var estoqueAtual = medicamento.getEstoque();
+
+        if (estoqueAtual == null) {
+            throw new IllegalArgumentException("Este medicamento nao possui estoque configurado.");
+        }
+
+        estoqueAtual.setQuantidadeAtual(estoqueAtual.getQuantidadeAtual() + quantidadeAdicionada);
+        return new DadosEstoqueGet(estoqueAtual);
+    }
+
+    public List<DadosMedicamentoMobile> listarMedicamentosMobilePorUsuario(String username) {
+        return usuarioRepository.findByNomeUsuario(username)
+                .map(usuario -> medicamentoRepository.findByUsuarioId(usuario.getId()))
+                .or(() -> dependenteRepository.findByNomeUsuario(username)
+                        .map(dependente -> medicamentoRepository.findByDependenteId(dependente.getId())))
+                .orElseThrow(() -> new EntityNotFoundException("Usuario ou dependente nao encontrado"))
+                .stream()
+                .map(DadosMedicamentoMobile::new)
+                .toList();
+    }
 
     public DadosDashboardPessoal obterDadosDashboardPessoal(Long usuarioId) {
         long medicamentosAtivos = medicamentoRepository.countByUsuarioId(usuarioId);
@@ -170,5 +230,10 @@ public class MedicamentoService {
                 .toList();
 
         return new DadosDashboardPessoal(medicamentosAtivos, reposicoesUrgentes, proximasDoses, listaMedicamentosHoje, listaEstoqueCritico);
+    }
+
+    private Medicamento buscarMedicamento(Long id) {
+        return medicamentoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Medicamento nao encontrado"));
     }
 }

@@ -1,7 +1,7 @@
 package com.medtrack.medtrack.security;
 
-import com.medtrack.medtrack.service.jwt.JwtService;
-import com.medtrack.medtrack.service.usuario.UsuarioDetailsService;
+import com.medtrack.medtrack.service.JwtService;
+import com.medtrack.medtrack.service.UsuarioDetailsService;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtService jwtService, UsuarioDetailsService usuarioDetailsService) {
         this.jwtService = jwtService;
         this.usuarioDetailsService = usuarioDetailsService;
-        System.out.println("✅ JwtAuthenticationFilter criado com sucesso!");
     }
 
     @Override
@@ -33,40 +32,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain chain
     ) throws ServletException, IOException {
 
-        System.out.println("🔧 JwtAuthenticationFilter: Processando requisição...");
-
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("⚠️ Token JWT não encontrado ou inválido.");
             chain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
+        final String jwt = authHeader.substring(7);
+        final String username;
 
-        System.out.println("🔑 Token JWT recebido: " + jwt);
-        System.out.println("🔑 Usuário extraído do token: " + username);
+        try {
+            username = jwtService.extractUsername(jwt);
+        } catch (RuntimeException e) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = usuarioDetailsService.loadUserByUsername(username);
 
-            System.out.println("🔐 Verificando token para o usuário: " + userDetails.getUsername());
-
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("✅ Token válido. Usuário autenticado: " + userDetails.getUsername());
-            } else {
-                System.out.println("❌ Token inválido para o usuário: " + userDetails.getUsername());
             }
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean isTokenValid(String jwt, UserDetails userDetails) {
+        try {
+            return jwtService.isTokenValid(jwt, userDetails);
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 }

@@ -1,9 +1,7 @@
-package com.medtrack.medtrack.service.medicamento;
+package com.medtrack.medtrack.util.exception;
 
 import com.medtrack.medtrack.model.medicamento.dto.DadosDuplicidadeMedicamento;
-import lombok.Getter;
 
-@Getter
 public class DuplicidadeMedicamentoException extends RuntimeException {
 
     private final DadosDuplicidadeMedicamento dadosDuplicidade;
@@ -13,4 +11,7 @@ public class DuplicidadeMedicamentoException extends RuntimeException {
         this.dadosDuplicidade = dadosDuplicidade;
     }
 
+    public DadosDuplicidadeMedicamento getDadosDuplicidade() {
+        return dadosDuplicidade;
+    }
 }

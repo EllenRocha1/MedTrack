@@ -1,39 +1,34 @@
 package com.medtrack.medtrack.controller;
 
-import com.medtrack.medtrack.model.usuario.Usuario;
 import com.medtrack.medtrack.model.usuario.dto.DadosUsuarioAtualizacao;
 import com.medtrack.medtrack.model.usuario.dto.DadosUsuarioCadastro;
 import com.medtrack.medtrack.model.usuario.dto.DetalhamentoUsuario;
-import com.medtrack.medtrack.repository.UsuarioRepository;
-import com.medtrack.medtrack.service.usuario.UsuarioService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import com.medtrack.medtrack.service.UsuarioService;
 import jakarta.validation.Valid;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("usuarios")
 public class UsuarioController {
 
-    private final UsuarioRepository repositorio;
-    private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioRepository repositorio, PasswordEncoder passwordEncoder, UsuarioService usuarioService) {
-        this.repositorio = repositorio;
-        this.passwordEncoder = passwordEncoder;
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
-
     @PostMapping("/cadastro")
-    @Transactional
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody @Valid DadosUsuarioCadastro dados) {
         var usuario = usuarioService.cadastrarUsuario(dados);
 
@@ -47,33 +42,26 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<Page<DetalhamentoUsuario>> listar(Pageable paginacao) {
-        var page = repositorio.findAll(paginacao).map(DetalhamentoUsuario::new);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(usuarioService.listar(paginacao));
     }
-
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<DetalhamentoUsuario> detalharUsuarios(@PathVariable Long id) {
-        var usuario = repositorio.getReferenceById(id);
-        return ResponseEntity.ok(new DetalhamentoUsuario(usuario));
-
+        return ResponseEntity.ok(usuarioService.detalhar(id));
     }
 
     @PutMapping("/atualizar/{id}")
-    @Transactional
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id,
-                                                    @RequestBody @Valid DadosUsuarioAtualizacao dados) {
-        Usuario usuarioAtualizado = usuarioService.atualizarUsuario(id, dados);
-        return ResponseEntity.ok(usuarioAtualizado);
+    public ResponseEntity<DetalhamentoUsuario> atualizarUsuario(
+            @PathVariable Long id,
+            @RequestBody @Valid DadosUsuarioAtualizacao dados
+    ) {
+        var usuarioAtualizado = usuarioService.atualizarUsuario(id, dados);
+        return ResponseEntity.ok(new DetalhamentoUsuario(usuarioAtualizado));
     }
 
     @DeleteMapping("/deletar/{id}")
-    @Transactional
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        if (!repositorio.existsById(id)) {
-            throw new EntityNotFoundException("Usuário não encontrado para exclusão");
-        }
-        repositorio.deleteById(id);
+        usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 }

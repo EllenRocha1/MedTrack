@@ -1,4 +1,4 @@
-package com.medtrack.medtrack.service.jwt;
+package com.medtrack.medtrack.service;
 
 import com.medtrack.medtrack.model.dependente.DependenteDetails;
 import com.medtrack.medtrack.model.usuario.UsuarioDetails;
