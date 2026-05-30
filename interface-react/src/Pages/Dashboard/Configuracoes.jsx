@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 import Popup from "../../Componentes/PopUp";
 
 const Configuracoes = () => {
-    const [open, setOpen] = useState(false)
     const [abaAtiva, setAbaAtiva] = useState("perfil");
     const role = getUserRole();
     const [data, setData] = useState("")
@@ -83,7 +82,8 @@ const Configuracoes = () => {
 const Perfil = ({ usuarioInicial }) => {
     const [usuario, setUsuario] = useState(usuarioInicial || {});
     const [erro, setError] = useState(null);
-    const [open, setOpen] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openSuccess, setOpenSuccess] = useState(false);
 
 
 
@@ -113,7 +113,7 @@ const Perfil = ({ usuarioInicial }) => {
 
             setUsuario(response.data); // Garante que o estado recebe os dados novos
             setError(null);
-            window.location.reload();
+            setOpenSuccess(true);
 
         } catch (err) {
             setError(err.message);
@@ -137,11 +137,11 @@ const Perfil = ({ usuarioInicial }) => {
             setError(err.message);
         }
     };
-    const botao1 = {
+    const botaoDelete = {
         label: "Excluir", funcao: handleDelete
     }
 
-    const texto = {
+    const textoDelete = {
         h2: "Tem certeza que quer excluir? ", sub: "Excluir fará com que você perca seus dados"
     }
 
@@ -192,11 +192,18 @@ const Perfil = ({ usuarioInicial }) => {
             </button>
             <button
                 className="bg-red-500 text-white px-4 py-2 rounded mt-2 ml-2"
-                onClick={()=>setOpen(true)}
+                onClick={()=>setOpenDelete(true)}
             >
                 Excluir Conta
             </button>
-            <Popup open={open} setOpen={setOpen} botao1={botao1} texto={ texto }/>
+            
+            <Popup open={openDelete} setOpen={setOpenDelete} botao1={botaoDelete} texto={ textoDelete }/>
+            <Popup 
+                open={openSuccess} 
+                setOpen={setOpenSuccess} 
+                botao1={{ label: "OK", funcao: () => window.location.reload() }} 
+                texto={{ h2: "Sucesso!", sub: "Suas informações foram atualizadas com sucesso." }} 
+            />
 
         </div>
     );
@@ -205,7 +212,9 @@ const Perfil = ({ usuarioInicial }) => {
 
 const Dependentes = ({dependentes}) => {
     const [dependenteSelecionado, setDependenteSelecionado] = useState(null);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
+    const [openSuccess, setOpenSuccess] = useState(false);
+
     const handleChange = (event) => {
         const depSelecionado = dependentes.find(dep => dep.nomeUsuario === event.target.value);
         setDependenteSelecionado(depSelecionado || {});
@@ -224,7 +233,7 @@ const Dependentes = ({dependentes}) => {
             console.log("Dados atualizados:", response.data);
             setDependenteSelecionado(response.data);
             setError(null);
-            window.location.reload();
+            setOpenSuccess(true);
         } catch (err) {
             setError(err.message);
         }
@@ -281,6 +290,12 @@ const Dependentes = ({dependentes}) => {
                 Salvar Alterações
 
             </button>
+            <Popup 
+                open={openSuccess} 
+                setOpen={setOpenSuccess} 
+                botao1={{ label: "OK", funcao: () => window.location.reload() }} 
+                texto={{ h2: "Sucesso!", sub: "As informações do dependente foram atualizadas." }} 
+            />
         </div>
     );
 };

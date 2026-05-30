@@ -1,6 +1,7 @@
 import api, { BACKEND_URL } from "../../Service/api";
 import { FiImage, FiUpload } from "react-icons/fi";
 import { useState } from "react";
+import Popup from "../PopUp";
 
 const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     const [medicacaoSelecionada, setMedicacaoSelecionada] = useState(null);
@@ -8,6 +9,11 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
     const [imagemArquivo, setImagemArquivo] = useState(null);
     const [salvandoImagem, setSalvandoImagem] = useState(false);
     const [erroImagem, setErroImagem] = useState("");
+    
+    // Estado para o PopUp de remoção
+    const [confirmarRemocaoOpen, setConfirmarRemocaoOpen] = useState(false);
+    const [idParaRemover, setIdParaRemover] = useState(null);
+    const [nomeParaRemover, setNomeParaRemover] = useState("");
 
     const medicacoesFiltradas = (Array.isArray(medicacoes) ? medicacoes : []).filter(med => {
         if (!med) return false;
@@ -28,6 +34,12 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
             console.error("Erro ao remover medicacao", error);
         }
     }
+
+    const handleConfirmarRemocao = (id, nome) => {
+        setIdParaRemover(id);
+        setNomeParaRemover(nome);
+        setConfirmarRemocaoOpen(true);
+    };
 
     function abrirDialogImagem(med) {
         setMedicacaoSelecionada(med);
@@ -83,6 +95,19 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
 
     return (
         <div className="flex flex-col gap-4">
+            <Popup
+                open={confirmarRemocaoOpen}
+                setOpen={setConfirmarRemocaoOpen}
+                texto={{
+                    h2: "Confirmar exclusão",
+                    sub: `Tem certeza que deseja remover o medicamento "${nomeParaRemover}"?`
+                }}
+                botao1={{
+                    label: "Remover",
+                    funcao: () => remover(idParaRemover)
+                }}
+            />
+
             {termoPesquisa && (
                 <p className="text-gray-500 text-sm">
                     {medicacoesFiltradas.length} resultados para "{termoPesquisa}"
@@ -132,7 +157,7 @@ const BoxMedicacao = ({ medicacoes, termoPesquisa }) => {
                         <div className="flex items-center gap-4">
                             <p className="text-gray-700">{med.dosagem}</p>
                             <button
-                                onClick={() => remover(med.id)}
+                                onClick={() => handleConfirmarRemocao(med.id, med.nome)}
                                 className="text-red-500 hover:text-red-700 text-sm font-medium"
                             >
                                 Remover

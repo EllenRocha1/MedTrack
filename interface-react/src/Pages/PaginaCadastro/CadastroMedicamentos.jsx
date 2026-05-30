@@ -5,6 +5,7 @@ import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import useMedicamentos from "../../Componentes/ListaDeMed";
 import { FiAlertTriangle, FiCheckCircle, FiImage, FiUpload, FiX } from "react-icons/fi";
 import Loading from "../../Componentes/Loading";
+import Popup from "../../Componentes/PopUp";
 
 const CadastroMedicamentos = () => {
     const userRole = getUserRole();
@@ -16,6 +17,8 @@ const CadastroMedicamentos = () => {
     const [duplicidade, setDuplicidade] = useState(null);
     const [salvando, setSalvando] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [popupTexto, setPopupTexto] = useState({ h2: "", sub: "" });
     
     const [formData, setFormData] = useState({
         nome: "",
@@ -146,7 +149,11 @@ const CadastroMedicamentos = () => {
                 }
             }));
         } else {
-            alert('Por favor, insira um horário antes de adicionar.');
+            setPopupTexto({
+                h2: "Horário Inválido",
+                sub: "Por favor, insira um horário antes de adicionar."
+            });
+            setPopupOpen(true);
         }
     };
 
@@ -305,7 +312,11 @@ const CadastroMedicamentos = () => {
 
     const cadastrarMedicamento = async ({ ignorarDuplicidade = false } = {}) => {
         if (!formData.nome || !formData.principioAtivo || !formData.dosagemQuantidade || !formData.dosagemUnidade) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
+            setPopupTexto({
+                h2: "Campos Obrigatórios",
+                sub: "Por favor, preencha todos os campos obrigatórios."
+            });
+            setPopupOpen(true);
             return;
         }
 
@@ -336,7 +347,11 @@ const CadastroMedicamentos = () => {
                 return;
             }
 
-            alert('Erro ao cadastrar medicamento. Verifique sua conexão ou tente novamente mais tarde.');
+            setPopupTexto({
+                h2: "Erro no Cadastro",
+                sub: "Erro ao cadastrar medicamento. Verifique sua conexão ou tente novamente mais tarde."
+            });
+            setPopupOpen(true);
         } finally {
             setSalvando(false);
         }
@@ -376,6 +391,12 @@ const CadastroMedicamentos = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
+            <Popup
+                open={popupOpen}
+                setOpen={setPopupOpen}
+                texto={popupTexto}
+                botao1={{ label: "Entendido", funcao: () => setPopupOpen(false) }}
+            />
             <h1 className="text-2xl font-semibold mb-4">Cadastro de Medicamento</h1>
             <form onSubmit={handleSubmit} className="w-full max-w-lg">
                 <div className="flex flex-col gap-4">

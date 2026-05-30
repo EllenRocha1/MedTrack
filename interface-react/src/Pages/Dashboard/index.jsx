@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import api, { BACKEND_URL } from "../../Service/api";
 import { FiPackage, FiAlertTriangle, FiClock } from "react-icons/fi";
 import Loading from "../../Componentes/Loading";
+import Popup from "../../Componentes/PopUp";
 
 const DashboardPessoal = () => {
   const userInfo = getUserInfo();
-  const [sidebarExpandida, setSidebarExpandida] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupTexto, setPopupTexto] = useState({ h2: "", sub: "" });
 
   const fetchDashboard = async () => {
     try {
@@ -29,7 +31,11 @@ const DashboardPessoal = () => {
       fetchDashboard();
     } catch (error) {
       console.error("Erro ao confirmar dose:", error);
-      alert("Não foi possível confirmar a dose. Verifique se este medicamento tem um estoque configurado.");
+      setPopupTexto({
+        h2: "Erro ao confirmar dose",
+        sub: "Não foi possível confirmar a dose. Verifique se este medicamento tem um estoque configurado."
+      });
+      setPopupOpen(true);
     }
   };
 
@@ -49,14 +55,16 @@ const DashboardPessoal = () => {
 
   return (
     <div className="flex h-screen w-full bg-gray-50 overflow-hidden font-sans">
-      <Sidebar
-        type={false}
-        usuarioId={userInfo?.id}
-        expandida={sidebarExpandida}
-        setExpandida={setSidebarExpandida}
+      <Popup
+        open={popupOpen}
+        setOpen={setPopupOpen}
+        texto={popupTexto}
+        botao1={{ label: "Entendido", funcao: () => setPopupOpen(false) }}
       />
+      
+      <Sidebar type={false} />
 
-      <div className={`flex-1 flex flex-col h-full overflow-auto transition-all duration-300 ${sidebarExpandida ? "ml-0" : "ml-16"}`}>
+      <div className="flex-1 flex flex-col h-full overflow-auto transition-all duration-300">
         <header className="p-6 bg-white border-b flex justify-between items-center">
           <h2 className="text-xl font-bold text-cyan-600">Meu Painel de Saúde</h2>
           <span className="text-sm text-gray-500">{new Date().toLocaleDateString('pt-BR')}</span>
