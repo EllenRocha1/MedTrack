@@ -1,5 +1,6 @@
 import BoxMedicacao from "../BoxMedicacao";
 import Botao from "../Botao";
+import Loading from "../Loading";
 import {useEffect, useState} from "react";
 import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../Auth/AuthToken";
@@ -51,6 +52,11 @@ const Medicacoes = ({termoPesquisa}) => {
 
 
     return (
+        loading ? (
+            <div className="flex items-center justify-center h-48">
+                <Loading message={"Carregando..."} color={"teal"} />
+            </div>
+        ) : (
         <div className="flex flex-col gap-3 w-full h-screen border border-cyan-300 rounded-lg p-10">
             <div className="flex justify-between">
                 <h2 className="text-2xl font-bold">Lista de Medicações</h2>
@@ -67,7 +73,7 @@ const Medicacoes = ({termoPesquisa}) => {
                 />
             </div>
         </div>
-    );
+    ));
 };
 
 export default Medicacoes;

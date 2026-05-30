@@ -7,6 +7,7 @@ import api, { BACKEND_URL } from "../../Service/api";
 import {useParams} from "react-router-dom";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import Sidebar from "../../Componentes/Sidebar";
+import Loading from "../../Componentes/Loading";
 
 const PerfilDependente = () => {
     const { dependenteId } = useParams();
@@ -56,7 +57,11 @@ const PerfilDependente = () => {
     }
 
     if (!depInfo) {
-        return <div>Carregando...</div>;
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loading message={"Carregando perfil..."} color={"cyan"} />
+            </div>
+        );
     }
 
     return (

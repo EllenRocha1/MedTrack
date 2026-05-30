@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FormularioCadastro from '../../Componentes/FormularioCadastro';
 import api, { BACKEND_URL } from "../../Service/api";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Componentes/Loading";
 
 const CadastroDependente = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const CadastroDependente = () => {
     nomeUsuario: "",
     senha: ""
   });
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [globalError, setGlobalError] = useState('');
 
@@ -28,6 +30,7 @@ const CadastroDependente = () => {
   const handleSubmit = async (e) => {
     console.log('Formulário do Dependente submetido ');
     e.preventDefault();
+    setLoading(true);
 
     setErrors({});
     setGlobalError('');
@@ -36,6 +39,7 @@ const CadastroDependente = () => {
 
     if (!formData.nome || !formData.telefone || !formData.email || !formData.nomeUsuario || !formData.senha) {
       setGlobalError('Por favor, preencha todos os campos.');
+      setLoading(false);
       return;
     }
 
@@ -62,8 +66,19 @@ const CadastroDependente = () => {
       } else {
         setGlobalError(error.message || 'Erro ao cadastrar usuário. Verifique sua conexão ou tente novamente mais tarde.');
       }
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+      return (
+          <div className="flex h-screen items-center justify-center">
+              <Loading message={"Cadastrando dependente..."} color={"purple"} icon={"user-check"} />
+          </div>
+      );
+  }
+
   const camposCadastro = [
     { type: "text", id: "nome-completo", label: "Nome", name: "nome", placeholder: "Digite o nome do dependente" },
     { type: "text", id: "telefone", label: "Número", name: "telefone", placeholder: "Digite o número do dependente" },

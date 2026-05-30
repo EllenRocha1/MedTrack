@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import { Check, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api, { BACKEND_URL } from "../../Service/api";
+import Loading from "../Loading";
 
 const Relatorio = ({ termoPesquisa }) => {
     const [dependentes, setDependentes] = useState([]);
@@ -36,22 +37,26 @@ const Relatorio = ({ termoPesquisa }) => {
     }, []);
 
 
-  return (
-      <div className="p-6">
-        <div className="mt:flex flex-col max-h-[450px] gap-9 justify-center overflow-y-auto p-2 border border-cyan-200 rounded-lg">
-          {dependentesFiltrados.map((dep) => (
-              <div
-                  key={dep.id}
-                  className="flex justify-between bg-white p-5 border border-gray-300 items-center w-full"
-                  onClick={(e) => handleClickRelatorios(dep.id)}
-              >
-                <h1>{dep.nome}</h1>
-                {dep.emDia ? <Check color="green" /> : <X color="red" />}
-              </div>
-          ))}
-        </div>
-      </div>
-  );
+    if (loading) return (
+            <div className="p-6"><Loading message={"Carregando..."} color={"purple"} /></div>
+    );
+
+    return (
+            <div className="p-6">
+                <div className="mt:flex flex-col max-h-[450px] gap-9 justify-center overflow-y-auto p-2 border border-cyan-200 rounded-lg">
+                    {dependentesFiltrados.map((dep) => (
+                            <div
+                                    key={dep.id}
+                                    className="flex justify-between bg-white p-5 border border-gray-300 items-center w-full"
+                                    onClick={(e) => handleClickRelatorios(dep.id)}
+                            >
+                                <h1>{dep.nome}</h1>
+                                {dep.emDia ? <Check color="green" /> : <X color="red" />}
+                            </div>
+                    ))}
+                </div>
+            </div>
+    );
 };
 
 export default Relatorio;

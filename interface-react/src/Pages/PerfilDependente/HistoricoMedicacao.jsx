@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api, { BACKEND_URL } from "../../Service/api";
 import { getUserInfo, getUserRole } from "../../Componentes/Auth/AuthToken";
 import { useParams } from "react-router-dom";
+import Loading from "../../Componentes/Loading";
 
 const formatarHorarios = (frequenciaUso) => {
     if (!frequenciaUso) return "-";
@@ -26,6 +27,7 @@ const PaginaHistoricoDependentes = () => {
     const type = userRole !== "PESSOAL";
 
     const [dados, setDados] = useState({ nome: "", semana: "", registros: [] });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -71,11 +73,21 @@ const PaginaHistoricoDependentes = () => {
             } catch (err) {
                 console.error("Erro ao buscar:", err);
                 setError(err.message);
+            } finally {
+                setLoading(false);
             }
         };
 
         if (userRole) fetchDados();
     }, [userRole, id, userInfo.id, userInfo.nome]);
+
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loading message={"Carregando histórico..."} color={"blue"} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-screen">

@@ -4,6 +4,7 @@ import api, { BACKEND_URL } from "../../Service/api";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import useMedicamentos from "../../Componentes/ListaDeMed";
 import { FiAlertTriangle, FiCheckCircle, FiImage, FiUpload, FiX } from "react-icons/fi";
+import Loading from "../../Componentes/Loading";
 
 const CadastroMedicamentos = () => {
     const userRole = getUserRole();
@@ -14,6 +15,7 @@ const CadastroMedicamentos = () => {
     const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
     const [duplicidade, setDuplicidade] = useState(null);
     const [salvando, setSalvando] = useState(false);
+    const [loading, setLoading] = useState(true);
     
     const [formData, setFormData] = useState({
         nome: "",
@@ -62,29 +64,27 @@ const CadastroMedicamentos = () => {
     };
 
     useEffect(() => {
-        if (userRole === "ADMINISTRADOR") {
-            const fetchDependentes = async () => {
-                try {
+        const fetchInitialData = async () => {
+            try {
+                if (userRole === "ADMINISTRADOR") {
                     const data = await api.get(`${BACKEND_URL}/dependentes/buscar/todos`);
                     setDependentes(data.data);
-                } catch (err) {
-                    setError(err.message);
                 }
-            };
-            fetchDependentes();
-        }
-        else if (userRole === "PESSOAL") {
-            const fetchMedicamentoPessoal = async () => {
-                try {
+                else if (userRole === "PESSOAL") {
                     const response = await api.get(`${BACKEND_URL}/usuarios/buscar/${usuarioId}`);
                     setDependentes(response.data);
-                } catch (error) {
-                    setError(error.message);
                 }
-            };
-            fetchMedicamentoPessoal();
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        if (userRole) {
+            fetchInitialData();
         }
-    }, [userRole]);
+    }, [userRole, usuarioId]);
 
     const navigate = useNavigate();
 
@@ -357,6 +357,22 @@ const CadastroMedicamentos = () => {
         if (nomeCampo in formData.estoque) return formData.estoque[nomeCampo] || "";
         return formData[nomeCampo] || "";
     };   
+
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loading message={"Preparando formulário..."} color={"blue"} />
+            </div>
+        );
+    }
+
+    if (salvando) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loading message={"Salvando medicamento..."} color={"green"} icon={"check"} />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">

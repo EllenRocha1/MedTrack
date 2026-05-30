@@ -3,6 +3,7 @@ import { getUserInfo } from "../../Componentes/Auth/AuthToken";
 import { useEffect, useState } from "react";
 import api, { BACKEND_URL } from "../../Service/api";
 import { FiPackage, FiAlertTriangle, FiClock } from "react-icons/fi";
+import Loading from "../../Componentes/Loading";
 
 const DashboardPessoal = () => {
   const userInfo = getUserInfo();
@@ -39,7 +40,11 @@ const DashboardPessoal = () => {
   }, []);
 
   if (loading) {
-    return <div className="flex h-screen items-center justify-center">Carregando painel...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loading message={"Carregando painel..."} color={"teal"} />
+      </div>
+    );
   }
 
   return (
