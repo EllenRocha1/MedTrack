@@ -15,4 +15,33 @@ body {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
+:root{
+  --theme-purple-ring: rgba(127,119,221,0.25);
+  --theme-purple-icon: #7F77DD;
+  --theme-purple-text: #534AB7;
+
+  --theme-teal-ring: rgba(29,158,117,0.2);
+  --theme-teal-icon: #1D9E75;
+  --theme-teal-text: #0F6E56;
+
+  --theme-coral-ring: rgba(216,90,48,0.2);
+  --theme-coral-icon: #D85A30;
+  --theme-coral-text: #993C1D;
+
+  /* default values used by the loading component */
+  --lp-ring: var(--theme-purple-ring);
+  --lp-icon: var(--theme-purple-icon);
+  --lp-text: var(--theme-purple-text);
+}
+
+.theme-purple { --lp-ring: var(--theme-purple-ring); --lp-icon: var(--theme-purple-icon); --lp-text: var(--theme-purple-text); }
+.theme-teal   { --lp-ring: var(--theme-teal-ring);   --lp-icon: var(--theme-teal-icon);   --lp-text: var(--theme-teal-text); }
+.theme-coral  { --lp-ring: var(--theme-coral-ring);  --lp-icon: var(--theme-coral-icon);  --lp-text: var(--theme-coral-text); }
+
+/* LoadingPulse helpers (fallbacks using CSS variables) */
+.lp-ring, .lp-ring2, .lp-ring3 { background: var(--lp-ring); }
+.lp-icon { background: var(--lp-icon); }
+.lp-text { color: var(--lp-text); }
+
   
