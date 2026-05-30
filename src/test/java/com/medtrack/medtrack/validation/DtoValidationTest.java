@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DTOValidationTests {
+class DtoValidationTest {
 
     private static Validator validator;
     private static ValidatorFactory validatorFactory;
@@ -124,5 +124,17 @@ class DTOValidationTests {
         Set<String> mensagens = violacoes.stream().map(ConstraintViolation::getMessage).collect(Collectors.toSet());
         assertTrue(mensagens.contains("E-mail inválido. Informe um endereço de e-mail válido."));
         assertTrue(mensagens.contains("Telefone inválido. Use formato BR ou internacional válido."));
+    }
+
+    @Test
+    void deveAceitarEmailETelefoneNulosEmValidadoresOpcionais() {
+        assertTrue(new EmailValidoValidator().isValid(null, null));
+        assertTrue(new TelefoneValidoValidator().isValid(null, null));
+    }
+
+    @Test
+    void deveRejeitarEmailETelefoneEmBrancoNosValidadores() {
+        assertFalse(new EmailValidoValidator().isValid("   ", null));
+        assertFalse(new TelefoneValidoValidator().isValid("   ", null));
     }
 }
