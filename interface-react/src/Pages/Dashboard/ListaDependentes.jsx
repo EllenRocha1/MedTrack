@@ -6,6 +6,7 @@ import Botao from "../../Componentes/Botao/index.jsx";
 import {getUserInfo, getUserRole} from "../../Componentes/Auth/AuthToken";
 import api, { BACKEND_URL } from "../../Service/api";
 import {useNavigate} from "react-router-dom";
+import Loading from "../../Componentes/Loading";
 
 const ListaDependentes = () => {
     const [termoPesquisa, setTermoPesquisa] = useState("");
@@ -56,7 +57,11 @@ const ListaDependentes = () => {
     };
 
     if (loading) {
-        return <div>Carregando...</div>;
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <Loading message={"Carregando..."} color={"purple"} />
+            </div>
+        );
     }
 
     if (error) {

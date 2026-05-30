@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api, { BACKEND_URL } from "../../Service/api";
 import { useNavigate } from "react-router-dom";
 import { FiUsers, FiAlertCircle, FiActivity, FiPackage } from "react-icons/fi";
+import Loading from "../../Componentes/Loading";
 
 const DashboardAdmin = () => {
     const userInfo = getUserInfo();
@@ -103,7 +104,7 @@ const DashboardAdmin = () => {
                             </div>
                             <div className="p-0">
                                 {loading ? (
-                                    <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
+                                    <div className="p-8"><Loading message={"Carregando..."} color={"purple"} /></div>
                                 ) : dependentes.length === 0 ? (
                                     <p className="text-center text-slate-400 py-8 text-sm">Nenhum dependente cadastrado.</p>
                                 ) : (
@@ -150,7 +151,7 @@ const DashboardAdmin = () => {
                             <h3 className="font-semibold text-slate-800 text-lg mb-4">Reposições Urgentes</h3>
                             <div className="space-y-4">
                                 {loading ? (
-                                    <p className="text-center text-slate-400 py-8 text-sm">Carregando...</p>
+                                    <div className="p-6"><Loading message={"Carregando..."} color={"purple"} /></div>
                                 ) : alertas.length === 0 ? (
                                     <p className="text-center text-slate-400 text-sm py-4">Nenhuma reposição urgente 🎉</p>
                                 ) : (
