@@ -1,150 +1,99 @@
 package com.medtrack.medtrack.controller;
 
-import com.medtrack.medtrack.model.medicamento.Medicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosEstoqueGet;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamento;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoGet;
-import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.model.medicamento.dto.DadosMedicamentoPut;
-import com.medtrack.medtrack.repository.MedicamentoRepository;
+import com.medtrack.medtrack.model.usuario.dto.DadosDashboardPessoal;
 import com.medtrack.medtrack.service.CloudinaryService;
-import com.medtrack.medtrack.service.medicamento.DuplicidadeMedicamentoException;
-import com.medtrack.medtrack.service.medicamento.MedicamentoService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import com.medtrack.medtrack.service.MedicamentoService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/medicamentos")
 public class MedicamentoController {
     private static final Logger logger = LoggerFactory.getLogger(MedicamentoController.class);
-    private final MedicamentoRepository repositorio;
+
     private final MedicamentoService medicamentoService;
     private final CloudinaryService cloudinaryService;
 
-    public MedicamentoController(MedicamentoRepository repositorio, MedicamentoService medicamentoService, CloudinaryService cloudinaryService) {
-        this.repositorio = repositorio;
+    public MedicamentoController(MedicamentoService medicamentoService, CloudinaryService cloudinaryService) {
         this.medicamentoService = medicamentoService;
         this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/cadastro")
-    public ResponseEntity<?> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
-        logger.info("Recebendo requisição para criar medicamento: {}", dadosMedicamento);
-        Medicamento medicamento;
+    public ResponseEntity<DadosMedicamentoGet> create(@RequestBody @Valid DadosMedicamento dadosMedicamento) {
+        logger.info("Recebendo requisicao para criar medicamento: {}", dadosMedicamento);
 
-        try {
-            medicamento = medicamentoService.criarMedicamento(dadosMedicamento);
-        } catch (DuplicidadeMedicamentoException e) {
-            return ResponseEntity.status(409).body(e.getDadosDuplicidade());
-        }
-
+        var medicamento = medicamentoService.criarMedicamento(dadosMedicamento);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(medicamento.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(new DadosMedicamentoGet(medicamento));
-
     }
 
     @GetMapping("/todos/{usuarioId}")
     public ResponseEntity<List<DadosMedicamentoGet>> getMedicamentosByUsuarioId(@PathVariable Long usuarioId) {
-        List<Medicamento> medicamentos = repositorio.findByUsuarioId(usuarioId);
-
-        List<DadosMedicamentoGet> medicamentoResponseDTOs = medicamentos.stream()
-                .map(DadosMedicamentoGet::new)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(medicamentoResponseDTOs);
+        return ResponseEntity.ok(medicamentoService.listarPorUsuario(usuarioId));
     }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<DadosMedicamentoGet> detalharMedicamento(@PathVariable Long id) {
-        Medicamento medicamento = repositorio.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
-        return ResponseEntity.ok(new DadosMedicamentoGet(medicamento));
+        return ResponseEntity.ok(medicamentoService.detalhar(id));
     }
 
     @GetMapping("/todos/dependente/{dependenteId}")
     public ResponseEntity<List<DadosMedicamentoGet>> getMedicamentosByDependenteId(@PathVariable Long dependenteId) {
-        List<Medicamento> medicamentos = repositorio.findByDependenteId(dependenteId);
-
-        List<DadosMedicamentoGet> medicamentoResponseDTOs = medicamentos.stream()
-                .map(DadosMedicamentoGet::new)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(medicamentoResponseDTOs);
+        return ResponseEntity.ok(medicamentoService.listarPorDependente(dependenteId));
     }
 
     @GetMapping("/estoque-critico/{usuarioId}")
     public ResponseEntity<List<DadosMedicamentoGet>> getEstoqueCritico(@PathVariable Long usuarioId) {
-        List<Medicamento> medicamentos = medicamentoService.listarEstoqueCritico(usuarioId);
-
-        List<DadosMedicamentoGet> medicamentoResponseDTOs = medicamentos.stream()
-                .map(DadosMedicamentoGet::new)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(medicamentoResponseDTOs);
+        return ResponseEntity.ok(medicamentoService.listarEstoqueCriticoDto(usuarioId));
     }
 
     @GetMapping("/dashboard/resumo/{usuarioId}")
     public ResponseEntity<DadosDashboardPessoal> getDashboardResumo(@PathVariable Long usuarioId) {
-        DadosDashboardPessoal dados = medicamentoService.obterDadosDashboardPessoal(usuarioId);
-        return ResponseEntity.ok(dados);
+        return ResponseEntity.ok(medicamentoService.obterDadosDashboardPessoal(usuarioId));
     }
 
     @PatchMapping("/{id}/consumir")
-    @Transactional
     public ResponseEntity<DadosEstoqueGet> consumirDose(@PathVariable Long id) {
-       var medicamento = repositorio.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
-
-       if (medicamento.getEstoque() != null) {
-          medicamento.getEstoque().decrementar();
-
-        } else {
-        throw new IllegalArgumentException("Este medicamento não possui estoque configurado.");
-        }
-       return ResponseEntity.ok(new DadosEstoqueGet(medicamento.getEstoque()));
+        return ResponseEntity.ok(medicamentoService.consumirDose(id));
     }
 
     @PatchMapping("/{id}/repor")
-    @Transactional
     public ResponseEntity<DadosEstoqueGet> reporEstoque(@PathVariable Long id, @RequestBody Integer quantidadeAdicionada) {
-      var medicamentoEncontrado = repositorio.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Medicamento não encontrado"));
-
-      var estoqueAtual = medicamentoEncontrado.getEstoque();
-
-      if (estoqueAtual != null) {
-        int novaQuantidade = estoqueAtual.getQuantidadeAtual() + quantidadeAdicionada;
-        estoqueAtual.setQuantidadeAtual(novaQuantidade);
-
-    } else {
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(medicamentoService.reporEstoque(id, quantidadeAdicionada));
     }
 
-    return ResponseEntity.ok(new DadosEstoqueGet(estoqueAtual));
-}
-
     @PutMapping("/alterar/{id}")
-    @Transactional
-    public ResponseEntity<Void> atualizarMedicamento(@RequestBody @Valid DadosMedicamentoPut dadosMedicamentoPut, @PathVariable Long id) {
-        if (!repositorio.existsById(id)) {
-            throw new EntityNotFoundException("Medicamento não encontrado para atualização");
-        }
+    public ResponseEntity<Void> atualizarMedicamento(
+            @RequestBody @Valid DadosMedicamentoPut dadosMedicamentoPut,
+            @PathVariable Long id
+    ) {
         medicamentoService.atualizarMedicamento(dadosMedicamentoPut, id);
         return ResponseEntity.ok().build();
     }
@@ -155,17 +104,13 @@ public class MedicamentoController {
             @RequestPart("imagem") MultipartFile imagem
     ) {
         String imagemUrl = cloudinaryService.uploadImagemMedicamento(imagem);
-        Medicamento medicamento = medicamentoService.atualizarImagem(id, imagemUrl);
+        var medicamento = medicamentoService.atualizarImagem(id, imagemUrl);
         return ResponseEntity.ok(new DadosMedicamentoGet(medicamento));
     }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarMedicamento(@PathVariable Long id) {
-        try {
-            medicamentoService.deletarMedicamento(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        medicamentoService.deletarMedicamento(id);
+        return ResponseEntity.noContent().build();
     }
 }

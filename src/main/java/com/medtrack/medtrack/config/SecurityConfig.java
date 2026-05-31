@@ -1,8 +1,8 @@
 package com.medtrack.medtrack.config;
 
 import com.medtrack.medtrack.security.JwtAuthenticationFilter;
-import com.medtrack.medtrack.service.jwt.JwtService;
-import com.medtrack.medtrack.service.usuario.UsuarioDetailsService;
+import com.medtrack.medtrack.service.JwtService;
+import com.medtrack.medtrack.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

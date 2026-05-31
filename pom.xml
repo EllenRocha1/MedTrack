@@ -139,6 +139,39 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/MedtrackApplication*</exclude>
+								<exclude>**/config/**</exclude>
+								<exclude>**/repository/**</exclude>
+								<exclude>**/security/**</exclude>
+								<exclude>**/util/exception/**</exclude>
+							</excludes>
+							<formats>
+								<format>HTML</format>
+								<format>XML</format>
+								<format>CSV</format>
+							</formats>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>

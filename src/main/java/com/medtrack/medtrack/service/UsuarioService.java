@@ -1,11 +1,16 @@
-package com.medtrack.medtrack.service.usuario;
+package com.medtrack.medtrack.service;
 
 import com.medtrack.medtrack.model.usuario.Usuario;
 import com.medtrack.medtrack.model.usuario.dto.DadosUsuarioAtualizacao;
 import com.medtrack.medtrack.model.usuario.dto.DadosUsuarioCadastro;
+import com.medtrack.medtrack.model.usuario.dto.DadosUsuarioMobile;
+import com.medtrack.medtrack.model.usuario.dto.DetalhamentoUsuario;
 import com.medtrack.medtrack.repository.DependenteRepository;
 import com.medtrack.medtrack.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +43,24 @@ public class UsuarioService {
     }
     public Optional<Usuario> buscarPorId(Long id) {
         return repositorio.getUsuariosById(id);
+    }
+
+    public DadosUsuarioMobile buscarUsuarioMobilePorUsername(String username) {
+        return repositorio.findByNomeUsuario(username)
+                .map(DadosUsuarioMobile::new)
+                .or(() -> dependenteRepository.findByNomeUsuario(username)
+                        .map(DadosUsuarioMobile::new))
+                .orElseThrow(() -> new EntityNotFoundException("Usuario ou dependente nao encontrado"));
+    }
+
+    public Page<DetalhamentoUsuario> listar(Pageable paginacao) {
+        return repositorio.findAll(paginacao).map(DetalhamentoUsuario::new);
+    }
+
+    public DetalhamentoUsuario detalhar(Long id) {
+        Usuario usuario = repositorio.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario nao encontrado"));
+        return new DetalhamentoUsuario(usuario);
     }
 
     @Transactional
@@ -76,5 +99,14 @@ public class UsuarioService {
         }
 
         return repositorio.save(usuario);
+    }
+
+    @Transactional
+    public void deletarUsuario(Long id) {
+        if (!repositorio.existsById(id)) {
+            throw new EntityNotFoundException("Usuario nao encontrado para exclusao");
+        }
+
+        repositorio.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.medtrack.medtrack.config.exception;
+package com.medtrack.medtrack.util.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,16 @@ public class TratadorDeErros {
     @ExceptionHandler(AdministradorNaoEncontradoException.class)
     public ResponseEntity<Object> handleAdministradorNaoEncontrado(AdministradorNaoEncontradoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicidadeMedicamentoException.class)
+    public ResponseEntity<Object> handleDuplicidadeMedicamento(DuplicidadeMedicamentoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getDadosDuplicidade());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

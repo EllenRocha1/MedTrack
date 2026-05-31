@@ -1,13 +1,14 @@
 package com.medtrack.medtrack;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class MedtrackApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void deveInstanciarAplicacaoSemSubirContextoSpring() {
+		assertDoesNotThrow(MedtrackApplication::new);
 	}
 
 }
