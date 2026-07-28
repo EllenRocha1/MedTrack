@@ -6,7 +6,7 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 
 echo "==> Backend: clean verify (JDK 21)"
 docker run --rm \
-  -v "$repository_root:/workspace" \
+  -v "$repository_root/apps/backend:/workspace" \
   -v medtrack-maven-cache:/root/.m2 \
   -w /workspace \
   eclipse-temurin:21-jdk-alpine \
@@ -14,7 +14,7 @@ docker run --rm \
 
 echo "==> Frontend: npm ci (Node 22)"
 docker run --rm \
-  -v "$repository_root/interface-react:/workspace" \
+  -v "$repository_root:/workspace" \
   -v medtrack-npm-cache:/root/.npm \
   -w /workspace \
   node:22-alpine \
@@ -23,10 +23,10 @@ docker run --rm \
 echo "==> Frontend: tests (expected to fail until tests are added)"
 if docker run --rm \
   -e CI=true \
-  -v "$repository_root/interface-react:/workspace" \
+  -v "$repository_root:/workspace" \
   -w /workspace \
   node:22-alpine \
-  npm test -- --watchAll=false --coverage; then
+  npm run test:frontend -- --watchAll=false --coverage; then
   echo "Frontend tests passed."
 else
   echo "Frontend tests failed; see docs/BASELINE_MODERNIZACAO.md." >&2
@@ -37,10 +37,10 @@ if docker run --rm \
   -e CI=true \
   -e REACT_APP_BACKEND_URL=http://localhost:8081 \
   -e REACT_APP_FRONTEND_URL=http://localhost:3000 \
-  -v "$repository_root/interface-react:/workspace" \
+  -v "$repository_root:/workspace" \
   -w /workspace \
   node:22-alpine \
-  npm run build; then
+  npm run build:frontend; then
   echo "Frontend CI build passed."
 else
   echo "Frontend CI build failed; see docs/BASELINE_MODERNIZACAO.md." >&2

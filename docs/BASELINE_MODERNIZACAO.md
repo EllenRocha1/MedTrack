@@ -24,7 +24,7 @@ Comando:
 
 ```bash
 docker run --rm \
-  -v "$PWD:/workspace" \
+  -v "$PWD/apps/backend:/workspace" \
   -v medtrack-maven-cache:/root/.m2 \
   -w /workspace \
   eclipse-temurin:21-jdk-alpine \
@@ -54,7 +54,7 @@ Instalação:
 
 ```bash
 docker run --rm \
-  -v "$PWD/interface-react:/workspace" \
+  -v "$PWD:/workspace" \
   -v medtrack-npm-cache:/root/.npm \
   -w /workspace \
   node:22-alpine \
@@ -68,10 +68,10 @@ Comando:
 ```bash
 docker run --rm \
   -e CI=true \
-  -v "$PWD/interface-react:/workspace" \
+  -v "$PWD:/workspace" \
   -w /workspace \
   node:22-alpine \
-  npm test -- --watchAll=false --coverage
+  npm run test:frontend -- --watchAll=false --coverage
 ```
 
 Resultado: **vermelho**. O runner verificou 44 arquivos e não encontrou
@@ -145,4 +145,3 @@ documentadas. Isso será tratado na fase de DX/containerização.
   PR funcional deve tornar lint/test/build obrigatoriamente verdes.
 - Nenhuma auditoria pode piorar em quantidade ou severidade.
 - Não alterar contratos consumidos pelo Android sem teste e registro.
-

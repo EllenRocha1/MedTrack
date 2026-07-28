@@ -124,13 +124,13 @@ public class SecurityConfig {
 
 Documentação completa dos endpoints REST disponível em dois formatos:
 
-1. **[README das Rotas](src/README.md)** - Lista detalhada de todos os endpoints com:
+1. **Coleções e documentação da API** em [`docs/insomnia`](docs/insomnia) com:
   - Métodos HTTP
   - Parâmetros esperados
   - Exemplos de request/response
   - Status codes possíveis
 
-2. **[Coleção do Insomnia](src/main/java/com/medtrack/medtrack/docs/insomnia)** - Arquivo pronto para importar no Insomnia contendo:
+2. **[Coleção do Insomnia](docs/insomnia/V4_insominia_medtrack.json)** - Arquivo pronto para importar no Insomnia contendo:
   - Todas as rotas configuradas
   - Exemplos de requests pré-prontos
   - Environment configurado
@@ -140,7 +140,7 @@ Documentação completa dos endpoints REST disponível em dois formatos:
 
 <div align="center">
 
-  [![Run in Insomnia](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?uri=file://src/main/java/com/medtrack/medtrack/docs/insomnia/V3_Insominia_doc.json)
+  [![Run in Insomnia](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?uri=file://docs/insomnia/V4_insominia_medtrack.json)
 </div>
 
 <div align="center"> 
@@ -194,7 +194,7 @@ O ecossistema MedTrack está completamente dockerizado. Banco de Dados, Backend 
 | Componente | Tecnologia | Detalhes |
 |---|---|---|
 | **Backend** | Spring Boot + JRE 21 | Build multi-stage (Maven + JRE 21) para imagens leves e seguras |
-| **Frontend** | React + Node 18 | Suporte a Hot-Reload no Windows via Polling |
+| **Frontend** | React + Node 22 | Suporte a Hot-Reload no Windows via Polling |
 | **Banco de Dados** | PostgreSQL | Volumes persistentes e Healthcheck para garantir a ordem de subida dos serviços |
  
 ---
@@ -202,18 +202,24 @@ O ecossistema MedTrack está completamente dockerizado. Banco de Dados, Backend 
 ## 🚀 Rodando Localmente (sem Docker)
 
 ##### **Pré-requisitos**
-   - Node.js 18+ (Frontend)
+   - Node.js 22 (Frontend)
    - Java 21+ JDK (Backend)
    - PostgreSQL 15+
 
 #### **Frontend**
 ````bash
-cd interface-react
-npm install
-npm start
+npm ci
+npm run start:frontend
 ````
 
 #### **Backend**
+
+```bash
+cd apps/backend
+./mvnw spring-boot:run
+```
+
+Configuração do banco:
 `````properties
 spring.datasource.url=jdbc:postgresql://${DB_HOST}/medtrack
 spring.datasource.username=${DB_USER}

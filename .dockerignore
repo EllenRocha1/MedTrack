@@ -1,0 +1,9 @@
+.git
+.idea
+**/node_modules
+**/build
+**/target
+*.log
+.env
+.env.*
+!.env.example
