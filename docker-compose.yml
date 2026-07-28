@@ -17,7 +17,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: .
+    build: ./apps/backend
     container_name: medtrack-backend
     ports:
       - "${BACKEND_PORT:-8081}:8081"
@@ -38,7 +38,9 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./interface-react
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
     container_name: medtrack-frontend
     ports:
       - "${FRONTEND_PORT:-3000}:3000"

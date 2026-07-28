@@ -4,7 +4,7 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline  # cacheia deps separado do build
+RUN ./mvnw --batch-mode dependency:resolve
 COPY src ./src
 RUN ./mvnw clean package -DskipTests
 

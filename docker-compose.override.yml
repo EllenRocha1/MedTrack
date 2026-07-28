@@ -1,10 +1,10 @@
 services:
   backend:
     build:
-      context: .
+      context: ./apps/backend
       target: build
     volumes:
-      - .:/app
+      - ./apps/backend:/app
       - ~/.m2:/root/.m2  # cache do Maven entre rebuilds
     environment:
       - SPRING_PROFILES_ACTIVE=dev
@@ -13,8 +13,8 @@ services:
 
   frontend:
     volumes:
-      - ./interface-react:/app
-      - /app/node_modules
+      - ./apps/frontend:/workspace/apps/frontend
+      - /workspace/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
